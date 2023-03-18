@@ -38,8 +38,8 @@ const RegistrationForm = ({onToggle}) => {
     return (
         <>
             <div className="flex justify-end m-7">
-                <button className="text-xl font-semibold" onClick={onToggle}>Уже есть аккаунт</button>
-                <div className="inline-block align-middle">
+                <button className="text-base font-normal" onClick={onToggle}>Уже есть аккаунт</button>
+                <div className="flex justify-center items-center ml-2">
                     <Arrow/>
                 </div>
             </div>
@@ -78,18 +78,18 @@ const RegistrationForm = ({onToggle}) => {
                 }
             }
             >
-                <div className="z-30 py-10 flex flex-col justify-center sm:py-12 sm:max-w-xl sm:mx-auto md:px-28 lg:px-32 xl:px-48 2xl:px-48">
-                    <div className="relative py-3">
+                <div className="z-30 py-6 flex justify-center sm:py-12 sm:max-w-xl sm:mx-auto md:px-28 lg:px-32 xl:px-48 2xl:px-48">
+                    <div className="relative py-3 w-2/3">
                         <div
                             className="absolute inset-0 shadow-lg rounded-3xl bg-gradient-to-r from-bgMainOrange-100 to-bgMainOrange-600 shadow-lg transform -rotate-6 sm:rounded-3xl">
                         </div>
-                        <div className="relative bg-bgMainWhite shadow-lg sm:rounded-3xl p-20 rounded-3xl">
+                        <div className="relative bg-bgMainWhite shadow-2xl sm:rounded-3xl p-20 rounded-3xl">
                             <div className="mx-auto">
                                 <div>
                                     <h1 className="text-2xl font-semibold">Регистрация</h1>
                                 </div>
                                 <Form>
-                                    <div className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7 flex flex-row justify-between">
+                                    <div className="py-3 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7 flex flex-row justify-between">
                                         <div className="relative w-1/2 mr-10 mt-4">
                                             <div  className="relative">
                                                 <label htmlFor="username"
@@ -189,7 +189,7 @@ const RegistrationForm = ({onToggle}) => {
                                         </div>
                                         </div>
                                     <div className="relative flex top-14">
-                                        <button type="submit" className="bg-bgMainOrange-600 rounded-xl px-4 py-3">Зарегистрироваться</button>
+                                        <button type="submit" className="bg-bgMainOrange-600 shadow-xl rounded-xl px-4 py-3">Зарегистрироваться</button>
                                     </div>
                                     </Form>
                                 </div>

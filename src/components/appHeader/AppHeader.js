@@ -2,6 +2,7 @@ import {Link, NavLink} from "react-router-dom";
 import Logo from "../icons/Logo";
 import Telegram from "../icons/Telegram";
 import Instagram from "../icons/Instagram";
+import Avatar from "../icons/Avatar";
 
 
 const AppHeader = ({activeClient, logout}) => {
@@ -21,7 +22,7 @@ const AppHeader = ({activeClient, logout}) => {
                     <li className="w-2/5">
                         <label htmlFor="default-search"
                                className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-gray-300">Search</label>
-                        <div className="relative">
+                        <div className="relative flex items-center">
                             <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
                                 <svg className="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none"
                                      stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -30,10 +31,10 @@ const AppHeader = ({activeClient, logout}) => {
                                 </svg>
                             </div>
                             <input type="search" id="default-search"
-                                   className="block p-2 pl-10 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                   placeholder="Поиск.." required/>
+                                   className="block p-2 pl-10 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-bgMainOrange-600 focus:border-bgMainOrange-600 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                   placeholder="Поиск..." required/>
                             <button type="submit"
-                                    className="text-white absolute right-2.5 bottom-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                    className="text-sm absolute right-0 bg-bgMainOrange-100 hover:bg-bgMainOrange-600 focus:outline-none focus:ring-bgMainOrange-600 font-normal rounded-lg px-4 py-2">
                                 Найти
                             </button>
                         </div>
@@ -58,7 +59,8 @@ const AppHeader = ({activeClient, logout}) => {
                 </ul>
             </nav>
             {activeClient != null ?
-                    <div className="w-fit flex justify-end font-medium text-base xl:text-base lg:text-md 2xl:text-md sm:text-sm">
+                    <div className="w-fit flex items-center justify-between font-medium text-xs xl:text-sm lg:text-sm 2xl:text-sm sm:text-sm">
+                        <Avatar />
                         <NavLink to="/account" className="p-2 cursor-pointer" style={({isActive}) => ({color: isActive ? '#FFA82E' : 'inherit'})}>
                             {/*{activeClient.first_name}*/}
                             Наталья

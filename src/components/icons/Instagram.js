@@ -1,6 +1,6 @@
 function Instagram() {
     return (
-        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32" fill="none">
             <path fill-rule="evenodd" clip-rule="evenodd" d="M0 16C0 7.16344 7.16344 0 16 0C24.8366 0 32 7.16344 32 16C32 24.8366 24.8366
                 32 16 32C7.16344 32 0 24.8366 0 16ZM16.0008 7.46667C13.6833 7.46667 13.3924 7.4768 12.4822 7.51822C11.5737 7.55982 10.9536
                 7.70365 10.4111 7.91467C9.8498 8.13263 9.37371 8.42419 8.89939 8.89868C8.42472 9.373 8.13316 9.84909 7.91449 10.4102C7.70294
