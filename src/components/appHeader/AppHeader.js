@@ -7,7 +7,7 @@ import Avatar from "../icons/Avatar";
 
 const AppHeader = ({activeClient, logout}) => {
     return (
-        <header className="z-50 header sticky top-0 bg-bgMainWhite shadow-md flex items-center justify-between px-8">
+        <header className="z-50 header sticky top-0 bg-bgMainWhite shadow-sm flex items-center justify-between px-14">
             <div className="p-2.5 w-fit">
                 <Link to="/">
                     <Logo/>
