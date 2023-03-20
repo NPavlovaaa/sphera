@@ -1,4 +1,5 @@
 import {createAsyncThunk, createEntityAdapter, createSlice} from "@reduxjs/toolkit";
+import {useHttp} from "../hooks/http.hook";
 
 
 const userAdapter = createEntityAdapter();
@@ -10,58 +11,31 @@ const initialState = userAdapter.getInitialState({
     client: null
 });
 
+
 export const fetchLogin = createAsyncThunk(
     'users/fetchLogin',
      async (values) => {
-         await fetch('http://localhost:8000/login/', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            credentials: 'include',
-            body: JSON.stringify({
+         const {request} = useHttp();
+         return await request('http://localhost:8000/login/', 'POST', {
                 username: values.username,
                 password: values.password
             })
-        });
     }
 )
-
-
-// export const fetchAuth = async () => {
-//     try {
-//         const response = await fetch('http://localhost:8000/account/', {
-//             headers: {'Content-Type': 'application/json'},
-//             credentials: 'include',
-//         });
-//
-//         if (response.ok) {
-//             return await response.json();
-//         } else {
-//             throw new Error(`Error! status: ${response.status}`);
-//         }
-//     } catch (err) {
-//         console.log(err);
-//     }
-// }
 
 export const fetchAuth = createAsyncThunk(
     'users/fetchAuth',
     async () => {
-        const response = await fetch('http://localhost:8000/authUser/', {
-            headers: {'Content-Type': 'application/json'},
-            credentials: 'include',
-        });
-        return await response.json();
+        const {request} = useHttp();
+        return await request('http://localhost:8000/authUser/');
     }
 )
 
 export const fetchClient = createAsyncThunk(
     'users/fetchClient',
     async () => {
-        const response = await fetch('http://localhost:8000/account/', {
-            headers: {'Content-Type': 'application/json'},
-            credentials: 'include',
-        });
-        return await response.json();
+        const {request} = useHttp();
+        return await request('http://localhost:8000/account/');
     }
 )
 
@@ -85,10 +59,13 @@ const userSlice = createSlice({
                 state.userAuthLoadingStatus = 'idle';
                 state.user = action.payload;
             })
+            .addCase(fetchAuth.rejected, state => {state.userAuthLoadingStatus = 'error'})
+            .addCase(fetchClient.pending, state => {
+                state.userAuthLoadingStatus = 'loading';
+            })
             .addCase(fetchClient.fulfilled, (state, action) => {
                 state.client = action.payload
             })
-            .addCase(fetchAuth.rejected, state => {state.userAuthLoadingStatus = 'error'})
             .addDefaultCase(() => {})
     }
 })
