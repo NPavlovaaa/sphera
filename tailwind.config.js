@@ -5,12 +5,14 @@ module.exports = {
   theme: {
     extend: {},
     colors: {
-      bgMainWhite: '#ffffff',
-      bgMainOrange:{
+      mainWhite: '#ffffff',
+      mainOrange:{
         100: 'rgba(255, 168, 46, 0.5)',
         600: '#FFA82E',
+        700: 'rgba(255,168,46,0.76)',
       },
-      bgGray: '#a9a9a9'
+      mainGray: '#a9a9a9',
+
     },
     screens: {
       'sm': {'min': '640px', 'max': '767px'},

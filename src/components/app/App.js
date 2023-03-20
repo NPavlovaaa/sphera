@@ -41,9 +41,6 @@ function App() {
                           </Routes>
                       </main>
                   </Suspense>
-                  {/*<div className="relative flex top-14 justify-center">*/}
-                  {/*    <button type="submit" onClick={logout} className="bg-bgMainOrange-600 text-white rounded-md px-3 py-2">Выйти</button>*/}
-                  {/*</div>*/}
               </div>
           </Router>
       );
