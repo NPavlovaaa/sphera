@@ -5,12 +5,13 @@ import cup from "../../assets/cup.png"
 import bobs from "../../assets/bob-coffee.png"
 import gradient from "../../assets/gradient.png"
 
-const MainPage = ({activeClient}) => {
+const MainPage = ({activeClient, activeUser}) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(fetchAuth())
         dispatch(fetchClient())
+
     }, [])
     return (
         <div className="flex flex-row p-28">
@@ -18,9 +19,9 @@ const MainPage = ({activeClient}) => {
                 <h1>Производим <br/>кофе<br/> для бизнеса</h1>
             </div>
             <div className="ml-2 w-1/2">
-                <img className="-top-8 right-0 absolute z-10" src={gradient}/>
-                <img className="mt-10 absolute z-20 w-5/12" src={bobs}/>
-                <img className="-top-6 ml-5 relative z-30 w-3/4" src={cup}/>
+                <img className="-top-8 right-0 absolute z-10" src={gradient} alt="градиент"/>
+                <img className="mt-10 absolute z-20 w-5/12" src={bobs} alt="кофейные бобы"/>
+                <img className="-top-6 ml-5 relative z-30 w-3/4" src={cup} alt="стакан кофе"/>
             </div>
         </div>
 

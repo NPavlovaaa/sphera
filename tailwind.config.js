@@ -11,7 +11,7 @@ module.exports = {
         600: '#FFA82E',
         700: 'rgba(255,168,46,0.76)',
       },
-      mainGray: '#a9a9a9',
+      mainGray: '#a4a4a4',
 
     },
     screens: {

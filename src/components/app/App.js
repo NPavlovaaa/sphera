@@ -13,7 +13,7 @@ import store from "../../store";
 
 
 function App() {
-    //   const activeUser = useSelector(state => state.authUser.user);
+      const activeUser = useSelector(state => state.authUser.user)
       const activeClient = useSelector(state => state.authUser.client);
       const dispatch = useDispatch();
 
@@ -35,7 +35,7 @@ function App() {
                   <Suspense fallback={<Spinner/>}>
                       <main>
                           <Routes>
-                              <Route path="/" element={<MainPage activeClient={activeClient}/>}/>
+                              <Route path="/" element={<MainPage activeUser={activeUser} activeClient={activeClient}/>}/>
                               <Route path="/login" element={<RegistrationFormPage/>}/>
                               <Route path="/clients" element={<ClientsList/>}/>
                           </Routes>
