@@ -4,7 +4,7 @@ import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 export const apiSlice = createApi({
     reducerPath: '',
     baseQuery: fetchBaseQuery({baseUrl: 'http://127.0.0.1:8000'}),
-    tagTypes: ['Users'],
+    tagTypes: ['Users', 'CLients', 'Products'],
     endpoints: builder => ({
         getUsers: builder.query({
             query: () => '/users/',
@@ -26,6 +26,10 @@ export const apiSlice = createApi({
             }),
             invalidatesTags: ['Clients']
         }),
+        getProducts: builder.query({
+            query: () => '/products/',
+            providesTags: ['Products']
+        }),
 
     })
 })
@@ -33,4 +37,5 @@ export const apiSlice = createApi({
 export const {  useGetUsersQuery,
                 useCreateUserMutation,
                 useCreateClientMutation,
+                useGetProductsQuery
 } = apiSlice;

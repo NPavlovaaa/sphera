@@ -7,22 +7,7 @@ import cart from "../../assets/cart.png";
 import favorite from "../../assets/favorite.png"
 
 const AppHeader = ({activeClient, logout}) => {
-    // let levelUser;
-    //
-    // switch (element) {
-    //     case 'fire':
-    //         levelUser = 'Новичо';
-    //         break;
-    //     case 'water':
-    //         levelUser = 'bg-primary bg-gradient';
-    //         break;
-    //     case 'wind':
-    //         levelUser = 'bg-success bg-gradient';
-    //         break;
-    //         break;
-    //     default:
-    //         levelUser = 'bg-warning bg-gradient';
-    // }
+
     return (
         <header className="z-50 header bg-mainWhite sticky top-0 shadow-sm flex items-center justify-between px-14">
             <div className="p-2.5 w-fit">
@@ -34,7 +19,7 @@ const AppHeader = ({activeClient, logout}) => {
             <nav className="nav font-normal text-xs xl:text-xs lg:text-xs 2xl:text-sm w-2/3 text-center">
                 <ul className="flex justify-between items-center">
                     <li className="p-2 border-b-3 hover:text-mainOrange-600 cursor-pointer flex flex-row">
-                        <NavLink to="/catalog" style={({isActive}) => ({color: isActive ? '#FFA82E' : 'inherit'})}>Каталог товаров</NavLink>
+                        <NavLink to="/products" style={({isActive}) => ({color: isActive ? '#FFA82E' : 'inherit'})}>Каталог товаров</NavLink>
                     </li>
                     <li className="w-2/5">
                         <div className="relative flex items-center">
