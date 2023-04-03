@@ -12,7 +12,7 @@ module.exports = {
         700: 'rgba(255,168,46,0.76)',
       },
       mainGray: '#a4a4a4',
-
+      lightGray: 'rgba(223, 223, 223, 0.27)',
     },
     screens: {
       'sm': {'min': '640px', 'max': '767px'},

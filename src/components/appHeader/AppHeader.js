@@ -83,10 +83,9 @@ const AppHeader = ({activeClient, logout}) => {
                             <p>Корзина</p>
                         </NavLink>
                     </div>
-                    {/* <button type="submit" className="ml-1.5 hover:text-mainOrange-600" onClick={logout}>Выйти</button> */}
                 </div>
             :   <div className="w-fit flex justify-betweent font-medium text-xs xl:text-xs lg:text-xs 2xl:text-sm sm:text-sm px-3">
-                    <button type="submit" className="bg-mainOrange-600 shadow-lg rounded-xl px-10 py-3 hover:bg-mainOrange-700">
+                    <button type="submit" className="bg-mainOrange-600 shadow-lg rounded-2xl px-10 py-3 hover:bg-mainOrange-700">
                         <NavLink to="/login" className="p-2 cursor-pointer">
                             Войти
                         </NavLink>

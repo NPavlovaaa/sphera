@@ -1,18 +1,9 @@
-import {useEffect} from "react";
-import {useDispatch} from "react-redux";
-import {fetchAuth, fetchClient} from "../../api/userSlice";
 import cup from "../../assets/cup.png"
 import bobs from "../../assets/bob-coffee.png"
 import gradient from "../../assets/gradient.png"
 
-const MainPage = ({activeClient, activeUser}) => {
-    const dispatch = useDispatch();
+const MainPage = () => {
 
-    useEffect(() => {
-        dispatch(fetchAuth())
-        dispatch(fetchClient())
-
-    }, [])
     return (
         <div className="flex flex-row p-28">
             <div className="w-1/2 4xl:text-10xl 3xl:text-9xl 3xl:p-4 2xl:text-8xl xl:text-7xl lg:text-6xl px-12 font-semibold">
@@ -28,14 +19,3 @@ const MainPage = ({activeClient, activeUser}) => {
     )
 }
 export default MainPage;
-
-// useEffect( () => {
-//     async function fetchData() {
-//         try {
-//             // const res = await dispatch(fetchAuth)
-//             setAuthUser(res)
-//         } catch (err) {
-//             console.log(err);
-//         }
-//     }
-// }, []);

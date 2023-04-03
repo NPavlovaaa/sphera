@@ -1,7 +1,7 @@
-function Avatar() {
+function AvatarDetail() {
     return (
         <div className="border-mainGray border-2 p-1 rounded-lg mr-1.5">
-            <svg width="23" height="23" viewBox="0 0 13 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg width="35" height="35" viewBox="0 0 13 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M0.999947 13.475C1.014 12.3346 1.39596 11.2292 2.08895 10.3234C2.78195 9.41762 3.74893 8.75983 4.84595 8.44798"
                       stroke="#FFA82E" stroke-width="1" stroke-linecap="round"/>
                 <path d="M11.7389 13.475C11.7249 12.3346 11.3429 11.2292 10.6499 10.3234C9.95695 9.41764 8.98996 8.75985 7.89294 8.448"
@@ -13,4 +13,4 @@ function Avatar() {
     );
 }
 
-export default Avatar;
+export default AvatarDetail;

@@ -8,9 +8,10 @@ import MainPage from "../pages/MainPage";
 import AppHeader from "../appHeader/AppHeader";
 import {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {activeClientChange, activeUserChange, fetchAuth, selectAll} from "../../api/userSlice";
+import {activeClientChange, activeUserChange, fetchAuth, fetchClient, selectAll} from "../../api/userSlice";
 import store from "../../store";
 import ProductList from '../productList/ProductList';
+import AccountPage from '../pages/AccountPage ';
 
 
 function App() {
@@ -28,18 +29,24 @@ function App() {
           dispatch(activeClientChange(null))
       }
 
-    // dispatch(activeUserChange(activeUser));
+
+      useEffect(() => {
+          dispatch(fetchAuth())
+          dispatch(fetchClient())
+      }, [])
+
       return (
           <Router>
               <div className="app">
-                  <AppHeader activeClient={activeClient} logout={logout}/>
+                  <AppHeader activeClient={activeClient}/>
                   <Suspense fallback={<Spinner/>}>
                       <main>
                           <Routes>
-                              <Route path="/" element={<MainPage activeUser={activeUser} activeClient={activeClient}/>}/>
+                              <Route path="/" element={<MainPage/>}/>
                               <Route path="/login" element={<RegistrationFormPage/>}/>
                               <Route path="/clients" element={<ClientsList/>}/>
                               <Route path="/products" element={<ProductList/>}/>
+                              <Route path="/account" element={<AccountPage activeUser={activeUser} activeClient={activeClient} logout={logout}/>}/>
                           </Routes>
                       </main>
                   </Suspense>
