@@ -7,7 +7,7 @@ import Favorite from "../icons/Favorite"
 import Cart from "../icons/Cart"
 import Package from "../icons/Package"
 
-const AppHeader = ({activeClient, logout}) => {
+const AppHeader = ({activeClient}) => {
 
     return (
         <header className="z-50 header bg-mainWhite sticky top-0 shadow-sm flex items-center justify-between px-14">
@@ -62,7 +62,7 @@ const AppHeader = ({activeClient, logout}) => {
             {activeClient != null ?
                 <div className="w-fit flex flex-col">
                     <NavLink to="/account" className="hover:text-mainOrange-600 py-2 cursor-pointer flex flex-row items-center justify-end" style={({isActive}) => ({color: isActive ? '#FFA82E' : 'inherit'})}>
-                        {/*{activeClient.first_name}*/}
+                        {activeClient.first_name}
                         <div className="flex flex-col mr-3">
                             <p className="flex justify-end xl:text-md lg:text-sm 2xl:text-md sm:text-sm">Наталья</p>
                             <p className="flex justify-end text-xs text-mainGray">Новичок</p>
