@@ -10,7 +10,7 @@ import {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {activeClientChange, activeUserChange, fetchAuth, fetchClient, selectAll} from "../../api/userSlice";
 import store from "../../store";
-import ProductList from '../productList/ProductList';
+import ProductListPage from '../pages/ProductListPage';
 import AccountPage from '../pages/AccountPage ';
 
 
@@ -45,7 +45,7 @@ function App() {
                               <Route path="/" element={<MainPage/>}/>
                               <Route path="/login" element={<RegistrationFormPage/>}/>
                               <Route path="/clients" element={<ClientsList/>}/>
-                              <Route path="/products" element={<ProductList/>}/>
+                              <Route path="/products" element={<ProductListPage/>}/>
                               <Route path="/account" element={<AccountPage activeUser={activeUser} activeClient={activeClient} logout={logout}/>}/>
                           </Routes>
                       </main>

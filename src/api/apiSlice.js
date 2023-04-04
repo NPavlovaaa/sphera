@@ -30,6 +30,14 @@ export const apiSlice = createApi({
             query: () => '/products/',
             providesTags: ['Products']
         }),
+        getRoastingMethods: builder.query({
+            query: () => '/roasting/',
+            providesTags: ['Products']
+        }),
+        getProcessingMethods: builder.query({
+            query: () => '/processing/',
+            providesTags: ['Products']
+        }),
 
     })
 })
@@ -37,5 +45,7 @@ export const apiSlice = createApi({
 export const {  useGetUsersQuery,
                 useCreateUserMutation,
                 useCreateClientMutation,
-                useGetProductsQuery
+                useGetProductsQuery,
+                useGetRoastingMethodsQuery,
+                useGetProcessingMethodsQuery
 } = apiSlice;
