@@ -38,7 +38,14 @@ export const apiSlice = createApi({
             query: () => '/processing/',
             providesTags: ['Products']
         }),
-
+        getWeights: builder.query({
+            query: () => '/weight/',
+            providesTags: ['Products']
+        }),
+        getWeightSelection: builder.query({
+            query: () => '/weight_selection/',
+            providesTags: ['Products']
+        }),
     })
 })
 
@@ -47,5 +54,7 @@ export const {  useGetUsersQuery,
                 useCreateClientMutation,
                 useGetProductsQuery,
                 useGetRoastingMethodsQuery,
-                useGetProcessingMethodsQuery
+                useGetProcessingMethodsQuery,
+                useGetWeightsQuery,
+                useGetWeightSelectionQuery,
 } = apiSlice;
