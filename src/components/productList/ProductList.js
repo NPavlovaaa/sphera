@@ -113,7 +113,7 @@ const ProductList = () => {
                     ref={el => itemRefs.current[i] = el}
                     key={product.product_id}
                 >
-                    <div className="bg-lightGray w-1/3 rounded-lg px-8 py-4 pb-10">
+                    <div className="bg-lightGray w-1/3 rounded-lg px-8 py-4 pb-5">
                         <div className="mb-5 flex flex-row text-xs">
                             <p className="text-mainGray l-0">{roasting}</p>
                             <p className="text-mainGray ml-3">{processing}</p>
@@ -161,6 +161,9 @@ const ProductList = () => {
                                 })}
                             </div>
                         </div>
+                        <div className="flex justify-end mt-5">
+                            <button type="submit" className="bg-mainOrange-600 shadow-xl rounded-lg px-5 py-2">В корзину</button>
+                        </div>
                     </div>
                 </li>
             )
@@ -176,13 +179,9 @@ const ProductList = () => {
 
     const elements = renderProductList(products);
     return (
-        <div className="flex flex-col w-full p-10">
+        <div className="flex flex-col w-full justify-center p-10">
             {elements}
-            <button
-                className="button button__main button__long"
-            >
-                <div className="inner">load more</div>
-            </button>
+            <button className="bg-mainOrange-600 shadow-xl rounded-lg px-5 py-2 mt-10">Загрузить еще</button>
         </div>
     )
 }
