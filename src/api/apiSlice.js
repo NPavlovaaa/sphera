@@ -46,6 +46,11 @@ export const apiSlice = createApi({
             query: () => '/weight_selection/',
             providesTags: ['Products']
         }),
+        getVariety: builder.query({
+            query: () => '/variety/',
+            providesTags: ['Products']
+        }),
+
     })
 })
 
@@ -57,4 +62,5 @@ export const {  useGetUsersQuery,
                 useGetProcessingMethodsQuery,
                 useGetWeightsQuery,
                 useGetWeightSelectionQuery,
+                useGetVarietyQuery
 } = apiSlice;

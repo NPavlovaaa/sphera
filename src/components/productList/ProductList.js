@@ -1,4 +1,4 @@
-import {useGetProductsQuery, useGetRoastingMethodsQuery, useGetProcessingMethodsQuery, useGetWeightsQuery, useGetWeightSelectionQuery} from "../../api/apiSlice";
+import {useGetProductsQuery, useGetRoastingMethodsQuery, useGetProcessingMethodsQuery, useGetWeightsQuery, useGetWeightSelectionQuery, useGetVarietyQuery} from "../../api/apiSlice";
 import { useRef } from "react";
 import bobs250 from "../../assets/bobs250.png"
 import Case1 from "../icons/Case1"
@@ -19,6 +19,8 @@ const ProductList = () => {
     const {data: processing_methods = []} = useGetProcessingMethodsQuery();
     const {data: weights = []} = useGetWeightsQuery();
     const {data: weightSelection = []} = useGetWeightSelectionQuery();
+    const {data: varieties = []} = useGetVarietyQuery();
+
 
     const itemRefs = useRef([]);
 
@@ -79,6 +81,15 @@ const ProductList = () => {
                 }
             })
 
+            const variety = varieties.map(item => {
+                if (item.variety_id === product.variety){
+                    return item.variety_name
+                }
+                else{
+                    return null
+                }
+            })
+
             const weights_render = weightSelection.map(weight_selection => {
                 let current_weight = []
                 if (weight_selection.product === product.product_id){
@@ -110,7 +121,8 @@ const ProductList = () => {
                         <div className="flex flex-col items-center w-full">
                             <p className="text-xl font-medium mb-3">{product.product_name}</p>
                             <img src={bobs250} width="200" alt="Картинка товара" />
-                            <p className="text-xl font-medium mb-3"></p>
+                            <p className="text-md text-mainGray mt-3">{variety}</p>
+                            <p className="text-sm text-mainGray mt-2">{product.taste}</p>
                             <div className="flex flex-col text-sm text-mainGray w-full mt-5">
                                 <div className="flex justify-between">
                                     <div className="flex flex-col items-center mb-2">
