@@ -50,7 +50,16 @@ export const apiSlice = createApi({
             query: () => '/variety/',
             providesTags: ['Products']
         }),
-
+        getProductsItem: builder.query({
+            query: (id) => `products/${id}/`,
+            providesTags: ['Products']
+        }),
+        // getProductsItem: builder.query({
+        //     query: id => ({
+        //         url: `products/${id}`,
+        //         providesTags: ['Products']
+        //     }),
+        // }),
     })
 })
 
@@ -62,5 +71,6 @@ export const {  useGetUsersQuery,
                 useGetProcessingMethodsQuery,
                 useGetWeightsQuery,
                 useGetWeightSelectionQuery,
-                useGetVarietyQuery
+                useGetVarietyQuery,
+                useGetProductsItemQuery
 } = apiSlice;

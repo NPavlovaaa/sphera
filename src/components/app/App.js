@@ -1,17 +1,16 @@
 import './App.css';
-import {lazy, Suspense, useEffect, useMemo} from 'react';
+import {Suspense, useEffect} from 'react';
 import ClientsList from "../clientsList/ClientsList";
 import { BrowserRouter as Router,  Route, Routes } from "react-router-dom";
 import Spinner from "../spinner/Spinner";
 import RegistrationFormPage from "../pages/RegistrationFormPage";
 import MainPage from "../pages/MainPage";
 import AppHeader from "../appHeader/AppHeader";
-import {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {activeClientChange, activeUserChange, fetchAuth, fetchClient, selectAll} from "../../api/userSlice";
-import store from "../../store";
 import ProductListPage from '../pages/ProductListPage';
 import AccountPage from '../pages/AccountPage ';
+import ProductListItem from '../productsListItem/ProductListItem';
 
 
 function App() {
@@ -46,6 +45,7 @@ function App() {
                               <Route path="/login" element={<RegistrationFormPage/>}/>
                               <Route path="/clients" element={<ClientsList/>}/>
                               <Route path="/products" element={<ProductListPage/>}/>
+                              <Route path="/products/:id/" element={<ProductListItem/>}/>
                               <Route path="/account" element={<AccountPage activeUser={activeUser} activeClient={activeClient} logout={logout}/>}/>
                           </Routes>
                       </main>

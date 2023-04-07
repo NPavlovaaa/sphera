@@ -7,6 +7,7 @@ import Case3 from "../icons/Case3"
 import Case4 from "../icons/Case4"
 import Case5 from "../icons/Case5"
 import CaseDefault from "../icons/CaseDefault"
+import { Link } from "react-router-dom";
 
 
 const ProductList = () => {
@@ -111,6 +112,7 @@ const ProductList = () => {
                     ref={el => itemRefs.current[i] = el}
                     key={product.product_id}
                 >
+                    <Link to={`/products/${product.product_id}/`} state={{ props: {variety, processing, roasting} }}>
                     <div className="bg-lightGray rounded-lg px-8 py-4 pb-5">
                         <div className="mb-5 flex flex-row text-xs">
                             <p className="text-mainGray l-0">{roasting}</p>
@@ -168,6 +170,7 @@ const ProductList = () => {
                             <button type="submit" className="bg-mainOrange-600 rounded-2xl px-5 py-2">В корзину</button>
                         </div>
                     </div>
+                    </Link>
                 </li>
             )
         })
