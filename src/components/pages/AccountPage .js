@@ -1,10 +1,14 @@
 import ClientAccount from "../clientAccount/ClientAccount";
+import { useSelector } from "react-redux";
 
-const AccountPage  = ({activeClient, activeUser, logout}) => {
+
+const AccountPage  = () => {
+    const activeUser = useSelector(state => state.authUser.user)
+    const activeClient = useSelector(state => state.authUser.client);
 
     return (
         activeUser ?
-            <ClientAccount activeUser={activeUser} activeClient={activeClient} logout={logout}/>
+            <ClientAccount activeUser={activeUser} activeClient={activeClient}/>
         :
         <p>Страница не найдена</p>
     )

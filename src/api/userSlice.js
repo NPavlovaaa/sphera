@@ -72,7 +72,6 @@ const userSlice = createSlice({
 
 const {actions, reducer} = userSlice;
 export default reducer;
-export const {selectAll} = userAdapter.getSelectors(state => state.authUser)
 
 export const {
     activeUserChange,

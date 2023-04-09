@@ -112,15 +112,16 @@ const ProductList = () => {
                     ref={el => itemRefs.current[i] = el}
                     key={product.product_id}
                 >
-                    <Link to={`/products/${product.product_id}/`} state={{ props: {variety, processing, roasting} }}>
                     <div className="bg-lightGray rounded-lg px-8 py-4 pb-5">
                         <div className="mb-5 flex flex-row text-xs">
                             <p className="text-mainGray l-0">{roasting}</p>
                             <p className="text-mainGray ml-3">{processing}</p>
                         </div>
                         <div className="flex flex-col items-center w-full">
+                            <Link to={`/products/${product.product_id}/`} state={{ props: {variety, processing, roasting} }}>
                             <p className="text-xl font-medium mb-3">{product.product_name}</p>
                             <img src={bobs250} width="200" alt="Картинка товара" />
+                            </Link>
                             <p className="text-md text-mainGray mt-3">{variety}</p>
                             <p className="text-sm w-full left-0 text-mainGray mt-3 h-9">{product.taste}</p>
                             <div className="flex flex-col text-sm text-mainGray w-full mt-5">
@@ -170,7 +171,6 @@ const ProductList = () => {
                             <button type="submit" className="bg-mainOrange-600 rounded-2xl px-5 py-2">В корзину</button>
                         </div>
                     </div>
-                    </Link>
                 </li>
             )
         })

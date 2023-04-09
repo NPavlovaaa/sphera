@@ -3,9 +3,24 @@ import Pen from "../icons/Pen"
 import Phone from "../icons/Phone"
 import Calendar from "../icons/Calendar"
 import Mail from "../icons/Mail"
+import {activeUserChange, activeClientChange} from "../../api/userSlice";
+import {useDispatch, useSelector} from "react-redux";
 
 
-const ClientAccount = ({activeClient, activeUser, logout}) => {
+const ClientAccount = () => {
+    const activeClient = useSelector(state => state.authUser.client);
+    const activeUser = useSelector(state => state.authUser.client);
+    const dispatch = useDispatch();
+
+    const logout = async () => {
+        await fetch('http://localhost:8000/logout/', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            credentials: 'include',
+        });
+        dispatch(activeUserChange(null))
+        dispatch(activeClientChange(null))
+    }
 
     return(
         <div className="flex flex-col px-20 py-10">

@@ -6,28 +6,15 @@ import Spinner from "../spinner/Spinner";
 import RegistrationFormPage from "../pages/RegistrationFormPage";
 import MainPage from "../pages/MainPage";
 import AppHeader from "../appHeader/AppHeader";
-import {useDispatch, useSelector} from "react-redux";
-import {activeClientChange, activeUserChange, fetchAuth, fetchClient, selectAll} from "../../api/userSlice";
+import {useDispatch} from "react-redux";
+import {fetchAuth, fetchClient} from "../../api/userSlice";
 import ProductListPage from '../pages/ProductListPage';
 import AccountPage from '../pages/AccountPage ';
 import ProductListItem from '../productsListItem/ProductListItem';
 
 
 function App() {
-      const activeUser = useSelector(state => state.authUser.user)
-      const activeClient = useSelector(state => state.authUser.client);
       const dispatch = useDispatch();
-
-      const logout = async () => {
-          await fetch('http://localhost:8000/logout/', {
-              method: 'POST',
-              headers: {'Content-Type': 'application/json'},
-              credentials: 'include',
-          });
-          dispatch(activeUserChange(null))
-          dispatch(activeClientChange(null))
-      }
-
 
       useEffect(() => {
           dispatch(fetchAuth())
@@ -37,7 +24,7 @@ function App() {
       return (
           <Router>
               <div className="app">
-                  <AppHeader activeClient={activeClient}/>
+                  <AppHeader/>
                   <Suspense fallback={<Spinner/>}>
                       <main>
                           <Routes>
@@ -46,7 +33,7 @@ function App() {
                               <Route path="/clients" element={<ClientsList/>}/>
                               <Route path="/products" element={<ProductListPage/>}/>
                               <Route path="/products/:id/" element={<ProductListItem/>}/>
-                              <Route path="/account" element={<AccountPage activeUser={activeUser} activeClient={activeClient} logout={logout}/>}/>
+                              <Route path="/account" element={<AccountPage/>}/>
                           </Routes>
                       </main>
                   </Suspense>

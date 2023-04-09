@@ -49,9 +49,9 @@ const AuthorizationForm = ({onToggle, setUser}) => {
             }
             >
                 <div className="z-30 py-6 flex justify-center sm:py-12 sm:max-w-xl sm:mx-auto">
-                    <div className="relative py-3 w-2/5 lg:w-2/5 md:w-2/5 xl:w-1/3 2xl:w-1/3 md:w-3/5">
+                    <div className="relative py-3 w-2/5 lg:w-2/5 md:w-2/5 xl:w-1/3 2xl:w-1/3">
                         <div
-                            className="absolute inset-0 shadow-2xl rounded-3xl bg-gradient-to-r from-mainOrange-100 to-mainOrange-600 shadow-2xl transform -rotate-6 sm:rounded-3xl">
+                            className="absolute inset-0 rounded-3xl bg-gradient-to-r from-mainOrange-100 to-mainOrange-600 shadow-2xl transform -rotate-6 sm:rounded-3xl">
                         </div>
                         <div className="relative bg-mainWhite shadow-lg sm:rounded-3xl p-20 rounded-3xl">
                             <div className="mx-auto">
