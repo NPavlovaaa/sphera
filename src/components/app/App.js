@@ -10,7 +10,7 @@ import {useDispatch} from "react-redux";
 import {fetchAuth, fetchClient} from "../../api/userSlice";
 import ProductListPage from '../pages/ProductListPage';
 import AccountPage from '../pages/AccountPage ';
-import ProductListItem from '../productsListItem/ProductListItem';
+import ProductItem from '../productItem/ProductItem';
 
 
 function App() {
@@ -32,7 +32,7 @@ function App() {
                               <Route path="/login" element={<RegistrationFormPage/>}/>
                               <Route path="/clients" element={<ClientsList/>}/>
                               <Route path="/products" element={<ProductListPage/>}/>
-                              <Route path="/products/:id/" element={<ProductListItem/>}/>
+                              <Route path="/products/:id" element={<ProductItem/>}/>
                               <Route path="/account" element={<AccountPage/>}/>
                           </Routes>
                       </main>
