@@ -1,4 +1,4 @@
-import {useGetProductsQuery, useGetWeightsQuery, useGetWeightSelectionQuery} from "../../api/apiSlice";
+import {useGetProductsQuery} from "../../api/apiSlice";
 import ProductListItem from "../productsListItem/ProductListItem";
 
 const ProductList = () => {
@@ -7,8 +7,6 @@ const ProductList = () => {
         isLoading,
         isError
     } = useGetProductsQuery();
-    const {data: weights = []} = useGetWeightsQuery();
-    const {data: weightSelection = []} = useGetWeightSelectionQuery();
 
 
     if (isLoading) {
@@ -23,21 +21,6 @@ const ProductList = () => {
         }
 
         const items = arr.map((product, i) => {
-
-            const weights_render = weightSelection.map(weight_selection => {
-                let current_weight = [];
-                if (weight_selection.product === product.product_id){
-                    weights.map(item => {
-                        if (item.weight_id === weight_selection.weight){
-                            current_weight.push(weight_selection.weight_selection_id)
-                            current_weight.push(item.weight)
-                            current_weight.push(weight_selection.price)
-                        }
-                        return current_weight
-                })}
-                return current_weight
-            });
-
             return (
                 <ProductListItem key={product.product_id} product={product} i={i}/>
             )

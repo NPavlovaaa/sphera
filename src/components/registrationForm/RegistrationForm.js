@@ -81,7 +81,7 @@ const RegistrationForm = ({onToggle}) => {
                 <div className="z-30 py-6 flex justify-center sm:py-12 sm:max-w-xl sm:mx-auto md:px-28 lg:px-32 xl:px-48 2xl:px-48">
                     <div className="relative py-3 w-2/3">
                         <div
-                            className="absolute inset-0 shadow-lg rounded-3xl bg-gradient-to-r from-mainOrange-100 to-mainOrange-600 shadow-2xl transform -rotate-6 sm:rounded-3xl">
+                            className="absolute inset-0 shadow-lg rounded-3xl bg-gradient-to-r from-mainOrange-100 to-mainOrange-600 transform -rotate-6 sm:rounded-3xl">
                         </div>
                         <div className="relative bg-mainWhite shadow-2xl sm:rounded-3xl p-20 rounded-3xl">
                             <div className="mx-auto">

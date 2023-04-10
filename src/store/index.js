@@ -1,6 +1,6 @@
 import {configureStore} from "@reduxjs/toolkit";
 import {apiSlice} from "../api/apiSlice";
-import authUser from "../api/userSlice"
+import authUser from "../api/userSlice";
 
 // Server side with csurf middleware
 const stringMiddleware = () => (next) => (action) => {

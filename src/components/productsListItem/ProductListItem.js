@@ -6,7 +6,7 @@ import useSetParams from "../../hooks/useSetParams"
 
 const ProductListItem = ({product, i}) => {
     const itemRefs = useRef([]);
-    const {renderParams, roasting, processing, variety} = useSetParams(product);
+    const {renderParams, roasting, processing, variety, weights_render} = useSetParams(product);
     return (
         <li
         className=""
@@ -48,7 +48,7 @@ const ProductListItem = ({product, i}) => {
                         </div>
                     </div>
                     <div className="flex flex-row justify-between w-full mt-5">
-                        {/* {weights_render.map(item => {
+                        {weights_render.map(item => {
                             if (item[1] !== undefined) {
                                 return (
                                     <div>
@@ -63,8 +63,9 @@ const ProductListItem = ({product, i}) => {
                                 )
                             }else return null
 
-                        })} */}
+                        })}
                     </div>
+
                 </div>
                 <div className="flex justify-end mt-5">
                     <button type="submit" className="bg-mainOrange-600 rounded-2xl px-5 py-2">В корзину</button>
