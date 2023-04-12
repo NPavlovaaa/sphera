@@ -5,12 +5,18 @@ import Calendar from "../icons/Calendar"
 import Mail from "../icons/Mail"
 import {activeUserChange, activeClientChange} from "../../api/userSlice";
 import {useDispatch, useSelector} from "react-redux";
+import {useHttp} from "../../hooks/http.hook";
+import { Link } from "react-router-dom";
 
 
 const ClientAccount = () => {
     const activeClient = useSelector(state => state.authUser.client);
-    const activeUser = useSelector(state => state.authUser.client);
+    const activeUser = useSelector(state => state.authUser.user);
+    // const userAuthLoadingStatus = useSelector(state => state.authUser.userAuthLoadingStatus);
+
     const dispatch = useDispatch();
+
+    console.log(activeClient, activeUser)
 
     const logout = async () => {
         await fetch('http://localhost:8000/logout/', {
@@ -19,7 +25,6 @@ const ClientAccount = () => {
             credentials: 'include',
         });
         dispatch(activeUserChange(null))
-        dispatch(activeClientChange(null))
     }
 
     return(
@@ -44,7 +49,9 @@ const ClientAccount = () => {
                         <p className="ml-3">{activeClient.birthday}</p>
                     </div>
                     <div className="flex mt-3">
-                        <button type="submit" className="text-mainGray hover:text-mainOrange-600" onClick={logout}>Выйти</button>
+                        <Link to="/">
+                            <button type="submit" className="text-mainGray hover:text-mainOrange-600" onClick={logout}>Выйти</button>
+                        </Link>
                     </div>
                 </div>
                 <div className="flex items-start w-1/2 justify-end">

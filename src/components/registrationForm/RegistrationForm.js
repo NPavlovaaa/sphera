@@ -1,37 +1,27 @@
 import { Formik, Form, Field, ErrorMessage} from 'formik';
 import * as Yup from 'yup';
 import { v4 as uuidv4 } from 'uuid';
-import {useCreateClientMutation, useCreateUserMutation} from "../../api/apiSlice";
+import {useCreateClientMutation, useCreateUserMutation, useRegistrationMutation} from "../../api/apiSlice";
 import Arrow from "../icons/Arrow";
 
 
 const RegistrationForm = ({onToggle}) => {
-    const [createUser] = useCreateUserMutation();
-    const [createClient, {isError}] = useCreateClientMutation();
+    const [registration, {isError}] = useRegistrationMutation();
 
     const addUser = ({username, password, first_name, last_name, phone, birthday, avatar}) => {
         const newUser = {
             user_id: uuidv4(),
             username,
-            password
+            password,
+            first_name,
+            last_name,
+            phone,
+            birthday,
+            avatar,
+            scores: 0,
+            level: 1,
         }
-        createUser(newUser);
-
-        setTimeout(() => {
-            const newClient = {
-                first_name,
-                last_name,
-                phone,
-                birthday,
-                avatar,
-                scores: 0,
-                level: 1,
-                user: newUser.user_id
-            }
-
-            createClient(newClient);
-
-        }, 1000);
+        registration(newUser)
     }
 
     const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
@@ -43,7 +33,7 @@ const RegistrationForm = ({onToggle}) => {
                     <Arrow/>
                 </div>
             </div>
-            {isError ? "Ошибка" : null}
+            {isError ? console.log(isError.ErrorMessage) : null}
             <Formik
                 initialValues ={{
                     username: '',
@@ -88,7 +78,7 @@ const RegistrationForm = ({onToggle}) => {
                                 <div>
                                     <h1 className="text-2xl font-semibold">Регистрация</h1>
                                 </div>
-                                <Form>
+                                <Form method="POST">
                                     <div className="py-3 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7 flex flex-row justify-between">
                                         <div className="relative w-1/2 mr-10 mt-4">
                                             <div  className="relative">

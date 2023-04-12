@@ -4,27 +4,19 @@ import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 export const apiSlice = createApi({
     reducerPath: '',
     baseQuery: fetchBaseQuery({baseUrl: 'http://127.0.0.1:8000'}),
-    tagTypes: ['Users', 'CLients', 'Products'],
+    tagTypes: ['Users', 'Clients', 'Products'],
     endpoints: builder => ({
-        getUsers: builder.query({
-            query: () => '/users/',
-            providesTags: ['Users']
-        }),
-        createUser: builder.mutation({
-            query: user => ({
-                url: '/users/',
-                method: 'POST',
-                body: user
-            }),
-            invalidatesTags: ['Users']
-        }),
-        createClient: builder.mutation({
+        registration: builder.mutation({
             query: client => ({
-                url: '/clients/',
+                url: '/registration/',
                 method: 'POST',
                 body: client
             }),
-            invalidatesTags: ['Clients']
+            invalidatesTags: ['Users', 'Clients']
+        }),
+        getUsers: builder.query({
+            query: () => '/users/',
+            providesTags: ['Users']
         }),
         getProducts: builder.query({
             query: () => '/products/',
@@ -54,17 +46,21 @@ export const apiSlice = createApi({
             query: (id) => `products/${id}/`,
             providesTags: ['Products']
         }),
+        getWeightSelectionItem: builder.query({
+            query: (id) => `/weight_selection/${id}/`,
+            providesTags: ['Products']
+        }),
     })
 })
 
 export const {  useGetUsersQuery,
-                useCreateUserMutation,
-                useCreateClientMutation,
+                useRegistrationMutation,
                 useGetProductsQuery,
                 useGetRoastingMethodsQuery,
                 useGetProcessingMethodsQuery,
                 useGetWeightsQuery,
                 useGetWeightSelectionQuery,
                 useGetVarietyQuery,
-                useGetProductsItemQuery
+                useGetProductsItemQuery,
+                useGetWeightSelectionItemQuery,
 } = apiSlice;

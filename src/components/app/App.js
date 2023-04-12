@@ -7,19 +7,22 @@ import RegistrationFormPage from "../pages/RegistrationFormPage";
 import MainPage from "../pages/MainPage";
 import AppHeader from "../appHeader/AppHeader";
 import {useDispatch} from "react-redux";
-import {fetchAuth, fetchClient} from "../../api/userSlice";
+import {fetchAuth} from "../../api/userSlice";
 import ProductListPage from '../pages/ProductListPage';
-import AccountPage from '../pages/AccountPage ';
+import AccountPage from '../pages/AccountPage';
 import ProductItem from '../productItem/ProductItem';
+import { useSelector } from 'react-redux';
 
 
 function App() {
       const dispatch = useDispatch();
+      const userAuthLoadingStatus = useSelector(state => state.authUser.userAuthLoadingStatus);
 
       useEffect(() => {
-          dispatch(fetchAuth())
-          dispatch(fetchClient())
-      }, [])
+        if(userAuthLoadingStatus === 'login success' || userAuthLoadingStatus === 'idle'){
+            dispatch(fetchAuth())
+        }
+    }, [userAuthLoadingStatus])
 
       return (
           <Router>
