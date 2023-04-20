@@ -8,7 +8,6 @@ const ProductList = () => {
         isError
     } = useGetProductsQuery();
 
-
     if (isLoading) {
         return <h5 className="text-center mt-5">Загрузка</h5>;
     } else if (isError) {
@@ -22,7 +21,7 @@ const ProductList = () => {
 
         const items = arr.map((product, i) => {
             return (
-                <ProductListItem key={product.product_id} product={product} i={i}/>
+                <ProductListItem key={product.product_id} product_id={product.product_id} product={product} i={i}/>
             )
         })
 

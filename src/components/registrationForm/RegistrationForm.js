@@ -1,7 +1,7 @@
 import { Formik, Form, Field, ErrorMessage} from 'formik';
 import * as Yup from 'yup';
 import { v4 as uuidv4 } from 'uuid';
-import {useCreateClientMutation, useCreateUserMutation, useRegistrationMutation} from "../../api/apiSlice";
+import {useRegistrationMutation} from "../../api/apiSlice";
 import Arrow from "../icons/Arrow";
 
 

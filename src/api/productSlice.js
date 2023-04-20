@@ -7,7 +7,6 @@ const pruductAdapter = createEntityAdapter();
 const initialState = pruductAdapter.getInitialState({
     // selectId: (user) => user.user_id,
     productLoadingStatus: 'idle',
-    product: null,
 });
 
 
@@ -19,6 +18,37 @@ export const fetchProduct = createAsyncThunk(
     }
 )
 
+export const fetchWeight = createAsyncThunk(
+    'products/fetchWeight',
+     async (id) => {
+         const {request} = useHttp();
+         return await request(`http://localhost:8000/weight_selection/${id}/`)
+    }
+)
+
+export const fetchRoastingMethod = createAsyncThunk(
+    'products/fetchRoastingMethod',
+     async (id) => {
+         const {request} = useHttp();
+         return await request(`http://localhost:8000/roasting/${id}/`)
+    }
+)
+
+export const fetchProcessingMethod = createAsyncThunk(
+    'products/fetchProcessingMethod',
+     async (id) => {
+         const {request} = useHttp();
+         return await request(`http://localhost:8000/processing/${id}/`)
+    }
+)
+
+export const fetchVariety = createAsyncThunk(
+    'products/fetchVariety',
+     async (id) => {
+         const {request} = useHttp();
+         return await request(`http://localhost:8000/variety/${id}/`)
+    }
+)
 
 
 const productSlice = createSlice({
@@ -33,8 +63,14 @@ const productSlice = createSlice({
             })
             .addCase(fetchProduct.fulfilled, (state, action) => {
                 state.productLoadingStatus = 'idle';
-                state.product = action.payload;
             })
+            .addCase(fetchWeight.pending, state => {
+                state.productLoadingStatus = 'loading';
+            })
+            .addCase(fetchWeight.fulfilled, (state, action) => {
+                state.productLoadingStatus = 'success';
+            })
+            .addCase(fetchWeight.rejected, state => {state.productLoadingStatus = 'error'})
             .addCase(fetchProduct.rejected, state => {state.productLoadingStatus = 'error'})
             .addDefaultCase(() => {})
     }
