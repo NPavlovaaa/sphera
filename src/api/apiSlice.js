@@ -26,10 +26,6 @@ export const apiSlice = createApi({
             query: (id) => `products/${id}/`,
             providesTags: ['Products']
         }),
-        getWeightSelectionItem: builder.query({
-            query: (id) => `/weight_selection/${id}/`,
-            providesTags: ['Products']
-        }),
     })
 })
 

@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import bobs250 from "../../assets/bobs250.png"
 import { Link } from "react-router-dom";
 import { useRef } from "react";
@@ -13,6 +14,8 @@ const ProductListItem = ({product, i, product_id}) => {
     const [processing, setProcessing] = useState();
     const [roasting, setRoasting] = useState();
     const [checkedList, setCheckedList] = useState();
+    const [openWeight, setOpenWeight] = useState(1);
+
 
     useEffect(()=>{
         dispatch(fetchProcessingMethod(product.processing_method)).then(data => {
@@ -79,21 +82,25 @@ const ProductListItem = ({product, i, product_id}) => {
                         </div>
                     </div>
                     <div className="flex flex-row justify-between w-full mt-5">
-                        {checkedList ? checkedList.map(({id, weight, price, checked}) => {
+                    {checkedList ? checkedList.map(({id, weight, price}) => {
                             return (
                                 <div key={id}>
-                                    <input className="peer"
-                                        type="radio"
-                                        name={id}
-                                        value={id}
-                                        checked={checked}
-                                        onChange={(e) => changeList(id, e.target.checked)}/>
-                                    <label className="text-xs text-mainGray flex justify-center cursor-pointer rounded-lg border-b-mainOrange-600 mainOrange py-1 px-2 focus:outline-none peer-checked:border-transparent peer-checked:ring-1 peer-checked:ring-mainOrange-600 transition-all duration-400 ease-in-out" for={id}>
-                                        {weight}
-                                    </label>
-                                    <div className="mt-3 text-xl justify-center flex transition-all duration-500 ease-in-out translate-x-40 opacity-0 invisible peer-checked:opacity-100 peer-checked:visible peer-checked:translate-x-1">
-                                        {price} р
-                                    </div>
+                                    <ul className="flex space-x-10">
+                                        <li>
+                                            <a  className={` ${openWeight === id ? "border-2 border-mainOrange-600" : ""} text-xs text-mainGray flex justify-center cursor-pointer rounded-lg py-1 px-2`}
+                                                href="#"
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    setOpenWeight(id)
+                                                }}
+                                            >
+                                                {weight}
+                                            </a>
+                                            <div className={`${openWeight === id ? "flex" : "hidden"} mt-3 text-2xl justify-center`}>
+                                                {price} р
+                                            </div>
+                                        </li>
+                                    </ul>
                                 </div>
                             )
                         }) : null}

@@ -9,6 +9,8 @@ import { fetchProduct } from "../../api/productSlice";
 import { useDispatch } from "react-redux";
 import { fetchProcessingMethod, fetchRoastingMethod, fetchVariety, fetchWeight } from "../../api/productSlice";
 import setParams from "../../hooks/useSetParams";
+import MakingMethods from "../makingMethods/MakingMethods";
+import ProductReview from "../productReview/ProductReview";
 
 const ProductItem = () => {
     const [product, setProduct] = useState({})
@@ -20,6 +22,8 @@ const ProductItem = () => {
     const dispatch = useDispatch();
     const [checkedList, setCheckedList] = useState();
     const [openTab, setOpenTab] = useState(1);
+    const [openWeight, setOpenWeight] = useState(1);
+
     console.log(product)
 
     useEffect(()=>{
@@ -110,21 +114,26 @@ const ProductItem = () => {
                         </div>
                     </div>
                     <div className="flex flex-row w-full mt-5">
-                        {checkedList ? checkedList.map(({id, weight, price, checked}) => {
+                        {checkedList ? checkedList.map(({id, weight, price}) => {
                             return (
                                 <div key={id}>
-                                    <input className="peer"
-                                        type="radio"
-                                        name={id}
-                                        value={id}
-                                        checked={checked}
-                                        onChange={(e) => changeList(id, e.target.checked)}/>
-                                    <label className="text-xs text-mainGray flex justify-center cursor-pointer rounded-lg border-b-mainOrange-600 py-1 px-2 focus:outline-none peer-checked:border-transparent peer-checked:ring-1 peer-checked:ring-mainOrange-600 transition-all duration-400 ease-in-out" for={id}>
-                                        {weight}
-                                    </label>
-                                    <div className="mt-3 text-xl justify-center flex transition-all duration-500 ease-in-out translate-x-40 opacity-0 invisible peer-checked:opacity-100 peer-checked:visible peer-checked:translate-x-1">
-                                        {price} р
-                                    </div>
+                                    <ul className="flex space-x-10">
+                                        <li>
+                                            <a
+                                                href="#"
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    setOpenWeight(id)
+                                                }}
+                                                className={` ${openWeight === id ? "border-2 border-mainOrange-600" : ""} text-sm flex justify-center cursor-pointer rounded-lg py-1 px-4`}
+                                            >
+                                                {weight}
+                                            </a>
+                                            <div className={`${openWeight === id ? "flex" : "hidden"} mt-3 text-2xl justify-center transition-all duration-500`}>
+                                                {price} р
+                                            </div>
+                                        </li>
+                                    </ul>
                                 </div>
                             )
                         }) : null}
@@ -138,38 +147,32 @@ const ProductItem = () => {
                 <div className="flex flex-col w-full">
                     <ul className="flex space-x-10">
                         <li>
-                            <a
-                                href="#"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    setOpenTab(1)
-                                }}
-                                className={` ${openTab === 1 ? "border-2 border-mainOrange-600" : ""} text-lg flex justify-center cursor-pointer rounded-lg py-2 px-4`}
-                            >
+                            <a className={` ${openTab === 1 ? "border-2 border-mainOrange-600" : ""} text-lg flex justify-center cursor-pointer rounded-lg py-2 px-4`}
+                               href="#"
+                               onClick={(e) => {
+                               e.preventDefault();
+                               setOpenTab(1)
+                            }}>
                                 Описание
                             </a>
                         </li>
                         <li>
-                            <a
-                                href="#"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    setOpenTab(2)
-                                }}
-                                className={` ${openTab === 2 ? "border-2 border-mainOrange-600" : ""} text-lg flex justify-center cursor-pointer rounded-lg py-2 px-3`}
-                            >
+                            <a className={` ${openTab === 2 ? "border-2 border-mainOrange-600" : ""} text-lg flex justify-center cursor-pointer rounded-lg py-2 px-3`}
+                               href="#"
+                               onClick={(e) => {
+                               e.preventDefault();
+                               setOpenTab(2)
+                            }}>
                                 Способы приготовления
                             </a>
                         </li>
                         <li>
-                            <a
-                                href="#"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    setOpenTab(3)
-                                }}
-                                className={` ${openTab === 3 ? "border-2 border-mainOrange-600" : ""} text-lg flex justify-center cursor-pointer rounded-lg py-2 px-3`}
-                            >
+                            <a className={` ${openTab === 3 ? "border-2 border-mainOrange-600" : ""} text-lg flex justify-center cursor-pointer rounded-lg py-2 px-3`}
+                               href="#"
+                               onClick={(e) => {
+                               e.preventDefault();
+                               setOpenTab(3)
+                            }}>
                                 Отзывы
                             </a>
                         </li>
@@ -179,10 +182,10 @@ const ProductItem = () => {
                             {product.product_description}
                         </div>
                         <div className={`${openTab === 2 ? "flex" : "hidden"} flex w-full`}>
-                            Способы приготовления
+                            <MakingMethods/>
                         </div>
                         <div className={`${openTab === 3 ? "flex" : "hidden"} flex w-full`}>
-                            Отзывы
+                            <ProductReview/>
                         </div>
                     </div>
                 </div>
