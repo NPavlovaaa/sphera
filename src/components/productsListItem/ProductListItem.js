@@ -2,19 +2,24 @@
 import bobs250 from "../../assets/bobs250.png"
 import { Link } from "react-router-dom";
 import { useRef } from "react";
-import setParams from "../../hooks/useSetParams"
+import setParams from "../../setParams/SetParams"
 import { useEffect, useState } from "react";
 import { fetchProcessingMethod, fetchRoastingMethod, fetchWeight } from "../../api/productSlice";
 import { useDispatch } from "react-redux";
+import { useAddCartMutation, useGetCartQuery } from "../../api/apiSlice";
 
 
-const ProductListItem = ({product, i, product_id}) => {
+const ProductListItem = ({product, i, client}) => {
     const itemRefs = useRef([]);
     const dispatch = useDispatch();
     const [processing, setProcessing] = useState();
     const [roasting, setRoasting] = useState();
     const [checkedList, setCheckedList] = useState();
     const [openWeight, setOpenWeight] = useState(1);
+
+    const {renderParams} = setParams(product);
+    const [addCart] = useAddCartMutation();
+    const {data: cart = []} = useGetCartQuery(client);
 
 
     useEffect(()=>{
@@ -29,17 +34,15 @@ const ProductListItem = ({product, i, product_id}) => {
         })
       }, [])
 
-    function toggleOption(options, id, checked) {
-        return options.map((option) =>
-            option.id === id ? { ...option, checked } : { ...option, checked: false }
-        );
+    const onAddToCart = () => {
+        if(client){
+            const newCart = {
+                'client': client,
+                'weight_selection': openWeight
+            }
+            addCart(newCart);
+        }
     }
-
-    const changeList = (id, checked) => {
-        setCheckedList((checkedList) => toggleOption(checkedList, id, checked));
-    };
-
-    const {renderParams} = setParams(product);
 
     return (
         <li
@@ -83,6 +86,27 @@ const ProductListItem = ({product, i, product_id}) => {
                     </div>
                     <div className="flex flex-row justify-between w-full mt-5">
                     {checkedList ? checkedList.map(({id, weight, price}) => {
+                            let dem = '';
+                            switch(weight){
+                                case 250:
+                                    dem = '250г';
+                                    break;
+                                case 1000:
+                                    dem = '1000г';
+                                    break;
+                                case 10:
+                                    dem = 'от 10 кг';
+                                    break;
+                                case 50:
+                                    dem = 'от 50 кг';
+                                    break;
+                                case 0:
+                                    dem = 'Образец';
+                                    break;
+                                default:
+                                    dem = '250г';
+                                    break;
+                            }
                             return (
                                 <div key={id}>
                                     <ul className="flex space-x-10">
@@ -94,7 +118,7 @@ const ProductListItem = ({product, i, product_id}) => {
                                                     setOpenWeight(id)
                                                 }}
                                             >
-                                                {weight}
+                                                {dem}
                                             </a>
                                             <div className={`${openWeight === id ? "flex" : "hidden"} mt-3 text-2xl justify-center`}>
                                                 {price} р
@@ -107,7 +131,7 @@ const ProductListItem = ({product, i, product_id}) => {
                     </div>
                 </div>
                 <div className="flex justify-end mt-5">
-                    <button type="submit" className="flex bg-mainOrange-600 rounded-2xl px-5 py-2">В корзину</button>
+                    <button type="submit" onClick={onAddToCart} className="flex bg-mainOrange-600 hover:bg-mainOrange-700 rounded-2xl px-5 py-2">В корзину</button>
                 </div>
             </div>
         </li>

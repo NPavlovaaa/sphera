@@ -8,9 +8,10 @@ import { useEffect, useState } from "react";
 import { fetchProduct } from "../../api/productSlice";
 import { useDispatch } from "react-redux";
 import { fetchProcessingMethod, fetchRoastingMethod, fetchVariety, fetchWeight } from "../../api/productSlice";
-import setParams from "../../hooks/useSetParams";
+import setParams from "../../setParams/SetParams";
 import MakingMethods from "../makingMethods/MakingMethods";
 import ProductReview from "../productReview/ProductReview";
+
 
 const ProductItem = () => {
     const [product, setProduct] = useState({})
@@ -115,6 +116,27 @@ const ProductItem = () => {
                     </div>
                     <div className="flex flex-row w-full mt-5">
                         {checkedList ? checkedList.map(({id, weight, price}) => {
+                            let dem = '';
+                            switch(weight){
+                                case 250:
+                                    dem = '250г';
+                                    break;
+                                case 1000:
+                                    dem = '1000г';
+                                    break;
+                                case 10:
+                                    dem = 'от 10 кг';
+                                    break;
+                                case 50:
+                                    dem = 'от 50 кг';
+                                    break;
+                                case 0:
+                                    dem = 'Образец';
+                                    break;
+                                default:
+                                    dem = '250г';
+                                    break;
+                            }
                             return (
                                 <div key={id}>
                                     <ul className="flex space-x-10">
@@ -127,7 +149,7 @@ const ProductItem = () => {
                                                 }}
                                                 className={` ${openWeight === id ? "border-2 border-mainOrange-600" : ""} text-sm flex justify-center cursor-pointer rounded-lg py-1 px-4`}
                                             >
-                                                {weight}
+                                                {dem}
                                             </a>
                                             <div className={`${openWeight === id ? "flex" : "hidden"} mt-3 text-2xl justify-center transition-all duration-500`}>
                                                 {price} р

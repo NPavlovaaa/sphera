@@ -3,7 +3,7 @@ import * as Yup from 'yup';
 import Arrow from '../icons/Arrow';
 import {useState} from "react";
 import {Navigate} from "react-router-dom";
-import {fetchLogin, fetchAuth} from "../../api/userSlice";
+import {fetchLogin} from "../../api/userSlice";
 import {useDispatch} from "react-redux";
 
 

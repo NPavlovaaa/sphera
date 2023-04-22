@@ -3,20 +3,16 @@ import Pen from "../icons/Pen"
 import Phone from "../icons/Phone"
 import Calendar from "../icons/Calendar"
 import Mail from "../icons/Mail"
-import {activeUserChange, activeClientChange} from "../../api/userSlice";
+import {activeUserChange} from "../../api/userSlice";
 import {useDispatch, useSelector} from "react-redux";
-import {useHttp} from "../../hooks/http.hook";
 import { Link } from "react-router-dom";
 
 
 const ClientAccount = () => {
     const activeClient = useSelector(state => state.authUser.client);
     const activeUser = useSelector(state => state.authUser.user);
-    // const userAuthLoadingStatus = useSelector(state => state.authUser.userAuthLoadingStatus);
 
     const dispatch = useDispatch();
-
-    console.log(activeClient, activeUser)
 
     const logout = async () => {
         await fetch('http://localhost:8000/logout/', {

@@ -13,6 +13,7 @@ module.exports = {
       },
       mainGray: '#a4a4a4',
       lightGray: 'rgba(223, 223, 223, 0.27)',
+      red: '#EC5859'
     },
     screens: {
       'sm': {'min': '640px', 'max': '767px'},
@@ -48,19 +49,6 @@ module.exports = {
       '9xl': ['6.5rem', '1.12'],
       '10xl': ['8rem', '1.12'],
     },
-    // fontWeight: {
-    //   thin: '0.5',
-    //   hairline: '100',
-    //   extralight: '200',
-    //   light: '300',
-    //   normal: '400',
-    //   medium: '500',
-    //   semibold: '600',
-    //   bold: '700',
-    //   extrabold: '800',
-    //   'extra-bold': '800',
-    //   black: '900',
-    // }
   },
   plugins: [
     // plugin(function({ matchUtilities, theme }) {

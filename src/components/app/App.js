@@ -12,7 +12,7 @@ import ProductListPage from '../pages/ProductListPage';
 import AccountPage from '../pages/AccountPage';
 import ProductItem from '../productItem/ProductItem';
 import { useSelector } from 'react-redux';
-
+import ClientCart from '../clientCart/ClientCart';
 
 function App() {
       const dispatch = useDispatch();
@@ -37,6 +37,7 @@ function App() {
                               <Route path="/products" element={<ProductListPage/>}/>
                               <Route path="/products/:id" element={<ProductItem/>}/>
                               <Route path="/account" element={<AccountPage/>}/>
+                              <Route path="/cart" element={<ClientCart/>}/>
                           </Routes>
                       </main>
                   </Suspense>

@@ -1,7 +1,11 @@
 import {useGetProductsQuery} from "../../api/apiSlice";
 import ProductListItem from "../productsListItem/ProductListItem";
+import { useSelector } from "react-redux";
+
 
 const ProductList = () => {
+    const activeClient = useSelector(state => state.authUser.client);
+
     const {
         data: products = [],
         isLoading,
@@ -21,7 +25,7 @@ const ProductList = () => {
 
         const items = arr.map((product, i) => {
             return (
-                <ProductListItem key={product.product_id} product_id={product.product_id} product={product} i={i}/>
+                <ProductListItem key={product.product_id} product_id={product.product_id} product={product} i={i} client={activeClient ? activeClient.client_id : null}/>
             )
         })
 
