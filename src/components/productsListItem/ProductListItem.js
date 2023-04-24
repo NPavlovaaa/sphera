@@ -6,8 +6,8 @@ import setParams from "../../setParams/SetParams"
 import { useEffect, useState } from "react";
 import { fetchProcessingMethod, fetchRoastingMethod, fetchWeight } from "../../api/productSlice";
 import { useDispatch } from "react-redux";
-import { useAddCartMutation, useGetCartQuery } from "../../api/apiSlice";
-
+import { useAddCartMutation} from "../../api/apiSlice";
+import { fetchProductInCart, fetchDeleteProductInCart, fetchUpdateCart } from "../../api/cartSlice";
 
 const ProductListItem = ({product, i, client}) => {
     const itemRefs = useRef([]);
@@ -19,8 +19,7 @@ const ProductListItem = ({product, i, client}) => {
 
     const {renderParams} = setParams(product);
     const [addCart] = useAddCartMutation();
-    const {data: cart = []} = useGetCartQuery(client);
-
+    const [cart, setCart] = useState();
 
     useEffect(()=>{
         dispatch(fetchProcessingMethod(product.processing_method)).then(data => {
@@ -32,7 +31,17 @@ const ProductListItem = ({product, i, client}) => {
         dispatch(fetchWeight(product.product_id)).then(data => {
             setCheckedList(data.payload)
         })
-      }, [])
+        updateCard();
+
+      }, [openWeight])
+
+    const updateCard = () => {
+        dispatch(fetchProductInCart({
+            'client': client,
+            'product': product.product_id,
+            'weight_selection': openWeight
+        })).then(data => setCart(data.payload))
+    }
 
     const onAddToCart = () => {
         if(client){
@@ -40,17 +49,51 @@ const ProductListItem = ({product, i, client}) => {
                 'client': client,
                 'weight_selection': openWeight
             }
-            addCart(newCart);
+            addCart(newCart).then(updateCard);
         }
+    }
+
+    const changeCount = (value) => {
+        cart.product_count += value
+        if (cart.product_count > 0){
+            setTimeout(() =>{
+                dispatch(fetchUpdateCart({
+                    'client': client,
+                    'weight_selection': cart.weight_selection,
+                    'product_count': cart.product_count,
+                    'id': cart.cart_id
+                })).then(updateCard)
+            }, 200)
+        }else{
+            setTimeout(() =>{
+                dispatch(fetchDeleteProductInCart(cart.cart_id)).then(updateCard)
+            }, 200)
+        }
+
+    }
+
+    const renBtn = () => {
+        let btn = '';
+        cart && cart.product_count !== 0 ?
+                btn = <div className="flex w-1/4 justify-between border-2 border-mainOrange-600 rounded-2xl py-1 px-3">
+                        <button type="submit" onClick={() => changeCount(-1)} className="flex text-xl">-</button>
+                        <p className="flex text-xl">{cart.product_count}</p>
+                        <button type="submit" onClick={() => changeCount(1)} className="flex text-xl">+</button>
+                      </div>
+                :
+                btn = <button type="submit" onClick={onAddToCart} className="flex bg-mainOrange-600 hover:bg-mainOrange-700 rounded-2xl px-5 py-2">
+                        В корзину
+                      </button>
+        return btn
     }
 
     return (
         <li
-        className=""
+        className="bg-lightGray rounded-lg px-8 py-4 pb-5"
         tabIndex={0}
         ref={el => itemRefs.current[i] = el}
         >
-            <div className="bg-lightGray rounded-lg px-8 py-4 pb-5">
+            <div>
                 <div className="mb-5 flex flex-row text-xs">
                     <p className="text-mainGray l-0">{roasting ? roasting.roasting_method_name : null}</p>
                     <p className="text-mainGray ml-3">{processing ? processing.processing_method_name : null}</p>
@@ -130,9 +173,9 @@ const ProductListItem = ({product, i, client}) => {
                         }) : null}
                     </div>
                 </div>
-                <div className="flex justify-end mt-5">
-                    <button type="submit" onClick={onAddToCart} className="flex bg-mainOrange-600 hover:bg-mainOrange-700 rounded-2xl px-5 py-2">В корзину</button>
-                </div>
+            </div>
+            <div className="flex w-full justify-end mt-2">
+                {renBtn()}
             </div>
         </li>
     )

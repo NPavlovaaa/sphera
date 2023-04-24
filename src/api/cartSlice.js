@@ -28,6 +28,20 @@ export const fetchUpdateCart = createAsyncThunk(
      })
 })
 
+export const fetchProductInCart = createAsyncThunk(
+    'products/fetchProductInCart',
+     async (data) => {
+         const {request} = useHttp();
+         return await request(`http://localhost:8000/product_cart/${data.product}/${data.client}/${data.weight_selection}/`)
+})
+
+export const fetchDeleteProductInCart = createAsyncThunk(
+    'products/fetchDeleteProductInCart',
+     async (id) => {
+         const {request} = useHttp();
+         return await request(`http://localhost:8000/carts/${id}/`, 'DELETE')
+})
+
 
 const productSlice = createSlice({
     name: 'getCart',

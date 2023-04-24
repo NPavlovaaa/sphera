@@ -38,6 +38,10 @@ export const apiSlice = createApi({
             query: (id) => `cart/${id}/`,
             providesTags: ['Clients']
         }),
+        getProductCart: builder.query({
+            query: ({product, client, weight_selection}) => `product_cart/${product}/${client}/${weight_selection}/`,
+            providesTags: ['Clients']
+        }),
     })
 })
 
@@ -46,5 +50,6 @@ export const {  useGetUsersQuery,
                 useGetProductsQuery,
                 useGetProductsItemQuery,
                 useAddCartMutation,
-                useGetCartQuery
+                useGetCartQuery,
+                useGetProductCartQuery
 } = apiSlice;

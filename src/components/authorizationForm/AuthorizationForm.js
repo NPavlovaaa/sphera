@@ -7,7 +7,7 @@ import {fetchLogin} from "../../api/userSlice";
 import {useDispatch} from "react-redux";
 
 
-const AuthorizationForm = ({onToggle, setUser}) => {
+const AuthorizationForm = ({onToggle}) => {
     const [redirect, setRedirect] = useState(false);
     const dispatch = useDispatch();
 

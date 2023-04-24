@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { fetchCart, fetchUpdateCart } from "../../api/cartSlice";
+import { fetchCart, fetchDeleteProductInCart, fetchUpdateCart } from "../../api/cartSlice";
 import bobs250 from "../../assets/bobs250.png";
 
 
@@ -30,14 +30,25 @@ const ClientCart = () => {
         const renderCart = cart ? cart.map(({product, roasting, processing, price, weight, cart_id, count, weight_selection}) => {
             const changeCount = (value) => {
                 count += value
-                setTimeout(() =>{
-                    dispatch(fetchUpdateCart({
-                        'client': activeClient.client_id,
-                        'weight_selection': weight_selection,
-                        'product_count': count,
-                        'id': cart_id
-                    })).then(updateCart)
-                }, 200)
+                if (count > 0){
+                    setTimeout(() =>{
+                        dispatch(fetchUpdateCart({
+                            'client': activeClient.client_id,
+                            'weight_selection': weight_selection,
+                            'product_count': count,
+                            'id': cart_id
+                        })).then(updateCart)
+                    }, 150)
+                }else{
+                    setTimeout(() =>{
+                        dispatch(fetchDeleteProductInCart(cart_id)).then(updateCart)
+                    }, 150)
+                }
+
+            }
+
+            const deleteProduct = () => {
+                dispatch(fetchDeleteProductInCart(cart_id)).then(updateCart)
             }
             totul_sum += price;
             weight_sum += weight * count;
@@ -66,17 +77,20 @@ const ClientCart = () => {
                             </p>
                             <div className="grid grid-cols-3 mt-1 text-sm">
                                 <button type="submit" className="flex text-mainOrange-600 py-2 w-full">В избранное</button>
-                                <button type="submit" className="flex text-red py-2 w-full">Удалить</button>
+                                <button type="submit" onClick={deleteProduct} className="flex text-red py-2 w-full">Удалить</button>
                             </div>
                         </div>
                     </div>
                     <div className="flex w-1/5 justify-end">
-                        <button type="submit" onClick={() => changeCount(-1)} className="flex text-xl mr-2">-</button>
-                        <p className="flex text-xl mr-2">{count}</p>
-                        <button type="submit" onClick={() => changeCount(1)} className="flex text-xl">+</button>
+                        <button type="submit" onClick={() => changeCount(-1)} className="flex text-xl mr-2 bg-lightGray px-2.5 py-1 rounded-lg h-fit">-</button>
+                        <p className="flex text-lg mr-2 py-1">{count}</p>
+                        <button type="submit" onClick={() => changeCount(1)} className="flex text-xl bg-lightGray px-2 py-1 rounded-lg h-fit">+</button>
                     </div>
-                    <div className="flex w-1/5 justify-end pr-3">
-                        <p className="flex text-xl">{price} р</p>
+                    <div className="flex w-1/5 pr-3 justify-end">
+                        <div className="flex flex-col items-center">
+                            <p className="flex text-xl">{price} р</p>
+                            <p className="flex text-sm text-mainGray mt-0.5">{weight} г</p>
+                        </div>
                     </div>
                 </div>
             )
