@@ -6,5 +6,6 @@
 - ReactJS;
 - Redux;
 - RTK Query;
-- Tailwind Css.
+- Tailwind Css;
+- Formik and Yup;
 
