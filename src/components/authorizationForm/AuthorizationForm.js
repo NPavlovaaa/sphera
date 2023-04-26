@@ -58,7 +58,7 @@ const AuthorizationForm = ({onToggle}) => {
                                 <div>
                                     <h1 className="text-2xl font-semibold">Авторизация</h1>
                                 </div>
-                                <Form>
+                                <Form method="POST">
                                     <div className="divide-y divide-gray-200">
                                         <div className="py-8 text-base leading-6 space-y-4 sm:text-lg sm:leading-7">
                                             <div className="relative">

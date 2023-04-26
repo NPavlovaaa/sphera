@@ -3,24 +3,22 @@ import * as Yup from 'yup';
 import { v4 as uuidv4 } from 'uuid';
 import {useRegistrationMutation} from "../../api/apiSlice";
 import Arrow from "../icons/Arrow";
-
+import { useState } from 'react';
 
 const RegistrationForm = ({onToggle}) => {
+    const [image, setFieldValue] = useState();
     const [registration, {isError}] = useRegistrationMutation();
+    const addUser = ({username, password, first_name, last_name, phone, birthday}) => {
+        let newUser = new FormData();
+        newUser.append('user_id',  uuidv4())
+        newUser.append('username', username)
+        newUser.append('password', password)
+        newUser.append('first_name', first_name)
+        newUser.append('last_name', last_name)
+        newUser.append('phone', phone)
+        newUser.append('birthday', birthday)
+        newUser.append('avatar', image ? image : null)
 
-    const addUser = ({username, password, first_name, last_name, phone, birthday, avatar}) => {
-        const newUser = {
-            user_id: uuidv4(),
-            username,
-            password,
-            first_name,
-            last_name,
-            phone,
-            birthday,
-            avatar,
-            scores: 0,
-            level: 1,
-        }
         registration(newUser)
     }
 
@@ -33,7 +31,7 @@ const RegistrationForm = ({onToggle}) => {
                     <Arrow/>
                 </div>
             </div>
-            {isError ? console.log(isError.ErrorMessage) : null}
+            {isError ? console.log(isError) : null}
             <Formik
                 initialValues ={{
                     username: '',
@@ -78,7 +76,7 @@ const RegistrationForm = ({onToggle}) => {
                                 <div>
                                     <h1 className="text-2xl font-semibold">Регистрация</h1>
                                 </div>
-                                <Form method="POST">
+                                <Form method="POST" enctype="multipart/form-data">
                                     <div className="py-3 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7 flex flex-row justify-between">
                                         <div className="relative w-1/2 mr-10 mt-4">
                                             <div  className="relative">
@@ -116,8 +114,17 @@ const RegistrationForm = ({onToggle}) => {
                                                         </svg>
                                                         <span className="text-sm">Загрузить фото</span>
                                                     </label>
-                                                    <input id="avatar" type="file" className="hidden"/>
+                                                    <input
+                                                    type="file"
+                                                    name="avatar"
+                                                    id="avatar"
+                                                    className="hidden"
+                                                    onChange={(event) => {
+                                                        setFieldValue(event.currentTarget.files[0]);
+                                                      }}
+                                                    />
                                                 </div>
+                                                <span>{image ? image.name : null}</span>
                                             </div>
                                         </div>
                                         <div className="relative w-1/2">

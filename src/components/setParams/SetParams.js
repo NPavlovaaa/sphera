@@ -1,8 +1,8 @@
-import Case1 from "../components/icons/Case1";
-import Case2 from "../components/icons/Case2";
-import Case3 from "../components/icons/Case3";
-import Case4 from "../components/icons/Case4";
-import Case5 from "../components/icons/Case5";
+import Case1 from "../icons/Case1";
+import Case2 from "../icons/Case2";
+import Case3 from "../icons/Case3";
+import Case4 from "../icons/Case4";
+import Case5 from "../icons/Case5";
 
 
 const setParams = (product) => {

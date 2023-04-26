@@ -10,7 +10,6 @@ const initialState = userAdapter.getInitialState({
     client: null
 });
 
-
 export const fetchLogin = createAsyncThunk(
     'users/fetchLogin',
      async (values) => {

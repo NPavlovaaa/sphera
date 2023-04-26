@@ -2,12 +2,14 @@
 import bobs250 from "../../assets/bobs250.png"
 import { Link } from "react-router-dom";
 import { useRef } from "react";
-import setParams from "../../setParams/SetParams"
+import setParams from "../setParams/SetParams"
 import { useEffect, useState } from "react";
-import { fetchProcessingMethod, fetchRoastingMethod, fetchWeight } from "../../api/productSlice";
+import { fetchFavorite, fetchProcessingMethod, fetchRoastingMethod, fetchWeight } from "../../api/productSlice";
 import { useDispatch } from "react-redux";
-import { useAddCartMutation} from "../../api/apiSlice";
+import { useAddCartMutation, useAddFavoriteMutation} from "../../api/apiSlice";
 import { fetchProductInCart, fetchDeleteProductInCart, fetchUpdateCart } from "../../api/cartSlice";
+import Star from "../icons/Star";
+import Favorite from "../icons/Favorite";
 
 const ProductListItem = ({product, i, client}) => {
     const itemRefs = useRef([]);
@@ -19,7 +21,9 @@ const ProductListItem = ({product, i, client}) => {
 
     const {renderParams} = setParams(product);
     const [addCart] = useAddCartMutation();
+    const [addFavorite] = useAddFavoriteMutation();
     const [cart, setCart] = useState();
+    const [favorite, setFavorite] = useState();
 
     useEffect(()=>{
         dispatch(fetchProcessingMethod(product.processing_method)).then(data => {
@@ -41,7 +45,15 @@ const ProductListItem = ({product, i, client}) => {
             'product': product.product_id,
             'weight_selection': openWeight
         })).then(data => setCart(data.payload))
+        dispatch(fetchFavorite(client)).then(data => setFavorite(data.payload))
     }
+
+    // const active = () => {
+    //     console.log(favorite)
+    //     if(favorite){
+    //         return true
+    //     }else return false
+    // }
 
     const onAddToCart = () => {
         if(client){
@@ -50,6 +62,16 @@ const ProductListItem = ({product, i, client}) => {
                 'weight_selection': openWeight
             }
             addCart(newCart).then(updateCard);
+        }
+    }
+
+    const onAddToFavorite = () => {
+        if(client){
+            const newFavorite = {
+                'client': client,
+                'product': product.product_id
+            }
+            addFavorite(newFavorite).then(updateCard);
         }
     }
 
@@ -94,16 +116,24 @@ const ProductListItem = ({product, i, client}) => {
         ref={el => itemRefs.current[i] = el}
         >
             <div>
-                <div className="mb-5 flex flex-row text-xs">
-                    <p className="text-mainGray l-0">{roasting ? roasting.roasting_method_name : null}</p>
-                    <p className="text-mainGray ml-3">{processing ? processing.processing_method_name : null}</p>
+                <div className="mb-5 flex text-xs justify-between">
+                    <div className="flex">
+                        <p className="text-mainGray l-0">{roasting ? roasting.roasting_method_name : null}</p>
+                        <p className="text-mainGray ml-3">{processing ? processing.processing_method_name : null}</p>
+                    </div>
+                    <div className="flex">
+                        <Star width="16"/>
+                        <p className="text-mainGray text ml-1 mr-4">{product.raiting}</p>
+                        <button className="h-fit" onClick={onAddToFavorite}>
+                            <Favorite width="20" height="20" strokeColor="#939393"/>
+                        </button>
+                    </div>
                 </div>
                 <div className="flex flex-col items-center w-full">
                     <Link to={`/products/${product.product_id}/`}>
                         <p className="text-xl font-medium mb-3">{product.product_name}</p>
                         <img src={bobs250} width="200" alt="Картинка товара" />
                     </Link>
-                    <p className="text-md text-mainGray mt-3">{}</p>
                     <p className="text-sm w-full left-0 text-mainGray mt-3 h-9">{product.taste}</p>
                     <div className="flex flex-col text-sm text-mainGray w-full mt-5">
                         <div className="flex justify-between">

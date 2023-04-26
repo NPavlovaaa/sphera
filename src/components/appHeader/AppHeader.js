@@ -77,7 +77,7 @@ const AppHeader = () => {
                             <p>Заказы</p>
                         </NavLink>
                         <NavLink to="/favorite" className="flex flex-col items-center ml-5">
-                            <Favorite/>
+                            <Favorite width="24" height="32" strokeColor="black"/>
                             <p>Избранное</p>
                         </NavLink>
                         <NavLink to="/cart" className="flex flex-col items-center ml-5">

@@ -10,7 +10,7 @@ export const apiSlice = createApi({
             query: client => ({
                 url: '/registration/',
                 method: 'POST',
-                body: client
+                body: client,
             }),
             invalidatesTags: ['Users', 'Clients']
         }),
@@ -42,6 +42,14 @@ export const apiSlice = createApi({
             query: ({product, client, weight_selection}) => `product_cart/${product}/${client}/${weight_selection}/`,
             providesTags: ['Clients']
         }),
+        addFavorite: builder.mutation({
+            query: favorite => ({
+                url: '/favorites/',
+                method: 'POST',
+                body: favorite
+            }),
+            invalidatesTags: ['Clients']
+        }),
     })
 })
 
@@ -51,5 +59,7 @@ export const {  useGetUsersQuery,
                 useGetProductsItemQuery,
                 useAddCartMutation,
                 useGetCartQuery,
-                useGetProductCartQuery
+                useGetProductCartQuery,
+                useAddFavoriteMutation,
+                useLoginMutation
 } = apiSlice;

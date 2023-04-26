@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { fetchProduct } from "../../api/productSlice";
 import { useDispatch } from "react-redux";
 import { fetchProcessingMethod, fetchRoastingMethod, fetchVariety, fetchWeight } from "../../api/productSlice";
-import setParams from "../../setParams/SetParams";
+import setParams from "../setParams/SetParams";
 import MakingMethods from "../makingMethods/MakingMethods";
 import ProductReview from "../productReview/ProductReview";
 

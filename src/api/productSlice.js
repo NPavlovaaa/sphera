@@ -5,7 +5,6 @@ import {useHttp} from "../hooks/http.hook";
 const pruductAdapter = createEntityAdapter();
 
 const initialState = pruductAdapter.getInitialState({
-    // selectId: (user) => user.user_id,
     productLoadingStatus: 'idle',
 });
 
@@ -47,6 +46,14 @@ export const fetchVariety = createAsyncThunk(
      async (id) => {
          const {request} = useHttp();
          return await request(`http://localhost:8000/variety/${id}/`)
+    }
+)
+
+export const fetchFavorite = createAsyncThunk(
+    'products/fetchFavorite',
+     async (id) => {
+         const {request} = useHttp();
+         return await request(`http://localhost:8000/favorite/${id}/`)
     }
 )
 
