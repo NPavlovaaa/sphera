@@ -25,7 +25,6 @@ const ProductItem = () => {
     const [openTab, setOpenTab] = useState(1);
     const [openWeight, setOpenWeight] = useState(1);
 
-    console.log(product)
 
     useEffect(()=>{
         dispatch(fetchProduct(id)).then(data => {

@@ -26,10 +26,16 @@ const ClientAccount = () => {
     return(
         <div className="flex flex-col px-20 py-10">
             <h1 className="text-3xl font-bold">Личный кабинет</h1>
-            <div className="flex flex-row bg-lightGray shadow-md rounded-xl px-16 py-10 w-full h-fit">
+            <div className="flex flex-row bg-lightGray shadow-md rounded-xl px-16 py-10 w-full h-fit mt-5">
                 <div className="flex flex-col w-1/2">
                     <div className="flex flex-row items-center mb-5">
-                        <AvatarDetail/>
+                        {activeClient.avatar ?
+                            <div className="h-16 w-16">
+                                <img src={activeClient.avatar} className="rounded-xl avatar" alt="фотография пользователя"/>
+                            </div>
+                        :
+                            <AvatarDetail/>
+                        }
                         <p className="text-xl ml-2">{activeClient.first_name} {activeClient.last_name}</p>
                     </div>
                     <div className="flex flex-row items-center">

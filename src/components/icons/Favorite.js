@@ -1,5 +1,6 @@
 
 function Favorite({width, height, strokeColor, active}){
+  console.log(active)
     let fill;
     active ? fill = '#FFA82E' : fill ='none'
     return (

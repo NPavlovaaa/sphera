@@ -1,8 +1,8 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import { fetchCart, fetchDeleteProductInCart, fetchUpdateCart } from "../../api/cartSlice";
 import bobs250 from "../../assets/bobs250.png";
+import { Link } from "react-router-dom";
 
 
 const ClientCart = () => {
@@ -50,13 +50,24 @@ const ClientCart = () => {
             const deleteProduct = () => {
                 dispatch(fetchDeleteProductInCart(cart_id)).then(updateCart)
             }
+
+            // const checkedProduct = () => {
+            //     setChecked(!checked)
+            //     console.log(checked)
+            //     checked ? chekedList.push(cart_id) : console.log(cart_id)
+            // }
+            // console.log(chekedList)
+
             totul_sum += price;
             weight_sum += weight * count;
             count_products += 1 * count;
             return (
                 <div className="flex flex-row w-full justify-between bg-mainWhite mb-1.5 p-8 rounded-xl" key={cart_id}>
                     <div className="flex flex-row w-2/3 items-center justify-center">
-                        <input type="checkbox" className="flex mr-3"/>
+                        {/* <input  type="checkbox"
+                                name="selected"
+                                checked={checked} onChange={checkedProduct}
+                                className="flex mr-3"/> */}
                         <div className="flex py-3 w-1/4">
                             <img src={bobs250} alt="картинка товар" width="120"/>
                         </div>
@@ -99,15 +110,18 @@ const ClientCart = () => {
     }
 
     return (
-        <div className="w-full p-20">
+        <div className="w-full px-20 py-10">
+            <h1 className="text-3xl font-bold">Корзина</h1>
             <div className="grid grid-cols-3 gap-16 col-span-2 bg-lightGray p-10 w-full rounded-xl">
                 <div className="flex flex-col col-span-2">
                 {itemCart()}
                 </div>
-                <div className="flex flex-col items-center">
-                    <button type="submit" className="flex bg-mainOrange-600 hover:bg-mainOrange-700 rounded-2xl px-5 py-3 w-full text-lg font-semibold justify-center">
-                        Перейти к оформлению
-                    </button>
+                <div className="flex flex-col">
+                    <Link to={`/ordering/`}>
+                        <button type="submit" className="flex bg-mainOrange-600 hover:bg-mainOrange-700 rounded-2xl px-5 py-3 w-full text-lg font-semibold justify-center">
+                            Перейти к оформлению
+                        </button>
+                    </Link>
                     <p className="text-mainGray text-sm mt-3">Доступные способы и время доставки можно выбрать при оформлении заказа</p>
                     <div className="flex flex-row justify-between bg-mainWhite w-full mb-1.5 p-6 rounded-xl mt-3">
                         <p className="text-lg">Ваша корзина</p>

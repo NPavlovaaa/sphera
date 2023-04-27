@@ -43,7 +43,7 @@ export const fetchDeleteProductInCart = createAsyncThunk(
 })
 
 
-const productSlice = createSlice({
+const cartSlice = createSlice({
     name: 'getCart',
     initialState,
     reducers: {
@@ -61,5 +61,5 @@ const productSlice = createSlice({
     }
 })
 
-const {reducer} = productSlice;
+const {reducer} = cartSlice;
 export default reducer;

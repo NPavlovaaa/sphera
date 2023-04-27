@@ -69,7 +69,14 @@ const AppHeader = () => {
                             <p className="flex justify-end xl:text-md lg:text-sm 2xl:text-md sm:text-sm">{activeClient.first_name}</p>
                             <p className="flex justify-end text-xs text-mainGray">Новичок</p>
                         </div>
-                        <Avatar/>
+                        {activeClient.avatar ?
+                            <div className="h-12 w-12">
+                                <img src={activeClient.avatar} className="rounded-xl avatar" alt="фотография пользователя"/>
+                            </div>
+                        :
+                            <Avatar/>
+                        }
+                        {/* <Avatar/> */}
                     </NavLink>
                     <div className="flex justify-between items-center text-xs text-mainGray pb-1.5">
                         <NavLink to="/favorite" className="flex flex-col items-center">

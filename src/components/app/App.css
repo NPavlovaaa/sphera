@@ -6,3 +6,13 @@
 .App {
   text-align: center;
 }
+
+.avatar{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+:active, :hover, :focus {
+  outline: 0;
+  outline-offset: 0;
+}

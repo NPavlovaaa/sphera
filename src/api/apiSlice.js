@@ -4,7 +4,7 @@ import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 export const apiSlice = createApi({
     reducerPath: '',
     baseQuery: fetchBaseQuery({baseUrl: 'http://127.0.0.1:8000'}),
-    tagTypes: ['Users', 'Clients', 'Products'],
+    tagTypes: ['Users', 'Clients', 'Products', 'Orders'],
     endpoints: builder => ({
         registration: builder.mutation({
             query: client => ({
@@ -50,6 +50,10 @@ export const apiSlice = createApi({
             }),
             invalidatesTags: ['Clients']
         }),
+        getDeliveryMethods: builder.query({
+            query: () => '/delivery_methods/',
+            providesTags: ['Orders']
+        }),
     })
 })
 
@@ -61,5 +65,5 @@ export const {  useGetUsersQuery,
                 useGetCartQuery,
                 useGetProductCartQuery,
                 useAddFavoriteMutation,
-                useLoginMutation
+                useGetDeliveryMethodsQuery
 } = apiSlice;

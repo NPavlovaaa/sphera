@@ -23,7 +23,7 @@ const ProductListItem = ({product, i, client}) => {
     const [addCart] = useAddCartMutation();
     const [addFavorite] = useAddFavoriteMutation();
     const [cart, setCart] = useState();
-    const [favorite, setFavorite] = useState();
+    const [favorite, setFavorite] = useState(false);
 
     useEffect(()=>{
         dispatch(fetchProcessingMethod(product.processing_method)).then(data => {
@@ -48,12 +48,6 @@ const ProductListItem = ({product, i, client}) => {
         dispatch(fetchFavorite(client)).then(data => setFavorite(data.payload))
     }
 
-    // const active = () => {
-    //     console.log(favorite)
-    //     if(favorite){
-    //         return true
-    //     }else return false
-    // }
 
     const onAddToCart = () => {
         if(client){
@@ -94,6 +88,12 @@ const ProductListItem = ({product, i, client}) => {
 
     }
 
+    const active = () => {
+        const fav = favorite ? true : false
+        return fav
+    }
+    // console.log(product.product_id, favorite)
+
     const renBtn = () => {
         let btn = '';
         cart && cart.product_count !== 0 ?
@@ -125,7 +125,7 @@ const ProductListItem = ({product, i, client}) => {
                         <Star width="16"/>
                         <p className="text-mainGray text ml-1 mr-4">{product.raiting}</p>
                         <button className="h-fit" onClick={onAddToFavorite}>
-                            <Favorite width="20" height="20" strokeColor="#939393"/>
+                            <Favorite width="20" height="20" strokeColor="#939393" active={active()}/>
                         </button>
                     </div>
                 </div>
