@@ -1,7 +1,7 @@
 import {configureStore} from "@reduxjs/toolkit";
 import {apiSlice} from "../api/apiSlice";
 import authUser from "../api/userSlice";
-
+import getProduct from "../api/productSlice";
 // Server side with csurf middleware
 const stringMiddleware = () => (next) => (action) => {
     if (typeof action === 'string') {
@@ -13,7 +13,7 @@ const stringMiddleware = () => (next) => (action) => {
 }
 
 const store = configureStore({
-    reducer: {authUser, [apiSlice.reducerPath]: apiSlice.reducer,},
+    reducer: {authUser, getProduct, [apiSlice.reducerPath]: apiSlice.reducer,},
     middleware: getDefaultMiddleware => getDefaultMiddleware().concat(stringMiddleware, apiSlice.middleware),
     devTools: process.env.NODE_ENV !== 'production'
 })

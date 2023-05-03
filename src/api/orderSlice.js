@@ -9,11 +9,11 @@ const initialState = orderAdapter.getInitialState({
 });
 
 
-export const fetchOrder = createAsyncThunk(
-    'products/fetchOrder',
-     async (data) => {
+export const fetchClientOrders = createAsyncThunk(
+    'products/fetchClientOrders',
+     async (id) => {
          const {request} = useHttp();
-         return await request(`http://localhost:8000/ordering/${data.client}/`)
+         return await request(`http://localhost:8000/my_orders/${id}/`, 'GET')
     }
 )
 
@@ -25,13 +25,13 @@ const orderingSlice = createSlice({
     },
     extraReducers: builder => {
         builder
-            .addCase(fetchOrder.pending, state => {
+            .addCase(fetchClientOrders.pending, state => {
                 state.o = 'loading';
             })
-            .addCase(fetchOrder.fulfilled, (state) => {
+            .addCase(fetchClientOrders.fulfilled, (state) => {
                 state.orderingLoadingStatus = 'success';
             })
-            .addCase(fetchOrder.rejected, state => {state.orderingLoadingStatus = 'error'})
+            .addCase(fetchClientOrders.rejected, state => {state.orderingLoadingStatus = 'error'})
             .addDefaultCase(() => {})
     }
 })

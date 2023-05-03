@@ -45,7 +45,7 @@ const ProductListItem = ({product, i, client}) => {
             'product': product.product_id,
             'weight_selection': openWeight
         })).then(data => setCart(data.payload))
-        dispatch(fetchFavorite(client)).then(data => setFavorite(data.payload))
+        // dispatch(fetchFavorite(client)).then(data => setFavorite(data.payload))
     }
 
 

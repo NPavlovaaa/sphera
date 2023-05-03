@@ -17,7 +17,7 @@ const ClientCart = () => {
     }, [activeClient])
 
     const updateCart = () =>{
-        dispatch(fetchCart(activeClient.client_id)).then(data => {
+        dispatch(fetchCart({'client': activeClient.client_id, 'cart': 1})).then(data => {
             setCart(data.payload)
         })
     }
@@ -25,6 +25,7 @@ const ClientCart = () => {
     let totul_sum  = 0;
     let weight_sum  = 0;
     let count_products = 0;
+    console.log(cart)
 
     const itemCart = () => {
         const renderCart = cart ? cart.map(({product, roasting, processing, price, weight, cart_id, count, weight_selection}) => {
@@ -112,7 +113,7 @@ const ClientCart = () => {
     return (
         <div className="w-full px-20 py-10">
             <h1 className="text-3xl font-bold">Корзина</h1>
-            <div className="grid grid-cols-3 gap-16 col-span-2 bg-lightGray p-10 w-full rounded-xl">
+            <div className="grid grid-cols-3 gap-16 col-span-2 bg-lightGray p-10 w-full rounded-xl mt-6">
                 <div className="flex flex-col col-span-2">
                 {itemCart()}
                 </div>

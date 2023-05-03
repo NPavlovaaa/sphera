@@ -6,18 +6,28 @@ import frutes from "../../assets/frutes.png";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { fetchProduct } from "../../api/productSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchProcessingMethod, fetchRoastingMethod, fetchVariety, fetchWeight } from "../../api/productSlice";
 import setParams from "../setParams/SetParams";
 import MakingMethods from "../makingMethods/MakingMethods";
 import ProductReview from "../productReview/ProductReview";
+import { useAddCartMutation, useAddFavoriteMutation} from "../../api/apiSlice";
+import { fetchProductInCart, fetchDeleteProductInCart, fetchUpdateCart } from "../../api/cartSlice";
 
 
 const ProductItem = () => {
+    const activeClient = useSelector(state => state.authUser.client);
+    const curProduct = useSelector(state => state.getProduct.product);
+
     const [product, setProduct] = useState({})
     const [variety, setVariety] = useState();
     const [processing, setProcessing] = useState();
     const [roasting, setRoasting] = useState();
+
+    const [addCart] = useAddCartMutation();
+    const [addFavorite] = useAddFavoriteMutation();
+    const [cart, setCart] = useState();
+    const [favorite, setFavorite] = useState(false);
 
     const {id} = useParams();
     const dispatch = useDispatch();
@@ -25,8 +35,7 @@ const ProductItem = () => {
     const [openTab, setOpenTab] = useState(1);
     const [openWeight, setOpenWeight] = useState(1);
 
-
-    useEffect(()=>{
+    useEffect(() => {
         dispatch(fetchProduct(id)).then(data => {
             setProduct(data.payload)
             dispatch(fetchVariety(data.payload.variety)).then(data => {
@@ -43,6 +52,12 @@ const ProductItem = () => {
             })
         })
     }, [])
+
+    useEffect(() => {
+        if(activeClient){
+            updateCard();
+        }
+    }, [openWeight])
 
     const pars = () => {
         let renderParams = null;
@@ -61,6 +76,60 @@ const ProductItem = () => {
     const changeList = (id, checked) => {
         setCheckedList((checkedList) => toggleOption(checkedList, id, checked));
     };
+
+    const updateCard = () => {
+        dispatch(fetchProductInCart({
+            'client': activeClient.client_id,
+            'product': curProduct.product_id,
+            'weight_selection': openWeight
+        })).then(data => setCart(data.payload))
+        // dispatch(fetchFavorite(client)).then(data => setFavorite(data.payload))
+    }
+
+
+    const onAddToCart = () => {
+        if(activeClient){
+            const newCart = {
+                'client': activeClient.client_id,
+                'weight_selection': openWeight
+            }
+            addCart(newCart).then(updateCard);
+        }
+    }
+
+    const changeCount = (value) => {
+        cart.product_count += value
+        if (cart.product_count > 0){
+            setTimeout(() =>{
+                dispatch(fetchUpdateCart({
+                    'client': activeClient.client_id,
+                    'weight_selection': cart.weight_selection,
+                    'product_count': cart.product_count,
+                    'id': cart.cart_id
+                })).then(updateCard)
+            }, 100)
+        }else{
+            setTimeout(() =>{
+                dispatch(fetchDeleteProductInCart(cart.cart_id)).then(updateCard)
+            }, 100)
+        }
+
+    }
+
+    const renBtn = () => {
+        let btn = '';
+        cart && cart.product_count !== 0 ?
+                btn = <div className="flex w-1/4 justify-between border-2 border-mainOrange-600 rounded-2xl py-1 px-3">
+                        <button type="submit" onClick={() => changeCount(-1)} className="flex text-xl">-</button>
+                        <p className="flex text-xl">{cart.product_count}</p>
+                        <button type="submit" onClick={() => changeCount(1)} className="flex text-xl">+</button>
+                      </div>
+                :
+                btn = <button type="submit" onClick={onAddToCart} className="flex bg-mainOrange-600 hover:bg-mainOrange-700 rounded-2xl px-5 py-2">
+                        В корзину
+                      </button>
+        return btn
+    }
 
     return (
         <div className="px-56">
@@ -91,7 +160,7 @@ const ProductItem = () => {
                     </div>
                 </div>
                 <div className="flex flex-col">
-                    <p className="text-2xl font-semibold mb-5">{product.product_name}</p>
+                    <p className="text-2xl font-semibold mb-5">{curProduct ? curProduct.product_name : null}</p>
                     <div>
                         <p className="text-lg font-semibold mb-1">Разновидность</p>
                         <p className="text-base font-medium mb-3">{variety ? variety.variety_name : null}</p>
@@ -106,7 +175,7 @@ const ProductItem = () => {
                     </div>
                     <div>
                         <p className="text-lg font-semibold mb-1">Вкус</p>
-                        <p className="text-base font-medium mb-3">{product.taste}</p>
+                        <p className="text-base font-medium mb-3">{curProduct ? curProduct.taste : null}</p>
                         <div className="flex flex-row">
                             <img src={cookies} width="65" alt="Вкус черный чай" className="mr-5"></img>
                             <img src={frutes} width="65" alt="Вкус черный чай" className="mr-5"></img>
@@ -150,17 +219,17 @@ const ProductItem = () => {
                                             >
                                                 {dem}
                                             </a>
-                                            <div className={`${openWeight === id ? "flex" : "hidden"} mt-3 text-2xl justify-center transition-all duration-500`}>
-                                                {price} р
-                                            </div>
                                         </li>
                                     </ul>
+                                    <div className={`${openWeight === id ? "flex" : "hidden"} mt-3 text-2xl justify-center transition-all duration-500`}>
+                                        {price} р
+                                    </div>
                                 </div>
                             )
                         }) : null}
                     </div>
                     <div className="flex mt-5">
-                        <button type="submit" className="bg-mainOrange-600 rounded-xl px-10 py-2">В корзину</button>
+                        {renBtn()}
                     </div>
                 </div>
             </div>
@@ -200,7 +269,7 @@ const ProductItem = () => {
                     </ul>
                     <div className="flex px-14 py-8 mt-6 bg-lightGray rounded-lg tracking-wider">
                         <div className={`${openTab === 1 ? "flex" : "hidden"} flex w-full`}>
-                            {product.product_description}
+                            {curProduct ? curProduct.product_description : null}
                         </div>
                         <div className={`${openTab === 2 ? "flex" : "hidden"} flex w-full`}>
                             <MakingMethods/>

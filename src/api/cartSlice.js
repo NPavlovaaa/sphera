@@ -11,9 +11,9 @@ const initialState = cartAdapter.getInitialState({
 
 export const fetchCart = createAsyncThunk(
     'products/fetchCart',
-     async (id) => {
+     async (data) => {
          const {request} = useHttp();
-         return await request(`http://localhost:8000/cart/${id}/`)
+         return await request(`http://localhost:8000/cart/${data.client}/${data.cart}/`)
     }
 )
 

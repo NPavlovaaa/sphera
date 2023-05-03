@@ -6,6 +6,7 @@ const pruductAdapter = createEntityAdapter();
 
 const initialState = pruductAdapter.getInitialState({
     productLoadingStatus: 'idle',
+    product: null
 });
 
 
@@ -70,6 +71,7 @@ const productSlice = createSlice({
             })
             .addCase(fetchProduct.fulfilled, (state, action) => {
                 state.productLoadingStatus = 'idle';
+                state.product = action.payload;
             })
             .addCase(fetchWeight.pending, state => {
                 state.productLoadingStatus = 'loading';

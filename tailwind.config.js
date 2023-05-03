@@ -7,13 +7,28 @@ module.exports = {
     colors: {
       mainWhite: '#ffffff',
       mainOrange:{
-        100: 'rgba(255, 168, 46, 0.5)',
+        100: 'rgba(255, 168, 46, 0.2)',
         600: '#FFA82E',
         700: 'rgba(255,168,46,0.76)',
       },
-      mainGray: '#a4a4a4',
+      mainGray: '#939393',
       lightGray: 'rgba(223, 223, 223, 0.27)',
-      red: '#EC5859'
+      red: {
+        700: '#EC5859',
+        100: 'rgba(236, 88, 89, 0.2)'
+      },
+      green: {
+        700: '#48BA20',
+        100: 'rgba(36, 255, 0, 0.2)'
+      },
+      gray: {
+        700: '#939393',
+        100: 'rgba(147, 147, 147, 0.2)'
+      },
+      blue: {
+        700: '#0085FF',
+        100: 'rgba(0, 133, 255, 0.2)',
+      }
     },
     screens: {
       'sm': {'min': '640px', 'max': '767px'},

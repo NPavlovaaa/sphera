@@ -14,6 +14,8 @@ import ProductItem from '../productItem/ProductItem';
 import { useSelector } from 'react-redux';
 import ClientCart from '../clientCart/ClientCart';
 import Ordering from '../ordering/Ordering';
+import ClientOrders from "../clientOrders/clientOrders";
+
 
 function App() {
       const dispatch = useDispatch();
@@ -40,6 +42,7 @@ function App() {
                               <Route path="/account" element={<AccountPage/>}/>
                               <Route path="/cart" element={<ClientCart/>}/>
                               <Route path="/ordering" element={<Ordering/>}/>
+                              <Route path="/my_orders" element={<ClientOrders/>}/>
                           </Routes>
                       </main>
                   </Suspense>

@@ -54,6 +54,18 @@ export const apiSlice = createApi({
             query: () => '/delivery_methods/',
             providesTags: ['Orders']
         }),
+        createOrder: builder.mutation({
+            query: body => ({
+                url: `/create_order/`,
+                method: 'POST',
+                body: body
+            }),
+            invalidatesTags: ['Orders']
+        }),
+        // getClientOrder: builder.mutation({
+        //     query: (id) => `/my_order/${id}`,
+        //     providesTags: ['Orders']
+        // }),
     })
 })
 
@@ -65,5 +77,7 @@ export const {  useGetUsersQuery,
                 useGetCartQuery,
                 useGetProductCartQuery,
                 useAddFavoriteMutation,
-                useGetDeliveryMethodsQuery
+                useGetDeliveryMethodsQuery,
+                useCreateOrderMutation,
+                getClientOrder
 } = apiSlice;

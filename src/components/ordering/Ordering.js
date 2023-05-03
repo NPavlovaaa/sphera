@@ -1,5 +1,4 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCart } from "../../api/cartSlice";
@@ -7,7 +6,7 @@ import bobs250 from "../../assets/bobs250.png";
 import delivery from "../../assets/delivery.png";
 import { Link } from "react-router-dom";
 import Card from "../icons/Card";
-import { useGetDeliveryMethodsQuery } from "../../api/apiSlice";
+import { useCreateOrderMutation, useGetDeliveryMethodsQuery } from "../../api/apiSlice";
 
 
 const Ordering = () => {
@@ -15,16 +14,32 @@ const Ordering = () => {
     const [cart, setCart] = useState()
     const dispatch = useDispatch();
     const [openTab, setOpenTab] = useState(1);
-    const [selectedDelivery, setSelectedDelivery] = useState(false);
+    const [selectedDelivery, setSelectedDelivery] = useState({'delivery': null, 'selected': false});
+    const [address, setAddress] = useState({'city': null, 'apartament': null});
     const {data: deliveries = []} = useGetDeliveryMethodsQuery();
+    const [createOrder] = useCreateOrderMutation();
 
     useEffect(()=>{
         if(activeClient){
-            dispatch(fetchCart(activeClient.client_id)).then(data => {
+            dispatch(fetchCart({'client': activeClient.client_id, 'cart': 1})).then(data => {
                 setCart(data.payload)
             })
         }
     }, [activeClient])
+
+    const onCreateOrder = () =>{
+        console.log(cart)
+        const newOrder = {
+            'cart': cart,
+            'client': activeClient.client_id,
+            'delivery': selectedDelivery.delivery,
+            'order_sum': totul_sum,
+            'package': null,
+            'address': address.city + ', ' + address.apartament
+        }
+        console.log(newOrder)
+        createOrder(newOrder)
+    }
 
 
     let totul_sum  = 0;
@@ -93,31 +108,44 @@ const Ordering = () => {
                         <div className={`${openTab === 1 ? "flex" : "hidden"} flex-col w-full justify-between bg-mainWhite mb-1.5 p-8 rounded-xl mt-2`}>
                             {deliveries ? deliveries.map(item => {
                                 return(
-                                    <>
-                                        <div className={`${selectedDelivery === true ? "flex border-2 border-mainOrange-600" : "flex"} flex-row py-4 px-5 rounded-xl justify-between items-center text-lg`} onClick={(e) => {
+                                    <div key={item.delivery_id}>
+                                        <div className={`${selectedDelivery.selected === true && selectedDelivery.delivery === item.delivery_id ? "flex border-2 border-mainOrange-600" : "flex"} flex-row py-4 px-5 rounded-xl justify-between items-center text-lg`} onClick={(e) => {
                                             e.preventDefault();
-                                            setSelectedDelivery(!selectedDelivery)
+                                            setSelectedDelivery({'delivery': item.delivery_id, 'selected': !selectedDelivery.selected})
                                             }}>
                                             <img src={delivery} width="70" alt="картинка способа доставки"/>
                                             <p>2 - 4 мая</p>
                                             <p>149 р</p>
                                         </div>
-                                        <div className={`${selectedDelivery === true ? "flex" : "hidden"} w-4/5 mt-10`}>
-                                            <input placeholder="Город, улица" className="w-2/3 border-b-2 border-mainGray mr-10"/>
-                                            <input placeholder="Квартира/Офис" className="w-1/3 border-b-2 border-mainGray"/>
                                         </div>
-                                        <div className="flex flex-col mt-8">
-                                            <p className="text-base font-semibold">Получатель</p>
-                                            <div className="flex flex-row mt-2">
-                                                <p className="mr-10">{activeClient ? activeClient.first_name + ' ' + activeClient.last_name : null}</p>
-                                                <p>{activeClient ? activeClient.phone : null}</p>
-                                            </div>
-                                        </div>
-                                    </>
                                 )
                             })
                         : null}
-
+                            <div className={`${selectedDelivery.selected === true ? "flex" : "hidden"} w-4/5 mt-10`}>
+                                <input  name="city"
+                                        placeholder="Город, улица"
+                                        className="w-2/3 border-b-2 border-mainGray mr-10"
+                                        onChange={(e) => {
+                                            e.preventDefault();
+                                            setAddress({'city': e.currentTarget.value, 'apartament': address.apartament})
+                                        }}
+                                />
+                                <input  name="apartament"
+                                        placeholder="Квартира/Офис"
+                                        className="w-1/3 border-b-2 border-mainGray"
+                                        onChange={(e) => {
+                                            e.preventDefault();
+                                            setAddress({'city': address.city, 'apartament': e.currentTarget.value})
+                                        }}
+                                />
+                            </div>
+                            <div className="flex flex-col mt-8">
+                                <p className="text-base font-semibold">Получатель</p>
+                                <div className="flex flex-row mt-2">
+                                    <p className="mr-10">{activeClient ? activeClient.first_name + ' ' + activeClient.last_name : null}</p>
+                                    <p>{activeClient ? activeClient.phone : null}</p>
+                                </div>
+                            </div>
                         </div>
                         <div className={`${openTab === 2 ? "flex" : "hidden"} flex-row w-full justify-between bg-mainWhite mb-1.5 p-8 rounded-xl mt-2`}>
                             <img src={delivery} width="70" alt="картинка способа доставки"/>
@@ -133,11 +161,11 @@ const Ordering = () => {
 
                 </div>
                 <div className="flex flex-col">
-                    <Link to={`/ordering/`}>
-                        <button type="submit" className="flex bg-mainOrange-600 hover:bg-mainOrange-700 rounded-2xl px-20 py-3 w-full text-lg font-semibold justify-center">
+                    {/* <Link to={`/ordering/`}> */}
+                        <button onClick={onCreateOrder} type="submit" className="flex bg-mainOrange-600 hover:bg-mainOrange-700 rounded-2xl px-20 py-3 w-full text-lg font-semibold justify-center">
                             Оплатить онлайн
                         </button>
-                    </Link>
+                    {/* </Link> */}
                     <div className="flex flex-row justify-between bg-mainWhite w-full mb-1.5 p-6 rounded-xl mt-3">
                         <p className="text-lg">Ваш заказ</p>
                         <div className="flex">

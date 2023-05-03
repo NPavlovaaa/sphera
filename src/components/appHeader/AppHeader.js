@@ -79,7 +79,7 @@ const AppHeader = () => {
                         {/* <Avatar/> */}
                     </NavLink>
                     <div className="flex justify-between items-center text-xs text-mainGray pb-1.5">
-                        <NavLink to="/favorite" className="flex flex-col items-center">
+                        <NavLink to="/my_orders" className="flex flex-col items-center">
                             <Package/>
                             <p>Заказы</p>
                         </NavLink>
