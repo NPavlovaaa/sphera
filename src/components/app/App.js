@@ -1,11 +1,10 @@
 import './App.css';
-import {Suspense, useEffect} from 'react';
+import {Suspense, useEffect, useState} from 'react';
 import ClientsList from "../clientsList/ClientsList";
 import { BrowserRouter as Router,  Route, Routes } from "react-router-dom";
 import Spinner from "../spinner/Spinner";
 import RegistrationFormPage from "../pages/RegistrationFormPage";
 import MainPage from "../pages/MainPage";
-import AppHeader from "../appHeader/AppHeader";
 import {useDispatch} from "react-redux";
 import {fetchAuth} from "../../api/userSlice";
 import ProductListPage from '../pages/ProductListPage';
@@ -15,40 +14,55 @@ import { useSelector } from 'react-redux';
 import ClientCart from '../clientCart/ClientCart';
 import Ordering from '../ordering/Ordering';
 import ClientOrders from "../clientOrders/clientOrders";
+import AppHeaderClient from '../appHeader/AppHeaderClient';
+import AppHeaderAdmin from '../appHeader/AppHeaderAdmin';
+import ProductReviewsClient from '../productReviews/ProductReviewsClient';
+import ProductReviewsAdmin from '../productReviews/ProductReviewsAdmin';
+import ReviewsClient from '../reviews/ReviewsClient';
+import ReviewsAdmin from '../reviews/ReviewsAdmin';
 
 
 function App() {
-      const dispatch = useDispatch();
-      const userAuthLoadingStatus = useSelector(state => state.authUser.userAuthLoadingStatus);
+    // const [role, setRole] = useState();
+    const dispatch = useDispatch();
+    const userAuthLoadingStatus = useSelector(state => state.authUser.userAuthLoadingStatus);
+    const role = useSelector(state => state.authUser.role);
 
-      useEffect(() => {
-        if(userAuthLoadingStatus === 'login success' || userAuthLoadingStatus === 'idle'){
-            dispatch(fetchAuth())
-        }
+
+    useEffect(() => {
+    if(userAuthLoadingStatus === 'login success' || userAuthLoadingStatus === 'idle'){
+        dispatch(fetchAuth())
+    }
     }, [userAuthLoadingStatus])
 
-      return (
-          <Router>
-              <div className="app">
-                  <AppHeader/>
-                  <Suspense fallback={<Spinner/>}>
-                      <main>
-                          <Routes>
-                              <Route path="/" element={<MainPage/>}/>
-                              <Route path="/login" element={<RegistrationFormPage/>}/>
-                              <Route path="/clients" element={<ClientsList/>}/>
-                              <Route path="/products" element={<ProductListPage/>}/>
-                              <Route path="/products/:id" element={<ProductItem/>}/>
-                              <Route path="/account" element={<AccountPage/>}/>
-                              <Route path="/cart" element={<ClientCart/>}/>
-                              <Route path="/ordering" element={<Ordering/>}/>
-                              <Route path="/my_orders" element={<ClientOrders/>}/>
-                          </Routes>
-                      </main>
-                  </Suspense>
-              </div>
-          </Router>
-      );
+    // const
+
+    return (
+        <Router>
+            <div className="app">
+                {role && role === 1 ? <AppHeaderAdmin/> : <AppHeaderClient/>}
+                <Suspense fallback={<Spinner/>}>
+                    <main>
+                        <Routes>
+                            <Route path="/" element={<MainPage/>}/>
+                            <Route path="/login" element={<RegistrationFormPage/>}/>
+                            <Route path="/clients" element={<ClientsList/>}/>
+                            <Route path="/products" element={<ProductListPage/>}/>
+                            <Route path="/products/:id" element={<ProductItem/>}/>
+                            <Route path="/account" element={<AccountPage/>}/>
+                            <Route path="/cart" element={<ClientCart/>}/>
+                            <Route path="/ordering" element={<Ordering/>}/>
+                            <Route path="/my_orders" element={<ClientOrders/>}/>
+                            <Route path="/reviews" element={<ReviewsClient/>}/>
+                            <Route path="/reviews_admin" element={<ReviewsAdmin/>}/>
+                            <Route path="/product_reviews" element={<ProductReviewsClient/>}/>
+                            <Route path="/product_reviews_admin" element={<ProductReviewsAdmin/>}/>
+                        </Routes>
+                    </main>
+                </Suspense>
+            </div>
+        </Router>
+    );
 }
 
 export default App;

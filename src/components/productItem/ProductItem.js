@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchProcessingMethod, fetchRoastingMethod, fetchVariety, fetchWeight } from "../../api/productSlice";
 import setParams from "../setParams/SetParams";
 import MakingMethods from "../makingMethods/MakingMethods";
-import ProductReview from "../productReview/ProductReview";
+import ProductReview from "../productReviews/ProductReviewsClient";
 import { useAddCartMutation, useAddFavoriteMutation} from "../../api/apiSlice";
 import { fetchProductInCart, fetchDeleteProductInCart, fetchUpdateCart } from "../../api/cartSlice";
 

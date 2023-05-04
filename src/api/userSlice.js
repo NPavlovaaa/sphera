@@ -7,7 +7,9 @@ const userAdapter = createEntityAdapter();
 const initialState = userAdapter.getInitialState({
     userAuthLoadingStatus: 'idle',
     user: null,
-    client: null
+    role: null,
+    client: null,
+    level: null,
 });
 
 export const fetchLogin = createAsyncThunk(
@@ -51,7 +53,9 @@ const userSlice = createSlice({
             .addCase(fetchAuth.fulfilled, (state, action) => {
                 state.userAuthLoadingStatus = 'success';
                 state.user = action.payload.user;
+                state.role = action.payload.user.role;
                 state.client = action.payload.client;
+                state.level = action.payload.level;
             })
             .addCase(fetchLogin.rejected, state => {state.userAuthLoadingStatus = 'error'})
             .addCase(fetchAuth.rejected, state => {state.userAuthLoadingStatus = 'error'})
