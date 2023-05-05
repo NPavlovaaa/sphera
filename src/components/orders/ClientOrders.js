@@ -47,7 +47,6 @@ const ClientOrders = () => {
         }
         return typeStatus;
     }
-    let renderOrder = '';
 
     return(
         <div className="w-full px-28 py-10">

@@ -10,27 +10,20 @@ const initialState = userAdapter.getInitialState({
     role: null,
     client: null,
     level: null,
+    token: null
 });
 
 export const fetchLogin = createAsyncThunk(
     'users/fetchLogin',
-     async (values) => {
-         const {request} = useHttp();
-         await request('http://localhost:8000/login/', 'POST', {
-                username: values.username,
-                password: values.password
-            })
-    }
-)
-
-export const fetchAuth = createAsyncThunk(
-    'users/fetchAuth',
-    async () => {
+     async (data) => {
         const {request} = useHttp();
-        return await request('http://localhost:8000/authUser/');
+        return await request('http://localhost:8000/login/', 'POST', {
+                username: data.username,
+                password: data.password,
+                token: data.token
+        })
     }
 )
-
 
 const userSlice = createSlice({
     name: 'authUser',
@@ -44,21 +37,18 @@ const userSlice = createSlice({
     },
     extraReducers: builder => {
         builder
-            .addCase(fetchAuth.pending, state => {
+            .addCase(fetchLogin.pending, state => {
                 state.userAuthLoadingStatus = 'loading';
             })
-            .addCase(fetchLogin.fulfilled, (state) => {
+            .addCase(fetchLogin.fulfilled, (state, action) => {
                 state.userAuthLoadingStatus = 'login success';
-            })
-            .addCase(fetchAuth.fulfilled, (state, action) => {
-                state.userAuthLoadingStatus = 'success';
+                state.token = action.payload;
                 state.user = action.payload.user;
                 state.role = action.payload.user.role;
                 state.client = action.payload.client;
                 state.level = action.payload.level;
             })
             .addCase(fetchLogin.rejected, state => {state.userAuthLoadingStatus = 'error'})
-            .addCase(fetchAuth.rejected, state => {state.userAuthLoadingStatus = 'error'})
             .addDefaultCase(() => {})
     }
 })

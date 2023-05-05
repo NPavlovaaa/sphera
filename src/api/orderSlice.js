@@ -17,6 +17,14 @@ export const fetchClientOrders = createAsyncThunk(
     }
 )
 
+export const fetchAdminOrders = createAsyncThunk(
+    'products/fetchAdminOrders',
+     async (data) => {
+        const {request} = useHttp();
+        return await request(`http://localhost:8000/admin_orders/${data}/`)
+    }
+)
+
 
 const orderingSlice = createSlice({
     name: 'getOrdering',

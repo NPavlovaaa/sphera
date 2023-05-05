@@ -17,6 +17,14 @@ export const fetchCart = createAsyncThunk(
     }
 )
 
+export const fetchAdminCart = createAsyncThunk(
+    'products/fetchAdminCart',
+     async () => {
+         const {request} = useHttp();
+         return await request(`http://localhost:8000/admin_carts/`)
+    }
+)
+
 export const fetchUpdateCart = createAsyncThunk(
     'products/fetchUpdateCart',
      async (data) => {

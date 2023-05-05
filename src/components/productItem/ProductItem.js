@@ -267,7 +267,7 @@ const ProductItem = () => {
                             </a>
                         </li>
                     </ul>
-                    <div className="flex px-14 py-8 mt-6 bg-lightGray rounded-lg tracking-wider">
+                    <div className="flex px-14 py-8 mt-6 bg-lightGray rounded-lg tracking-wide">
                         <div className={`${openTab === 1 ? "flex" : "hidden"} flex w-full`}>
                             {curProduct ? curProduct.product_description : null}
                         </div>

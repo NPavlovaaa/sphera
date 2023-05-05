@@ -6,20 +6,21 @@ import Spinner from "../spinner/Spinner";
 import RegistrationFormPage from "../pages/RegistrationFormPage";
 import MainPage from "../pages/MainPage";
 import {useDispatch} from "react-redux";
-import {fetchAuth} from "../../api/userSlice";
+import {fetchLogin} from "../../api/userSlice";
 import ProductListPage from '../pages/ProductListPage';
 import AccountPage from '../pages/AccountPage';
 import ProductItem from '../productItem/ProductItem';
 import { useSelector } from 'react-redux';
 import ClientCart from '../clientCart/ClientCart';
 import Ordering from '../ordering/Ordering';
-import ClientOrders from "../clientOrders/clientOrders";
+import ClientOrders from "../orders/ClientOrders";
 import AppHeaderClient from '../appHeader/AppHeaderClient';
 import AppHeaderAdmin from '../appHeader/AppHeaderAdmin';
 import ProductReviewsClient from '../productReviews/ProductReviewsClient';
 import ProductReviewsAdmin from '../productReviews/ProductReviewsAdmin';
 import ReviewsClient from '../reviews/ReviewsClient';
 import ReviewsAdmin from '../reviews/ReviewsAdmin';
+import AdminOrders from '../orders/AdminOrders';
 
 
 function App() {
@@ -27,13 +28,13 @@ function App() {
     const dispatch = useDispatch();
     const userAuthLoadingStatus = useSelector(state => state.authUser.userAuthLoadingStatus);
     const role = useSelector(state => state.authUser.role);
-
+    const token = useSelector(state => state.authUser.token);
 
     useEffect(() => {
-    if(userAuthLoadingStatus === 'login success' || userAuthLoadingStatus === 'idle'){
-        dispatch(fetchAuth())
-    }
-    }, [userAuthLoadingStatus])
+        if(userAuthLoadingStatus === 'login success' || userAuthLoadingStatus === 'idle'){
+            dispatch(fetchLogin({'username': null, 'password': null, 'token': token ? token.jwt : null}))
+        }
+        }, [])
 
     // const
 
@@ -53,10 +54,11 @@ function App() {
                             <Route path="/cart" element={<ClientCart/>}/>
                             <Route path="/ordering" element={<Ordering/>}/>
                             <Route path="/my_orders" element={<ClientOrders/>}/>
+                            <Route path="/admin_orders" element={<AdminOrders/>}/>
                             <Route path="/reviews" element={<ReviewsClient/>}/>
-                            <Route path="/reviews_admin" element={<ReviewsAdmin/>}/>
+                            <Route path="/admin_reviews" element={<ReviewsAdmin/>}/>
                             <Route path="/product_reviews" element={<ProductReviewsClient/>}/>
-                            <Route path="/product_reviews_admin" element={<ProductReviewsAdmin/>}/>
+                            <Route path="/admin_product_reviews" element={<ProductReviewsAdmin/>}/>
                         </Routes>
                     </main>
                 </Suspense>
@@ -66,19 +68,3 @@ function App() {
 }
 
 export default App;
-
-
-// let [data, setData] = useState(null);
-//
-// async function getData(){
-//     let data = await fetch('http://localhost:8000/account/', {
-//                 headers: {'Content-Type': 'application/json'},
-//                 credentials: 'include',
-//             }).then(response => response.json())
-//
-//     setData(data);
-// }
-//
-// useEffect( () => {
-//     getData();
-// }, []);

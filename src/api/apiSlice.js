@@ -62,10 +62,6 @@ export const apiSlice = createApi({
             }),
             invalidatesTags: ['Orders']
         }),
-        // getClientOrder: builder.mutation({
-        //     query: (id) => `/my_order/${id}`,
-        //     providesTags: ['Orders']
-        // }),
     })
 })
 
