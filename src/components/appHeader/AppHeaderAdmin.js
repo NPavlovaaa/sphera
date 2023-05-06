@@ -1,11 +1,6 @@
 import {Link, NavLink} from "react-router-dom";
 import Logo from "../icons/Logo";
-import Telegram from "../icons/Telegram";
-import Instagram from "../icons/Instagram";
 import Avatar from "../icons/Avatar";
-import Favorite from "../icons/Favorite";
-import Cart from "../icons/Cart";
-import Package from "../icons/Package";
 import { useSelector } from "react-redux";
 
 
@@ -23,19 +18,6 @@ const AppHeaderAdmin = () => {
                     <p className="text-xs mt-1">Интернет-магазин кофе</p>
                 </Link>
             </div>
-            {/* <nav className="nav flex flex-col font-normal xl:text-md lg:text-sm 2xl:text-md 3xl:text-md w-2/3 px-3 text-center">
-                <ul className="flex justify-between items-center py-1.5">
-                    <li className="p-2 border-b-3 hover:text-mainOrange-600 cursor-pointer flex flex-row">
-                        <NavLink to="/reviews_admin" style={({isActive}) => ({color: isActive ? '#FFA82E' : 'inherit'})}>Отзывы о доставке и магазине</NavLink>
-                    </li>
-                    <li className="px-2 hover:text-mainOrange-600 cursor-pointer">
-                        <NavLink to="/product_reviews_admin" style={({isActive}) => ({color: isActive ? '#FFA82E' : 'inherit'})}>Отзывы о товарах</NavLink>
-                    </li>
-                    <li className="px-2 hover:text-mainOrange-600 cursor-pointer">
-                        <NavLink to="/orders_admin" style={({isActive}) => ({color: isActive ? '#FFA82E' : 'inherit'})}>Заказы</NavLink>
-                    </li>
-                </ul>
-            </nav> */}
             {activeUser != null ?
                 <div className="w-fit flex flex-col">
                     <NavLink to="/account" className="hover:text-mainOrange-600 py-2 cursor-pointer flex flex-row items-center justify-end" style={({isActive}) => ({color: isActive ? '#FFA82E' : 'inherit'})}>

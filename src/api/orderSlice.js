@@ -5,7 +5,9 @@ import {useHttp} from "../hooks/http.hook";
 const orderAdapter = createEntityAdapter();
 
 const initialState = orderAdapter.getInitialState({
-    orderingLoadingStatus: 'idle',
+    ordersLoadingStatus: 'idle',
+    statuses: null,
+    changeOrderStatus: 'idle'
 });
 
 
@@ -25,21 +27,51 @@ export const fetchAdminOrders = createAsyncThunk(
     }
 )
 
+export const fetchStatuses = createAsyncThunk(
+    'products/fetchStatuses',
+    async () => {
+        const {request} = useHttp();
+        return await request(`http://localhost:8000/statuses/`)
+    }
+)
+
+export const fetchChangeOrderStatus = createAsyncThunk(
+    'products/fetchChangeOrderStatus',
+    async (data) => {
+        const {request} = useHttp();
+        return await request(`http://localhost:8000/orders/${data.id}/`, 'PUT',{
+            'status': data.status,
+            'delivery_date': data.delivery_date,
+            'order_sum': data.order_sum,
+            'delivery': data.delivery,
+            'address': data.address,
+        })
+    }
+)
+
 
 const orderingSlice = createSlice({
-    name: 'getOrdering',
+    name: 'getOrders',
     initialState,
     reducers: {
     },
     extraReducers: builder => {
         builder
             .addCase(fetchClientOrders.pending, state => {
-                state.o = 'loading';
+                state.ordersLoadingStatus = 'loading';
             })
             .addCase(fetchClientOrders.fulfilled, (state) => {
-                state.orderingLoadingStatus = 'success';
+                state.ordersLoadingStatus = 'success';
             })
-            .addCase(fetchClientOrders.rejected, state => {state.orderingLoadingStatus = 'error'})
+            .addCase(fetchStatuses.fulfilled, (state, action) => {
+                state.statuses = action.payload;
+            })
+            .addCase(fetchChangeOrderStatus.fulfilled, (state, action) => {
+                state.changeOrderStatus = 'success';
+            })
+            .addCase(fetchClientOrders.rejected, state => {state.ordersLoadingStatus = 'error'})
+            .addCase(fetchChangeOrderStatus.rejected, state => {state.changeOrderStatus = 'error'})
+
             .addDefaultCase(() => {})
     }
 })
