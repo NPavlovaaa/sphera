@@ -5,13 +5,14 @@ import { useRef } from "react";
 import setParams from "../setParams/SetParams"
 import { useEffect, useState } from "react";
 import { fetchFavorite, fetchProcessingMethod, fetchRoastingMethod, fetchWeight } from "../../api/productSlice";
-import { useDispatch } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import { useAddCartMutation, useAddFavoriteMutation} from "../../api/apiSlice";
 import { fetchProductInCart, fetchDeleteProductInCart, fetchUpdateCart } from "../../api/cartSlice";
 import Star from "../icons/Star";
 import Favorite from "../icons/Favorite";
 
-const ProductListItem = ({product, i, client}) => {
+const ProductListItem = ({product, i}) => {
+    const activeClient = useSelector(state => state.authUser.client);
     const itemRefs = useRef([]);
     const dispatch = useDispatch();
     const [processing, setProcessing] = useState();
@@ -41,7 +42,6 @@ const ProductListItem = ({product, i, client}) => {
 
     const updateCard = () => {
         dispatch(fetchProductInCart({
-            'client': client,
             'product': product.product_id,
             'weight_selection': openWeight
         })).then(data => setCart(data.payload))
@@ -50,19 +50,15 @@ const ProductListItem = ({product, i, client}) => {
 
 
     const onAddToCart = () => {
-        if(client){
-            const newCart = {
-                'client': client,
-                'weight_selection': openWeight
-            }
-            addCart(newCart).then(updateCard);
+        const newCart = {
+            'weight_selection': openWeight
         }
+        addCart(newCart).then(updateCard);
     }
 
     const onAddToFavorite = () => {
-        if(client){
+        if(activeClient){
             const newFavorite = {
-                'client': client,
                 'product': product.product_id
             }
             addFavorite(newFavorite).then(updateCard);
@@ -74,7 +70,7 @@ const ProductListItem = ({product, i, client}) => {
         if (cart.product_count > 0){
             setTimeout(() =>{
                 dispatch(fetchUpdateCart({
-                    'client': client,
+                    'client': activeClient ? activeClient.client_id : null,
                     'weight_selection': cart.weight_selection,
                     'product_count': cart.product_count,
                     'id': cart.cart_id

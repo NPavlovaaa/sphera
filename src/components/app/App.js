@@ -6,7 +6,7 @@ import Spinner from "../spinner/Spinner";
 import RegistrationFormPage from "../pages/RegistrationFormPage";
 import MainPage from "../pages/MainPage";
 import {useDispatch} from "react-redux";
-import {fetchLogin} from "../../api/userSlice";
+import {fetchAuth, fetchLogin} from "../../api/userSlice";
 import ProductListPage from '../pages/ProductListPage';
 import AccountPage from '../pages/AccountPage';
 import ProductItem from '../productItem/ProductItem';
@@ -30,13 +30,13 @@ function App() {
     const role = useSelector(state => state.authUser.role);
     const token = useSelector(state => state.authUser.token);
 
+
     useEffect(() => {
         if(userAuthLoadingStatus === 'login success' || userAuthLoadingStatus === 'idle'){
-            dispatch(fetchLogin({'username': null, 'password': null, 'token': token ? token.jwt : null}))
+            dispatch(fetchAuth())
         }
-        }, [])
+    }, [userAuthLoadingStatus, token])
 
-    // const
 
     return (
         <Router>

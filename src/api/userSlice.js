@@ -4,26 +4,43 @@ import {useHttp} from "../hooks/http.hook";
 
 const userAdapter = createEntityAdapter();
 
+const token = localStorage.getItem('TOKEN_AUTH') ? localStorage.getItem('TOKEN_AUTH') : null
+
 const initialState = userAdapter.getInitialState({
     userAuthLoadingStatus: 'idle',
     user: null,
     role: null,
     client: null,
     level: null,
-    token: null
+    token
 });
 
 export const fetchLogin = createAsyncThunk(
     'users/fetchLogin',
-     async (data) => {
+    async (data) => {
         const {request} = useHttp();
-        return await request('http://localhost:8000/login/', 'POST', {
-                username: data.username,
-                password: data.password,
-                token: data.token
+        return await request('http://localhost:8000/auth/jwt/create/', 'POST', {
+            username: data.username,
+            password: data.password,
         })
     }
 )
+
+export const fetchAuth = createAsyncThunk(
+    'users/fetchAuth',
+    async () => {
+        const {request} = useHttp();
+        return await request('http://localhost:8000/login/')
+    }
+)
+
+// export const fetchLogout = createAsyncThunk(
+//     'users/fetchLogout',
+//     async () => {
+//         const {request} = useHttp();
+//         return await request('http://localhost:8000/logout/', 'POST')
+//     }
+// )
 
 const userSlice = createSlice({
     name: 'authUser',
@@ -42,13 +59,19 @@ const userSlice = createSlice({
             })
             .addCase(fetchLogin.fulfilled, (state, action) => {
                 state.userAuthLoadingStatus = 'login success';
-                state.token = action.payload;
+                state.token = action.payload.access;
+
+            })
+            .addCase(fetchAuth.fulfilled, (state, action) => {
                 state.user = action.payload.user;
                 state.role = action.payload.user.role;
                 state.client = action.payload.client;
                 state.level = action.payload.level;
             })
             .addCase(fetchLogin.rejected, state => {state.userAuthLoadingStatus = 'error'})
+            .addCase(fetchAuth.rejected, state => {
+                state.userAuthLoadingStatus = 'error';
+            })
             .addDefaultCase(() => {})
     }
 })

@@ -7,23 +7,15 @@ const orderAdapter = createEntityAdapter();
 const initialState = orderAdapter.getInitialState({
     ordersLoadingStatus: 'idle',
     statuses: null,
-    changeOrderStatus: 'idle'
+    changeOrderStatus: null
 });
 
 
-export const fetchClientOrders = createAsyncThunk(
+export const fetchOrders = createAsyncThunk(
     'products/fetchClientOrders',
-     async (id) => {
+     async () => {
          const {request} = useHttp();
-         return await request(`http://localhost:8000/my_orders/${id}/`, 'GET')
-    }
-)
-
-export const fetchAdminOrders = createAsyncThunk(
-    'products/fetchAdminOrders',
-     async (data) => {
-        const {request} = useHttp();
-        return await request(`http://localhost:8000/admin_orders/${data}/`)
+         return await request(`http://localhost:8000/get_orders/`)
     }
 )
 
@@ -57,19 +49,19 @@ const orderingSlice = createSlice({
     },
     extraReducers: builder => {
         builder
-            .addCase(fetchClientOrders.pending, state => {
+            .addCase(fetchOrders.pending, state => {
                 state.ordersLoadingStatus = 'loading';
             })
-            .addCase(fetchClientOrders.fulfilled, (state) => {
+            .addCase(fetchOrders.fulfilled, (state) => {
                 state.ordersLoadingStatus = 'success';
             })
             .addCase(fetchStatuses.fulfilled, (state, action) => {
                 state.statuses = action.payload;
             })
             .addCase(fetchChangeOrderStatus.fulfilled, (state, action) => {
-                state.changeOrderStatus = 'success';
+                state.changeOrderStatus = action.payload;
             })
-            .addCase(fetchClientOrders.rejected, state => {state.ordersLoadingStatus = 'error'})
+            .addCase(fetchOrders.rejected, state => {state.ordersLoadingStatus = 'error'})
             .addCase(fetchChangeOrderStatus.rejected, state => {state.changeOrderStatus = 'error'})
 
             .addDefaultCase(() => {})

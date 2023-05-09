@@ -1,28 +1,26 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {fetchAdminOrders, fetchChangeOrderStatus} from "../../api/orderSlice";
+import {fetchOrders} from "../../api/orderSlice";
 import { fetchAdminCart } from "../../api/cartSlice";
-import ModalWIndow from "../modalWindow/ModalWIndow";
+import ModalWindow from "../modalWindow/ModalWindow";
 
 
 const AdminOrders = () => {
-    const token = useSelector(state => state.authUser.token);
     const changeOrderStatus = useSelector(state => state.getOrders.changeOrderStatus);
     const activeUser = useSelector(state => state.authUser.user);
+
     const [orders, setOrders] = useState();
     const [cart, setCart] = useState();
     const dispatch = useDispatch();
 
     useEffect(()=>{
-        if(token){
-            updateOrders();
-            updateCarts();
-        }
-    }, [activeUser, token, changeOrderStatus])
+        updateOrders();
+        updateCarts();
+    }, [activeUser, changeOrderStatus])
 
 
     const updateOrders = () =>{
-        dispatch(fetchAdminOrders(token.jwt)).then(data => {
+        dispatch(fetchOrders()).then(data => {
             setOrders(data.payload)
         })
     }
@@ -54,35 +52,8 @@ const AdminOrders = () => {
         return typeStatus;
     }
 
-    const sucAlert = () => {
-        return(
-            <div className="bg-green-100 border-t-4 rounded-b px-4 py-3 shadow-md mb-5" role="alert" >
-                <div className="flex">
-                    <div className="py-1">
-                        <svg className="fill-current h-6 w-6 text-teal-500 mr-4" xmlns="http://www.w3.org/2000/svg"
-                             viewBox="0 0 20 20">
-                            <path
-                                d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
-                        </svg>
-                        {/*<button*/}
-                        {/*    className="p-1 ml-auto bg-transparent border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"*/}
-                        {/*    onClick={() => setAlert(false)}>*/}
-                        {/*<span className="bg-transparent text-black h-6 w-6 text-2xl block outline-none focus:outline-none">*/}
-                        {/*  ×*/}
-                        {/*</span>*/}
-                        {/*</button>*/}
-                    </div>
-                    <div>
-                        <p className="font-bold">Статус заказа был успешно изменен</p>
-                    </div>
-                </div>
-            </div>
-        )
-    }
-
     return(
         <div className="w-full">
-            {/*{sucAlert()}*/}
             <h1 className="text-3xl font-bold">Заказы</h1>
             {orders ? orders.map((item) => {
                 let total_product_count = 0;
@@ -113,6 +84,10 @@ const AdminOrders = () => {
                                         <div className="flex flex-row items-center">
                                             <p className="flex text-mainGray mt-5 mr-2 text-sm">Ожидаемая дата:</p>
                                             <p className="flex mt-5">{item.delivery_date}</p>
+                                        </div>
+                                        <div className="flex flex-row items-center">
+                                            <p className="flex text-mainGray mt-5 mr-2 text-sm">Адрес:</p>
+                                            <p className="flex mt-5">{item.order.address}</p>
                                         </div>
                                         <div className="flex flex-row items-center">
                                             <p className="flex text-mainGray mt-5 mr-2 text-sm">Получатель:</p>
@@ -153,7 +128,7 @@ const AdminOrders = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <ModalWIndow order={item.order} />
+                                <ModalWindow order={item.order} />
                             </div>
                         </div>
                     </div>

@@ -4,9 +4,9 @@ import { fetchCart, fetchDeleteProductInCart, fetchUpdateCart } from "../../api/
 import bobs250 from "../../assets/bobs250.png";
 import { Link } from "react-router-dom";
 
-
 const ClientCart = () => {
     const activeClient = useSelector(state => state.authUser.client);
+
     const dispatch = useDispatch();
     const [cart, setCart] = useState();
 
@@ -17,15 +17,14 @@ const ClientCart = () => {
     }, [activeClient])
 
     const updateCart = () =>{
-        dispatch(fetchCart({'client': activeClient.client_id, 'cart': 1})).then(data => {
+        dispatch(fetchCart()).then(data => {
             setCart(data.payload)
         })
     }
 
-    let totul_sum  = 0;
+    let total_sum  = 0;
     let weight_sum  = 0;
     let count_products = 0;
-    console.log(cart)
 
     const itemCart = () => {
         const renderCart = cart ? cart.map(({product, roasting, processing, price, weight, cart_id, count, weight_selection}) => {
@@ -34,7 +33,7 @@ const ClientCart = () => {
                 if (count > 0){
                     setTimeout(() =>{
                         dispatch(fetchUpdateCart({
-                            'client': activeClient.client_id,
+                            'client': activeClient ? activeClient.client_id : null,
                             'weight_selection': weight_selection,
                             'product_count': count,
                             'id': cart_id
@@ -59,7 +58,7 @@ const ClientCart = () => {
             // }
             // console.log(chekedList)
 
-            totul_sum += price;
+            total_sum += price;
             weight_sum += weight * count;
             count_products += 1 * count;
             return (
@@ -133,7 +132,7 @@ const ClientCart = () => {
                     </div>
                     <div className="flex flex-row justify-between bg-mainWhite w-full mb-1.5 p-6 rounded-xl">
                         <p className="flex text-xl">Общая стоимость</p>
-                        <p className="flex justify-end items-end text-xl font-semibold">{totul_sum} р</p>
+                        <p className="flex justify-end items-end text-xl font-semibold">{total_sum} р</p>
                     </div>
                 </div>
             </div>

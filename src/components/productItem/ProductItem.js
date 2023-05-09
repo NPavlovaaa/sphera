@@ -51,7 +51,7 @@ const ProductItem = () => {
                 setCheckedList(data.payload)
             })
         })
-    }, [])
+    }, [id])
 
     useEffect(() => {
         if(activeClient){
@@ -79,7 +79,6 @@ const ProductItem = () => {
 
     const updateCard = () => {
         dispatch(fetchProductInCart({
-            'client': activeClient.client_id,
             'product': curProduct.product_id,
             'weight_selection': openWeight
         })).then(data => setCart(data.payload))
@@ -90,7 +89,6 @@ const ProductItem = () => {
     const onAddToCart = () => {
         if(activeClient){
             const newCart = {
-                'client': activeClient.client_id,
                 'weight_selection': openWeight
             }
             addCart(newCart).then(updateCard);

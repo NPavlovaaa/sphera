@@ -1,10 +1,12 @@
 export const useHttp = () => {
-    const request = async (url, method = 'GET', body = null, headers = {'Content-Type': 'application/json'}, credentials = 'include') => {
+    const localToken = localStorage.getItem('TOKEN_AUTH')
+
+    const request = async (url, method = 'GET', body = null, headers = {'Content-Type': 'application/json', 'Authorization': `Bearer ${localToken}`} , credentials = 'include') => {
         if (body !== null){
             body = JSON.stringify(body)
         }
         try {
-            const response = await fetch(url, {method, body, headers, credentials});
+            const response = await fetch(url, {method, body, headers, credentials, mode: 'cors'});
 
             if (!response.ok) {
                 throw new Error(`Could not fetch ${url}, status: ${response.status}`);

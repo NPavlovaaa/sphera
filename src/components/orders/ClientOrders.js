@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchClientOrders } from "../../api/orderSlice";
-import { fetchCart } from "../../api/cartSlice";
+import { fetchOrders } from "../../api/orderSlice";
+import {fetchCart, fetchCartInOrders} from "../../api/cartSlice";
 import bobs250 from "../../assets/bobs250.png";
 
 
 const ClientOrders = () => {
+    const token = useSelector(state => state.authUser.token);
     const activeClient = useSelector(state => state.authUser.client);
     const [orders, setOrders] = useState();
     const [cart, setCart] = useState()
@@ -19,10 +20,10 @@ const ClientOrders = () => {
     }, [activeClient])
 
     const updateOrders = () =>{
-        dispatch(fetchClientOrders(activeClient.client_id)).then(data => {
+        dispatch(fetchOrders()).then(data => {
             setOrders(data.payload)
         })
-        dispatch(fetchCart({'client': activeClient.client_id, 'cart': 0})).then(data => {
+        dispatch(fetchCartInOrders()).then(data => {
             setCart(data.payload)
         })
     }
@@ -52,6 +53,7 @@ const ClientOrders = () => {
         <div className="w-full px-28 py-10">
             <h1 className="text-3xl font-bold">Заказы</h1>
             {orders ? orders.map((item) => {
+                console.log(item)
                 return(
                     <div className="flex flex-col bg-lightGray pt-6 w-full rounded-xl mt-6 shadow-md" key={item.order.order_id}>
                         <div className="flex justify-between pr-10">

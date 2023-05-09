@@ -3,7 +3,18 @@ import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 
 export const apiSlice = createApi({
     reducerPath: '',
-    baseQuery: fetchBaseQuery({baseUrl: 'http://127.0.0.1:8000'}),
+    baseQuery: fetchBaseQuery({
+        baseUrl: 'http://127.0.0.1:8000',
+        // mode: 'no-cors',
+        prepareHeaders: (headers, { getState }) => {
+            const token = getState().authUser.token
+            if (token) {
+                headers.set('Authorization', `Bearer ${token}`)
+                // headers.set('Access-Control-Allow-Origin', '*')
+                return headers
+            }
+        },
+    }),
     tagTypes: ['Users', 'Clients', 'Products', 'Orders'],
     endpoints: builder => ({
         registration: builder.mutation({
@@ -39,7 +50,7 @@ export const apiSlice = createApi({
             providesTags: ['Clients']
         }),
         getProductCart: builder.query({
-            query: ({product, client, weight_selection}) => `product_cart/${product}/${client}/${weight_selection}/`,
+            query: ({product, weight_selection}) => `product_cart/${product}/${weight_selection}/`,
             providesTags: ['Clients']
         }),
         addFavorite: builder.mutation({
@@ -68,12 +79,8 @@ export const apiSlice = createApi({
 export const {  useGetUsersQuery,
                 useRegistrationMutation,
                 useGetProductsQuery,
-                useGetProductsItemQuery,
                 useAddCartMutation,
-                useGetCartQuery,
-                useGetProductCartQuery,
                 useAddFavoriteMutation,
                 useGetDeliveryMethodsQuery,
                 useCreateOrderMutation,
-                getClientOrder
 } = apiSlice;

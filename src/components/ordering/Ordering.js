@@ -11,6 +11,7 @@ import { useCreateOrderMutation, useGetDeliveryMethodsQuery } from "../../api/ap
 
 const Ordering = () => {
     const activeClient = useSelector(state => state.authUser.client);
+    const token = useSelector(state => state.authUser.token);
     const [cart, setCart] = useState()
     const dispatch = useDispatch();
     const [openTab, setOpenTab] = useState(1);
@@ -21,34 +22,32 @@ const Ordering = () => {
 
     useEffect(()=>{
         if(activeClient){
-            dispatch(fetchCart({'client': activeClient.client_id, 'cart': 1})).then(data => {
+            dispatch(fetchCart(2)).then(data => {
                 setCart(data.payload)
             })
         }
     }, [activeClient])
 
     const onCreateOrder = () =>{
-        console.log(cart)
         const newOrder = {
-            'cart': cart,
-            'client': activeClient.client_id,
+            // 'cart': cart,
+            // 'client': activeClient.client_id,
             'delivery': selectedDelivery.delivery,
-            'order_sum': totul_sum,
+            'order_sum': total_sum,
             'package': null,
             'address': address.city + ', ' + address.apartament
         }
-        console.log(newOrder)
         createOrder(newOrder)
     }
 
 
-    let totul_sum  = 0;
+    let total_sum  = 0;
     let weight_sum  = 0;
     let count_products = 0;
 
     const ordering = () => {
         const renderOrdering = cart ? cart.map(({cart_id, price, weight, count}) => {
-            totul_sum += price;
+            total_sum += price;
             weight_sum += weight * count;
             count_products += 1 * count;
 
@@ -175,7 +174,7 @@ const Ordering = () => {
                     </div>
                     <div className="flex flex-row justify-between bg-mainWhite w-full mb-1.5 p-6 rounded-xl">
                         <p className="flex text-xl">Общая стоимость</p>
-                        <p className="flex justify-end items-end text-xl font-semibold">{totul_sum} р</p>
+                        <p className="flex justify-end items-end text-xl font-semibold">{total_sum} р</p>
                     </div>
                 </div>
             </div>

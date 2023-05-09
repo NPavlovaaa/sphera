@@ -11,9 +11,17 @@ const initialState = cartAdapter.getInitialState({
 
 export const fetchCart = createAsyncThunk(
     'products/fetchCart',
-     async (data) => {
+     async () => {
          const {request} = useHttp();
-         return await request(`http://localhost:8000/cart/${data.client}/${data.cart}/`)
+         return await request(`http://localhost:8000/cart/`)
+    }
+)
+
+export const fetchCartInOrders = createAsyncThunk(
+    'products/fetchCartInOrders',
+    async () => {
+        const {request} = useHttp();
+        return await request(`http://localhost:8000/cart_in_orders/`)
     }
 )
 
@@ -40,7 +48,7 @@ export const fetchProductInCart = createAsyncThunk(
     'products/fetchProductInCart',
      async (data) => {
          const {request} = useHttp();
-         return await request(`http://localhost:8000/product_cart/${data.product}/${data.client}/${data.weight_selection}/`)
+         return await request(`http://localhost:8000/product_cart/${data.product}/${data.weight_selection}/`)
 })
 
 export const fetchDeleteProductInCart = createAsyncThunk(
@@ -54,8 +62,6 @@ export const fetchDeleteProductInCart = createAsyncThunk(
 const cartSlice = createSlice({
     name: 'getCart',
     initialState,
-    reducers: {
-    },
     extraReducers: builder => {
         builder
             .addCase(fetchCart.pending, state => {

@@ -10,11 +10,12 @@ import {useDispatch, useSelector} from "react-redux";
 const AuthorizationForm = ({onToggle}) => {
     const [redirect, setRedirect] = useState(false);
     const dispatch = useDispatch();
-    const token = useSelector(state => state.authUser.token);
+    // const token = useSelector(state => state.authUser.token);
 
     const onLogin = (values) => {
-        dispatch(fetchLogin({'username': values.username, 'password': values.password, 'token': token ? token.jwt : null}))
-        setRedirect(true);
+        dispatch(fetchLogin({'username': values.username, 'password': values.password}))
+            .then(data => localStorage.setItem('TOKEN_AUTH', data.payload.access))
+            .then(setRedirect(true))
     }
 
     if (redirect) {

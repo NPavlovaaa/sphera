@@ -3,6 +3,7 @@ import {apiSlice} from "../api/apiSlice";
 import authUser from "../api/userSlice";
 import getProduct from "../api/productSlice";
 import getOrders from "../api/orderSlice";
+import getCart from "../api/cartSlice";
 
 // Server side with csurf middleware
 const stringMiddleware = () => (next) => (action) => {
@@ -15,7 +16,7 @@ const stringMiddleware = () => (next) => (action) => {
 }
 
 const store = configureStore({
-    reducer: {authUser, getProduct, getOrders, [apiSlice.reducerPath]: apiSlice.reducer,},
+    reducer: {authUser, getProduct, getOrders, getCart, [apiSlice.reducerPath]: apiSlice.reducer,},
     middleware: getDefaultMiddleware => getDefaultMiddleware().concat(stringMiddleware, apiSlice.middleware),
     devTools: process.env.NODE_ENV !== 'production'
 })
