@@ -15,11 +15,7 @@ const ClientAccount = () => {
     const dispatch = useDispatch();
 
     const logout = async () => {
-        await fetch('http://localhost:8000/logout/', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            credentials: 'include',
-        });
+        localStorage.removeItem('TOKEN_AUTH');
         dispatch(activeUserChange(null))
     }
 
