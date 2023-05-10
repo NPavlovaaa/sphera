@@ -7,7 +7,8 @@ const orderAdapter = createEntityAdapter();
 const initialState = orderAdapter.getInitialState({
     ordersLoadingStatus: 'idle',
     statuses: null,
-    changeOrderStatus: null
+    changeOrderStatus: null,
+    activeFilter: 0
 });
 
 
@@ -46,6 +47,9 @@ const orderingSlice = createSlice({
     name: 'getOrders',
     initialState,
     reducers: {
+        activeFilterStatusChange: (state, action) => {
+            state.activeFilter = action.payload;
+        },
     },
     extraReducers: builder => {
         builder
@@ -68,5 +72,8 @@ const orderingSlice = createSlice({
     }
 })
 
-const {reducer} = orderingSlice;
+const {actions, reducer} = orderingSlice;
 export default reducer;
+export const {
+    activeFilterStatusChange,
+} = actions;

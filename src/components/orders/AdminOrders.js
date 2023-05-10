@@ -1,17 +1,23 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {fetchOrders} from "../../api/orderSlice";
+import {fetchOrders, fetchStatuses} from "../../api/orderSlice";
 import { fetchAdminCart } from "../../api/cartSlice";
 import ModalWindow from "../modalWindow/ModalWindow";
+import {activeFilterStatusChange} from "../../api/orderSlice";
 
 
 const AdminOrders = () => {
-    const changeOrderStatus = useSelector(state => state.getOrders.changeOrderStatus);
+    const {changeOrderStatus, activeFilter} = useSelector(state => state.getOrders);
     const activeUser = useSelector(state => state.authUser.user);
+    const statuses = useSelector(state => state.getOrders.statuses);
 
     const [orders, setOrders] = useState();
     const [cart, setCart] = useState();
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(fetchStatuses())
+    }, [])
 
     useEffect(()=>{
         updateOrders();
@@ -30,32 +36,67 @@ const AdminOrders = () => {
         })
     }
 
-    const renderStatus = (id) => {
-        let typeStatus = '';
-        switch(id){
-            case 1:
-                typeStatus = 'text-red-700 bg-red-100';
-                break;
-            case 5:
-                typeStatus = 'text-red-700 bg-red-100';
-                break;
-            case 6:
-                typeStatus = 'text-green-700 bg-green-100';
-                break;
-            case 7:
-                typeStatus = 'text-gray-700 bg-gray-100';
-                break;
-            default:
-                typeStatus = 'text-blue-700 bg-blue-100';
-                break;
+    const filteredOrders = useMemo(() => {
+        const filteredOrders = orders? orders.slice() : null;
+        if (activeFilter === 0){
+            return filteredOrders;
+        } else {
+            return filteredOrders.filter(item => item.status.status_id === activeFilter)
         }
+    }, [orders, activeFilter]);
+
+
+    const renderStatus = ({id, detail}) => {
+        let typeStatus;
+        if((activeFilter && id === activeFilter) || detail === 'status'){
+            switch(id){
+                case 1:
+                    typeStatus = 'text-red-700 bg-red-100';
+                    break;
+                case 5:
+                    typeStatus = 'text-red-700 bg-red-100';
+                    break;
+                case 6:
+                    typeStatus = 'text-green-700 bg-green-100';
+                    break;
+                case 7:
+                    typeStatus = 'text-gray-700 bg-gray-100';
+                    break;
+                default:
+                    typeStatus = 'text-blue-700 bg-blue-100';
+                    break;
+            }
+        }
+        else {
+            typeStatus = 'border-lightGray border-2';
+        }
+
         return typeStatus;
     }
 
     return(
         <div className="w-full">
             <h1 className="text-3xl font-bold">Заказы</h1>
-            {orders ? orders.map((item) => {
+            <div className="flex flex-row mt-5 items-center">
+                <p className="text-mainGray mr-5">Фильтры: </p>
+                {statuses ? statuses.map(item =>{
+                    return(
+                        <button className={`${renderStatus({'id': item.status_id, 'detail': 'filter'})} text-sm flex justify-center h-fit rounded-lg py-1.5 px-3 shadow-sm mr-3`}
+                                type="submit"
+                                onClick={() => dispatch(activeFilterStatusChange(item.status_id))}
+                        >
+                            {item.status_name}
+                        </button>
+                        )
+                }) : null}
+                <button className="text-sm flex justify-center h-fit py-1.5 px-4"
+                        type="submit"
+                        onClick={() => dispatch(activeFilterStatusChange(0))}
+                >
+                    Сбросить фильтр
+                </button>
+            </div>
+            {filteredOrders ? filteredOrders.map((item) => {
                 let total_product_count = 0;
                 let total_weight = 0;
                 return(
@@ -73,7 +114,7 @@ const AdminOrders = () => {
                                     <div className="flex flex-col w-5/12">
                                         <div className="flex flex-row w-full rounded-xl">
                                             <p className="mr-5 font-semibold">Доставка в постамат</p>
-                                            <div className={`${renderStatus(item.status.status_id)} text-xs flex justify-center h-fit rounded-lg py-1.5 px-3 shadow-lg`}>
+                                            <div className={`${renderStatus({'id': item.status.status_id, 'detail': 'status'})} text-xs flex justify-center h-fit rounded-lg py-1.5 px-3 shadow-lg`}>
                                                 {item.status.status_name}
                                             </div>
                                         </div>

@@ -81,5 +81,4 @@ export default reducer;
 
 export const {
     activeUserChange,
-    activeClientChange
 } = actions;

@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchOrders } from "../../api/orderSlice";
-import {fetchCart, fetchCartInOrders} from "../../api/cartSlice";
+import {fetchOrders} from "../../api/orderSlice";
+import {fetchCartInOrders} from "../../api/cartSlice";
 import bobs250 from "../../assets/bobs250.png";
 
 
 const ClientOrders = () => {
-    const token = useSelector(state => state.authUser.token);
     const activeClient = useSelector(state => state.authUser.client);
     const [orders, setOrders] = useState();
     const [cart, setCart] = useState()
@@ -28,7 +27,7 @@ const ClientOrders = () => {
         })
     }
     const renderStatus = (id) => {
-        let typeStatus = '';
+        let typeStatus;
         switch(id){
             case 1:
                 typeStatus = 'text-red-700 bg-red-100';
