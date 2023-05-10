@@ -58,6 +58,9 @@ const ClientCart = () => {
             // }
             // console.log(chekedList)
 
+            let image;
+            weight === 1000 ? image = product.image_max : image = product.image_min
+
             total_sum += price;
             weight_sum += weight * count;
             count_products += 1 * count;
@@ -68,8 +71,8 @@ const ClientCart = () => {
                                 name="selected"
                                 checked={checked} onChange={checkedProduct}
                                 className="flex mr-3"/> */}
-                        <div className="flex py-3 w-1/4">
-                            <img src={bobs250} alt="картинка товар" width="120"/>
+                        <div className="flex py-3 w-1/4 max-h-44 justify-center">
+                            <img src={image} alt="картинка товара" className="max-h-40"/>
                         </div>
                         <div className="flex flex-col w-3/4 ml-5">
                             <p className="flex font-medium text-lg mt-1">

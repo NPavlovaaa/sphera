@@ -18,7 +18,8 @@ const ProductListItem = ({product, i}) => {
     const [processing, setProcessing] = useState();
     const [roasting, setRoasting] = useState();
     const [checkedList, setCheckedList] = useState();
-    const [openWeight, setOpenWeight] = useState(1);
+    const [openWeight, setOpenWeight] = useState({'weight_selection': 1, 'weight': 250});
+    const [image, setImage] = useState();
 
     const {renderParams} = setParams(product);
     const [addCart] = useAddCartMutation();
@@ -38,12 +39,12 @@ const ProductListItem = ({product, i}) => {
         })
         updateCard();
 
-      }, [openWeight])
+    }, [openWeight])
 
     const updateCard = () => {
         dispatch(fetchProductInCart({
             'product': product.product_id,
-            'weight_selection': openWeight
+            'weight_selection': openWeight.weight_selection
         })).then(data => setCart(data.payload))
         // dispatch(fetchFavorite(client)).then(data => setFavorite(data.payload))
     }
@@ -51,7 +52,7 @@ const ProductListItem = ({product, i}) => {
 
     const onAddToCart = () => {
         const newCart = {
-            'weight_selection': openWeight
+            'weight_selection': openWeight.weight_selection
         }
         addCart(newCart).then(updateCard);
     }
@@ -105,6 +106,12 @@ const ProductListItem = ({product, i}) => {
         return btn
     }
 
+    const renderImage = () =>{
+        let image;
+        openWeight.weight === 1000 ? image = product.image_max : image = product.image_min
+        return <img src={image} alt="картинка товара" className="max-h-44"/>
+    }
+
     return (
         <li
         className="bg-lightGray rounded-lg px-8 py-4 pb-5"
@@ -125,10 +132,14 @@ const ProductListItem = ({product, i}) => {
                         </button>
                     </div>
                 </div>
-                <div className="flex flex-col items-center w-full">
+                <div className="flex flex-col w-full">
                     <Link to={`/products/${product.product_id}/`}>
-                        <p className="text-xl font-medium mb-3">{product.product_name}</p>
-                        <img src={bobs250} width="200" alt="Картинка товара" />
+                        <div className="flex justify-center">
+                            <p className="text-xl font-medium mb-3">{product.product_name}</p>
+                        </div>
+                        <div className="flex justify-center items-end max-h-44">
+                            {renderImage()}
+                        </div>
                     </Link>
                     <p className="text-sm w-full left-0 text-mainGray mt-3 h-9">{product.taste}</p>
                     <div className="flex flex-col text-sm text-mainGray w-full mt-5">
@@ -180,16 +191,16 @@ const ProductListItem = ({product, i}) => {
                                 <div key={id}>
                                     <ul className="flex space-x-10">
                                         <li>
-                                            <a  className={` ${openWeight === id ? "border-2 border-mainOrange-600" : ""} text-xs text-mainGray flex justify-center cursor-pointer rounded-lg py-1 px-2`}
+                                            <a  className={` ${openWeight.weight_selection === id ? "border-2 border-mainOrange-600" : ""} text-xs text-mainGray flex justify-center cursor-pointer rounded-lg py-1 px-2`}
                                                 href="#"
                                                 onClick={(e) => {
                                                     e.preventDefault();
-                                                    setOpenWeight(id)
+                                                    setOpenWeight({'weight_selection': id, 'weight': weight})
                                                 }}
                                             >
                                                 {dem}
                                             </a>
-                                            <div className={`${openWeight === id ? "flex" : "hidden"} mt-3 text-2xl justify-center`}>
+                                            <div className={`${openWeight.weight_selection === id ? "flex" : "hidden"} mt-3 text-2xl justify-center`}>
                                                 {price} р
                                             </div>
                                         </li>

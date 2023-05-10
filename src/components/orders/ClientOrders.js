@@ -72,10 +72,12 @@ const ClientOrders = () => {
                                 </div>
                                 <p className="flex text-mainGray mt-5">Ожидаемая дата: {item.delivery_date}</p>
                             </div>
-                            <div className="flex pr-10">
-                            {cart ? cart.map(({order, product}) => {
+                            <div className="flex pr-10 items-end">
+                            {cart ? cart.map(({order, product, weight}) => {
                                 if(item.order.order_id === order){
-                                    return <img src={bobs250} alt="картинка товар" width="120"/>
+                                    let image;
+                                    weight === 1000 ? image = product.image_max : image = product.image_min
+                                    return <img src={image} alt="картинка товара" width="100" className="h-fit"/>
                                 }
                             })
                             : null}

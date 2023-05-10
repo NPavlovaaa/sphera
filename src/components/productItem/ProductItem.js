@@ -33,7 +33,7 @@ const ProductItem = () => {
     const dispatch = useDispatch();
     const [checkedList, setCheckedList] = useState();
     const [openTab, setOpenTab] = useState(1);
-    const [openWeight, setOpenWeight] = useState(1);
+    const [openWeight, setOpenWeight] = useState({'weight_selection': 1, 'weight': 250});
 
     useEffect(() => {
         dispatch(fetchProduct(id)).then(data => {
@@ -80,7 +80,7 @@ const ProductItem = () => {
     const updateCard = () => {
         dispatch(fetchProductInCart({
             'product': curProduct.product_id,
-            'weight_selection': openWeight
+            'weight_selection': openWeight.weight_selection
         })).then(data => setCart(data.payload))
         // dispatch(fetchFavorite(client)).then(data => setFavorite(data.payload))
     }
@@ -89,7 +89,7 @@ const ProductItem = () => {
     const onAddToCart = () => {
         if(activeClient){
             const newCart = {
-                'weight_selection': openWeight
+                'weight_selection': openWeight.weight_selection
             }
             addCart(newCart).then(updateCard);
         }
@@ -129,12 +129,20 @@ const ProductItem = () => {
         return btn
     }
 
+    const renderImage = () =>{
+        let image;
+        openWeight.weight === 1000 ? image = product.image_max : image = product.image_min
+        return <img src={image} alt="картинка товара" width="175" className="max-h-64"/>
+    }
+
     return (
         <div className="px-56">
-            <div className="grid grid-cols-2 gap-16 w-full py-10 mt-10">
-                <div className="flex flex-col items-center bg-lightGray rounded-lg pt-28 pb-20">
-                    <img src={bobs250} width="250" alt="Картинка товара" />
-                    <div className="flex flex-col text-base text-mainGray w-full mt-20 px-20">
+            <div className="grid grid-cols-7 gap-16 w-full py-10 mt-10">
+                <div className="flex flex-col col-span-3 items-center bg-lightGray rounded-lg pt-14 pb-10">
+                    <div className="flex justify-center items-end h-64">
+                        {renderImage()}
+                    </div>
+                    <div className="flex flex-col text-base text-mainGray w-full mt-14 px-14">
                         <div className="flex justify-between">
                             <div className="flex flex-col items-center mb-2">
                                 <p className="flex mb-1">Кислотность</p>
@@ -157,7 +165,7 @@ const ProductItem = () => {
                         </div>
                     </div>
                 </div>
-                <div className="flex flex-col">
+                <div className="flex flex-col col-span-4">
                     <p className="text-2xl font-semibold mb-5">{curProduct ? curProduct.product_name : null}</p>
                     <div>
                         <p className="text-lg font-semibold mb-1">Разновидность</p>
@@ -211,15 +219,15 @@ const ProductItem = () => {
                                                 href="#"
                                                 onClick={(e) => {
                                                     e.preventDefault();
-                                                    setOpenWeight(id)
+                                                    setOpenWeight({'weight_selection': id, 'weight': weight})
                                                 }}
-                                                className={` ${openWeight === id ? "border-2 border-mainOrange-600" : ""} text-sm flex justify-center cursor-pointer rounded-lg py-1 px-4`}
+                                                className={` ${openWeight.weight_selection === id ? "border-2 border-mainOrange-600" : ""} text-sm flex justify-center cursor-pointer rounded-lg py-1 px-4`}
                                             >
                                                 {dem}
                                             </a>
                                         </li>
                                     </ul>
-                                    <div className={`${openWeight === id ? "flex" : "hidden"} mt-3 text-2xl justify-center transition-all duration-500`}>
+                                    <div className={`${openWeight.weight_selection === id ? "flex" : "hidden"} mt-3 text-2xl justify-center transition-all duration-500`}>
                                         {price} р
                                     </div>
                                 </div>
