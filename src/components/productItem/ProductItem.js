@@ -33,7 +33,7 @@ const ProductItem = () => {
     const dispatch = useDispatch();
     const [checkedList, setCheckedList] = useState();
     const [openTab, setOpenTab] = useState(1);
-    const [openWeight, setOpenWeight] = useState({'weight_selection': 1, 'weight': 250});
+    const [openWeight, setOpenWeight] = useState({});
 
     useEffect(() => {
         dispatch(fetchProduct(id)).then(data => {
@@ -47,9 +47,15 @@ const ProductItem = () => {
             dispatch(fetchRoastingMethod(data.payload.roasting_method)).then(data => {
                 setRoasting(data.payload)
             })
-            dispatch(fetchWeight(id)).then(data => {
-                setCheckedList(data.payload)
-            })
+            dispatch(fetchWeight(id))
+                .then(data => {
+                    setCheckedList(data.payload)
+                    setOpenWeight({
+                        'weight_selection': data.payload[0].id,
+                        'weight': data.payload[0].weight,
+                        'price': data.payload[0].price
+                    })
+                })
         })
     }, [id])
 
@@ -58,6 +64,7 @@ const ProductItem = () => {
             updateCard();
         }
     }, [openWeight])
+
 
     const pars = () => {
         let renderParams = null;
@@ -219,7 +226,7 @@ const ProductItem = () => {
                                                 href="#"
                                                 onClick={(e) => {
                                                     e.preventDefault();
-                                                    setOpenWeight({'weight_selection': id, 'weight': weight})
+                                                    setOpenWeight({'weight_selection': id, 'weight': weight, 'price': price})
                                                 }}
                                                 className={` ${openWeight.weight_selection === id ? "border-2 border-mainOrange-600" : ""} text-sm flex justify-center cursor-pointer rounded-lg py-1 px-4`}
                                             >
@@ -227,12 +234,12 @@ const ProductItem = () => {
                                             </a>
                                         </li>
                                     </ul>
-                                    <div className={`${openWeight.weight_selection === id ? "flex" : "hidden"} mt-3 text-2xl justify-center transition-all duration-500`}>
-                                        {price} р
-                                    </div>
                                 </div>
                             )
                         }) : null}
+                    </div>
+                    <div className="flex mt-3 text-2xl">
+                        {openWeight.price} р
                     </div>
                     <div className="flex mt-5">
                         {renBtn()}

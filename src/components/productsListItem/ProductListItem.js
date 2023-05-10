@@ -18,9 +18,7 @@ const ProductListItem = ({product, i}) => {
     const [processing, setProcessing] = useState();
     const [roasting, setRoasting] = useState();
     const [checkedList, setCheckedList] = useState();
-    const [openWeight, setOpenWeight] = useState({'weight_selection': 1, 'weight': 250});
-    const [image, setImage] = useState();
-
+    const [openWeight, setOpenWeight] = useState({});
     const {renderParams} = setParams(product);
     const [addCart] = useAddCartMutation();
     const [addFavorite] = useAddFavoriteMutation();
@@ -34,18 +32,31 @@ const ProductListItem = ({product, i}) => {
         dispatch(fetchRoastingMethod(product.roasting_method)).then(data => {
             setRoasting(data.payload)
         })
-        dispatch(fetchWeight(product.product_id)).then(data => {
-            setCheckedList(data.payload)
-        })
         updateCard();
 
     }, [openWeight])
+
+
+    useEffect(() => {
+        dispatch(fetchWeight(product.product_id))
+            .then(data => {
+                setCheckedList(data.payload)
+                setOpenWeight({
+                    'weight_selection': data.payload[0].id,
+                    'weight': data.payload[0].weight,
+                    'price': data.payload[0].price
+                })
+            })
+
+    }, [])
+
 
     const updateCard = () => {
         dispatch(fetchProductInCart({
             'product': product.product_id,
             'weight_selection': openWeight.weight_selection
         })).then(data => setCart(data.payload))
+
         // dispatch(fetchFavorite(client)).then(data => setFavorite(data.payload))
     }
 
@@ -195,19 +206,19 @@ const ProductListItem = ({product, i}) => {
                                                 href="#"
                                                 onClick={(e) => {
                                                     e.preventDefault();
-                                                    setOpenWeight({'weight_selection': id, 'weight': weight})
+                                                    setOpenWeight({'weight_selection': id, 'weight': weight, 'price': price})
                                                 }}
                                             >
                                                 {dem}
                                             </a>
-                                            <div className={`${openWeight.weight_selection === id ? "flex" : "hidden"} mt-3 text-2xl justify-center`}>
-                                                {price} р
-                                            </div>
                                         </li>
                                     </ul>
                                 </div>
                             )
                         }) : null}
+                    </div>
+                    <div className="flex mt-3 text-2xl">
+                        {openWeight.price} р
                     </div>
                 </div>
             </div>
