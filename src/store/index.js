@@ -1,9 +1,9 @@
 import {configureStore} from "@reduxjs/toolkit";
 import {apiSlice} from "../api/apiSlice";
 import authUser from "../api/userSlice";
-import getProduct from "../api/productSlice";
-import getOrders from "../api/orderSlice";
-import getCart from "../api/cartSlice";
+import getProduct from "../components/products/productSlice";
+import getOrders from "../components/orders/orderSlice";
+import getCart from "../components/clientCart/cartSlice";
 
 // Server side with csurf middleware
 const stringMiddleware = () => (next) => (action) => {

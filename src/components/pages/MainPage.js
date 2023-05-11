@@ -2,9 +2,8 @@ import cup from "../../assets/cup.png"
 import bobs from "../../assets/bob-coffee.png"
 import gradient from "../../assets/gradient.png"
 import { useSelector } from "react-redux";
-import { useEffect, useState } from "react";
-import AdminOrders from "../orders/AdminOrders";
-
+import { useState } from "react";
+import AdminOrders from "../orders/adminOrders/AdminOrders";
 
 const MainPage = () => {
     const role = useSelector(state => state.authUser.role);

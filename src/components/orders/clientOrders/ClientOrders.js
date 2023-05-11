@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {fetchOrders} from "../../api/orderSlice";
-import {fetchCartInOrders} from "../../api/cartSlice";
-import bobs250 from "../../assets/bobs250.png";
-
+import {fetchOrders} from "../orderSlice";
+import {fetchCartInOrders} from "../../clientCart/cartSlice";
+import Spinner from "../../spinner/Spinner";
 
 const ClientOrders = () => {
     const activeClient = useSelector(state => state.authUser.client);
-    const [orders, setOrders] = useState();
-    const [cart, setCart] = useState()
+    const ordersLoadingStatus = useSelector(state => state.getOrders.ordersLoadingStatus);
+    const [orders, setOrders] = useState([]);
+    const [cart, setCart] = useState([])
 
     const dispatch = useDispatch();
 
@@ -51,8 +51,8 @@ const ClientOrders = () => {
     return(
         <div className="w-full px-28 py-10">
             <h1 className="text-3xl font-bold">Заказы</h1>
-            {orders ? orders.map((item) => {
-                console.log(item)
+            {ordersLoadingStatus === 'loading' ? <Spinner/> : null}
+            {orders.map((item) => {
                 return(
                     <div className="flex flex-col bg-lightGray pt-6 w-full rounded-xl mt-6 shadow-md" key={item.order.order_id}>
                         <div className="flex justify-between pr-10">
@@ -73,20 +73,18 @@ const ClientOrders = () => {
                                 <p className="flex text-mainGray mt-5">Ожидаемая дата: {item.delivery_date}</p>
                             </div>
                             <div className="flex pr-10 items-end">
-                            {cart ? cart.map(({order, product, weight}) => {
+                            {cart.map(({order, product, weight}) => {
                                 if(item.order.order_id === order){
                                     let image;
                                     weight === 1000 ? image = product.image_max : image = product.image_min
                                     return <img src={image} alt="картинка товара" width="100" className="h-fit"/>
                                 }
-                            })
-                            : null}
+                            })}
                             </div>
                         </div>
                     </div>
                 )
-            })
-            : null}
+            })}
         </div>
     )
 }

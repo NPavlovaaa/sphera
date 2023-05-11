@@ -1,5 +1,5 @@
-import ProductList from "../productList/ProductList"
-import ProductsFilters from "../productsFilters/ProductsFilters";
+import ProductList from "../products/productList/ProductList"
+import ProductsFilters from "../products/productsFilters/ProductsFilters";
 
 const ProductListPage = () => {
     return (

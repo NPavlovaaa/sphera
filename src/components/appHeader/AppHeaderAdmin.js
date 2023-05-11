@@ -9,7 +9,6 @@ const AppHeaderAdmin = () => {
     const activeUser = useSelector(state => state.authUser.user);
     const dispatch = useDispatch();
 
-
     const logout = async () => {
         localStorage.removeItem('TOKEN_AUTH');
         dispatch(activeUserChange(null))

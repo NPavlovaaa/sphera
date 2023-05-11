@@ -1,6 +1,6 @@
-const MakingMethods = () => {
+const ProductMakingMethods = () => {
     return (
         <div>Способы приготовления</div>
     )
 }
-export default MakingMethods;
+export default ProductMakingMethods;

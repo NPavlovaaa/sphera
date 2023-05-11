@@ -34,20 +34,13 @@ export const fetchAuth = createAsyncThunk(
     }
 )
 
-// export const fetchLogout = createAsyncThunk(
-//     'users/fetchLogout',
-//     async () => {
-//         const {request} = useHttp();
-//         return await request('http://localhost:8000/logout/', 'POST')
-//     }
-// )
-
 const userSlice = createSlice({
     name: 'authUser',
     initialState,
     reducers: {
         activeUserChange: (state, action) => {
             state.user = action.payload;
+            state.role = action.payload;
             state.client = action.payload;
             state.userAuthLoadingStatus = action.payload;
         },

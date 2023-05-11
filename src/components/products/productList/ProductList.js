@@ -1,4 +1,4 @@
-import {useGetProductsQuery} from "../../api/apiSlice";
+import {useGetProductsQuery} from "../../../api/apiSlice";
 import ProductListItem from "../productsListItem/ProductListItem";
 import { useSelector } from "react-redux";
 

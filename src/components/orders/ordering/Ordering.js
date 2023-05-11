@@ -1,17 +1,16 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCart } from "../../api/cartSlice";
-import bobs250 from "../../assets/bobs250.png";
-import delivery from "../../assets/delivery.png";
-import { Link } from "react-router-dom";
-import Card from "../icons/Card";
-import { useCreateOrderMutation, useGetDeliveryMethodsQuery } from "../../api/apiSlice";
+import { fetchCart } from "../../clientCart/cartSlice";
+import bobs250 from "../../../assets/bobs250.png";
+import delivery from "../../../assets/delivery.png";
+import Card from "../../icons/Card";
+import { useCreateOrderMutation, useGetDeliveryMethodsQuery } from "../../../api/apiSlice";
 
 
 const Ordering = () => {
     const activeClient = useSelector(state => state.authUser.client);
-    const token = useSelector(state => state.authUser.token);
+    // const token = useSelector(state => state.authUser.token);
     const [cart, setCart] = useState()
     const dispatch = useDispatch();
     const [openTab, setOpenTab] = useState(1);
@@ -46,7 +45,7 @@ const Ordering = () => {
     let count_products = 0;
 
     const ordering = () => {
-        const renderOrdering = cart ? cart.map(({cart_id, price, weight, count}) => {
+        cart ? cart.map(({cart_id, price, weight, count}) => {
             total_sum += price;
             weight_sum += weight * count;
             count_products += 1 * count;
@@ -58,7 +57,6 @@ const Ordering = () => {
                 </div>
             )
         }) : null
-        return renderOrdering
     }
 
     return (
@@ -83,7 +81,7 @@ const Ordering = () => {
                                 <ul className="flex space-x-10">
                                     <li>
                                         <a className={` ${openTab === 1 ? "text-mainOrange-600" : ""} text-mainGray text-lg flex justify-center cursor-pointer rounded-lg`}
-                                        href="#"
+                                        href="src/components/orders/ordering/Ordering#"
                                         onClick={(e) => {
                                         e.preventDefault();
                                         setOpenTab(1)
@@ -93,7 +91,7 @@ const Ordering = () => {
                                     </li>
                                     <li>
                                         <a className={` ${openTab === 2 ? "text-mainOrange-600" : ""} text-mainGray text-lg flex justify-center cursor-pointer rounded-lg`}
-                                        href="#"
+                                        href="src/components/orders/ordering/Ordering#"
                                         onClick={(e) => {
                                         e.preventDefault();
                                         setOpenTab(2)

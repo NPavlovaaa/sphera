@@ -1,11 +1,11 @@
-import Case1 from "../icons/Case1";
-import Case2 from "../icons/Case2";
-import Case3 from "../icons/Case3";
-import Case4 from "../icons/Case4";
-import Case5 from "../icons/Case5";
+import Case1 from "../../icons/Case1";
+import Case2 from "../../icons/Case2";
+import Case3 from "../../icons/Case3";
+import Case4 from "../../icons/Case4";
+import Case5 from "../../icons/Case5";
 
 
-const setParams = (product) => {
+const productSetParams = (product) => {
     const allParams = [product.acidity, product.density, product.sweetness, product.bitterness]
     let params;
     const renderParams = allParams.map(item => {
@@ -34,4 +34,4 @@ const setParams = (product) => {
 
     return {renderParams}
 }
-export default setParams;
+export default productSetParams;

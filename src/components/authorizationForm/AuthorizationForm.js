@@ -4,16 +4,18 @@ import Arrow from '../icons/Arrow';
 import {useState} from "react";
 import {Navigate} from "react-router-dom";
 import {fetchLogin} from "../../api/userSlice";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 
 
 const AuthorizationForm = ({onToggle}) => {
     const [redirect, setRedirect] = useState(false);
     const dispatch = useDispatch();
-    // const token = useSelector(state => state.authUser.token);
 
     const onLogin = (values) => {
-        dispatch(fetchLogin({'username': values.username, 'password': values.password}))
+        dispatch(fetchLogin({
+            'username': values.username,
+            'password': values.password
+        }))
             .then(data => localStorage.setItem('TOKEN_AUTH', data.payload.access))
             .then(setRedirect(true))
     }

@@ -1,15 +1,14 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import bobs250 from "../../assets/bobs250.png"
 import { Link } from "react-router-dom";
 import { useRef } from "react";
-import setParams from "../setParams/SetParams"
+import productSetParams from "../productSetParams/productSetParams"
 import { useEffect, useState } from "react";
-import { fetchFavorite, fetchProcessingMethod, fetchRoastingMethod, fetchWeight } from "../../api/productSlice";
+import { fetchFavorite, fetchProcessingMethod, fetchRoastingMethod, fetchWeight } from "../productSlice";
 import {useDispatch, useSelector} from "react-redux";
-import { useAddCartMutation, useAddFavoriteMutation} from "../../api/apiSlice";
-import { fetchProductInCart, fetchDeleteProductInCart, fetchUpdateCart } from "../../api/cartSlice";
-import Star from "../icons/Star";
-import Favorite from "../icons/Favorite";
+import { useAddCartMutation, useAddFavoriteMutation} from "../../../api/apiSlice";
+import { fetchProductInCart, fetchDeleteProductInCart, fetchUpdateCart } from "../../clientCart/cartSlice";
+import Star from "../../icons/Star";
+import Favorite from "../../icons/Favorite";
 
 const ProductListItem = ({product, i}) => {
     const activeClient = useSelector(state => state.authUser.client);
@@ -19,7 +18,7 @@ const ProductListItem = ({product, i}) => {
     const [roasting, setRoasting] = useState();
     const [checkedList, setCheckedList] = useState();
     const [openWeight, setOpenWeight] = useState({});
-    const {renderParams} = setParams(product);
+    const {renderParams} = productSetParams(product);
     const [addCart] = useAddCartMutation();
     const [addFavorite] = useAddFavoriteMutation();
     const [cart, setCart] = useState();
@@ -103,7 +102,7 @@ const ProductListItem = ({product, i}) => {
     // console.log(product.product_id, favorite)
 
     const renBtn = () => {
-        let btn = '';
+        let btn;
         cart && cart.product_count !== 0 ?
                 btn = <div className="flex w-1/4 justify-between border-2 border-mainOrange-600 rounded-2xl py-1 px-3">
                         <button type="submit" onClick={() => changeCount(-1)} className="flex text-xl">-</button>
@@ -177,7 +176,7 @@ const ProductListItem = ({product, i}) => {
                     </div>
                     <div className="flex flex-row justify-between w-full mt-5">
                     {checkedList ? checkedList.map(({id, weight, price}) => {
-                            let dem = '';
+                            let dem;
                             switch(weight){
                                 case 250:
                                     dem = '250г';
@@ -203,7 +202,7 @@ const ProductListItem = ({product, i}) => {
                                     <ul className="flex space-x-10">
                                         <li>
                                             <a  className={` ${openWeight.weight_selection === id ? "border-2 border-mainOrange-600" : ""} text-xs text-mainGray flex justify-center cursor-pointer rounded-lg py-1 px-2`}
-                                                href="#"
+                                                href="src/components/products/productsListItem/ProductListItem#"
                                                 onClick={(e) => {
                                                     e.preventDefault();
                                                     setOpenWeight({'weight_selection': id, 'weight': weight, 'price': price})

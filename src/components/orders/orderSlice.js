@@ -1,12 +1,12 @@
 import {createAsyncThunk, createEntityAdapter, createSlice} from "@reduxjs/toolkit";
-import {useHttp} from "../hooks/http.hook";
+import {useHttp} from "../../hooks/http.hook";
 
 
 const orderAdapter = createEntityAdapter();
 
 const initialState = orderAdapter.getInitialState({
     ordersLoadingStatus: 'idle',
-    statuses: null,
+    statuses: [],
     changeOrderStatus: null,
     activeFilter: 0
 });

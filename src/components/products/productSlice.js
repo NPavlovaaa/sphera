@@ -1,14 +1,13 @@
 import {createAsyncThunk, createEntityAdapter, createSlice} from "@reduxjs/toolkit";
-import {useHttp} from "../hooks/http.hook";
+import {useHttp} from "../../hooks/http.hook";
 
 
-const pruductAdapter = createEntityAdapter();
+const productAdapter = createEntityAdapter();
 
-const initialState = pruductAdapter.getInitialState({
+const initialState = productAdapter.getInitialState({
     productLoadingStatus: 'idle',
-    product: null
+    product: [],
 });
-
 
 export const fetchProduct = createAsyncThunk(
     'products/fetchProduct',
@@ -58,7 +57,6 @@ export const fetchFavorite = createAsyncThunk(
     }
 )
 
-
 const productSlice = createSlice({
     name: 'getProduct',
     initialState,
@@ -70,14 +68,8 @@ const productSlice = createSlice({
                 state.productLoadingStatus = 'loading';
             })
             .addCase(fetchProduct.fulfilled, (state, action) => {
-                state.productLoadingStatus = 'idle';
-                state.product = action.payload;
-            })
-            .addCase(fetchWeight.pending, state => {
-                state.productLoadingStatus = 'loading';
-            })
-            .addCase(fetchWeight.fulfilled, (state, action) => {
                 state.productLoadingStatus = 'success';
+                state.product = action.payload;
             })
             .addCase(fetchWeight.rejected, state => {state.productLoadingStatus = 'error'})
             .addCase(fetchProduct.rejected, state => {state.productLoadingStatus = 'error'})

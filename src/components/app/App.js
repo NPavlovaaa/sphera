@@ -1,42 +1,39 @@
 import './App.css';
-import {Suspense, useEffect, useState} from 'react';
+import {Suspense, useEffect} from 'react';
 import ClientsList from "../clientsList/ClientsList";
 import { BrowserRouter as Router,  Route, Routes } from "react-router-dom";
 import Spinner from "../spinner/Spinner";
 import RegistrationFormPage from "../pages/RegistrationFormPage";
 import MainPage from "../pages/MainPage";
 import {useDispatch} from "react-redux";
-import {fetchAuth, fetchLogin} from "../../api/userSlice";
+import {fetchAuth} from "../../api/userSlice";
 import ProductListPage from '../pages/ProductListPage';
 import AccountPage from '../pages/AccountPage';
-import ProductItem from '../productItem/ProductItem';
+import ProductItem from '../products/productItem/ProductItem';
 import { useSelector } from 'react-redux';
 import ClientCart from '../clientCart/ClientCart';
-import Ordering from '../ordering/Ordering';
-import ClientOrders from "../orders/ClientOrders";
+import Ordering from '../orders/ordering/Ordering';
+import ClientOrders from "../orders/clientOrders/ClientOrders";
 import AppHeaderClient from '../appHeader/AppHeaderClient';
 import AppHeaderAdmin from '../appHeader/AppHeaderAdmin';
-import ProductReviewsClient from '../productReviews/ProductReviewsClient';
-import ProductReviewsAdmin from '../productReviews/ProductReviewsAdmin';
+import ProductReviewsClient from '../products/productReviews/ProductReviewsClient';
+import ProductReviewsAdmin from '../products/productReviews/ProductReviewsAdmin';
 import ReviewsClient from '../reviews/ReviewsClient';
 import ReviewsAdmin from '../reviews/ReviewsAdmin';
-import AdminOrders from '../orders/AdminOrders';
+import AdminOrders from '../orders/adminOrders/AdminOrders';
 
 
 function App() {
-    // const [role, setRole] = useState();
     const dispatch = useDispatch();
     const userAuthLoadingStatus = useSelector(state => state.authUser.userAuthLoadingStatus);
     const role = useSelector(state => state.authUser.role);
     const token = useSelector(state => state.authUser.token);
-
 
     useEffect(() => {
         if(userAuthLoadingStatus === 'login success' || userAuthLoadingStatus === 'idle'){
             dispatch(fetchAuth())
         }
     }, [userAuthLoadingStatus, token])
-
 
     return (
         <Router>
