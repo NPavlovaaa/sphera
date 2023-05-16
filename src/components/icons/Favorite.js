@@ -1,8 +1,11 @@
 
 function Favorite({width, height, strokeColor, active}){
-  console.log(active)
     let fill;
+    let border = strokeColor;
+
     active ? fill = '#FFA82E' : fill ='none'
+    active ? strokeColor = 'none' : strokeColor = border
+
     return (
         <svg
           xmlns="http://www.w3.org/2000/svg"

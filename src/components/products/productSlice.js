@@ -6,7 +6,10 @@ const productAdapter = createEntityAdapter();
 
 const initialState = productAdapter.getInitialState({
     productLoadingStatus: 'idle',
+    favoriteLoadingStatus: 'idle',
     product: [],
+    favorite: [],
+    activeFilterProcessing: null
 });
 
 export const fetchProduct = createAsyncThunk(
@@ -53,7 +56,15 @@ export const fetchFavorite = createAsyncThunk(
     'products/fetchFavorite',
      async (id) => {
          const {request} = useHttp();
-         return await request(`http://localhost:8000/favorite/${id}/`)
+         return await request(`http://localhost:8000/favorite_detail/${id}/`)
+    }
+)
+
+export const fetchFavoriteList = createAsyncThunk(
+    'products/fetchFavoriteList',
+    async () => {
+        const {request} = useHttp();
+        return await request(`http://localhost:8000/favorites/`)
     }
 )
 
@@ -61,6 +72,9 @@ const productSlice = createSlice({
     name: 'getProduct',
     initialState,
     reducers: {
+        activeFilterProcessingChange: (state, action) => {
+            state.activeFilterProcessing = action.payload;
+        },
     },
     extraReducers: builder => {
         builder
@@ -71,11 +85,23 @@ const productSlice = createSlice({
                 state.productLoadingStatus = 'success';
                 state.product = action.payload;
             })
+            .addCase(fetchFavorite.fulfilled, state => {
+                state.productLoadingStatus = 'success';
+            })
+            .addCase(fetchFavoriteList.pending, state => {
+                state.productLoadingStatus = 'loading';
+            })
+            .addCase(fetchFavoriteList.fulfilled, state => {
+                state.productLoadingStatus = 'success';
+            })
             .addCase(fetchWeight.rejected, state => {state.productLoadingStatus = 'error'})
             .addCase(fetchProduct.rejected, state => {state.productLoadingStatus = 'error'})
             .addDefaultCase(() => {})
     }
 })
 
-const {reducer} = productSlice;
+const {actions, reducer} = productSlice;
 export default reducer;
+export const {
+    activeFilterProcessingChange,
+} = actions;

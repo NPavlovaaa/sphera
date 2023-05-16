@@ -3,12 +3,21 @@ import { Link } from "react-router-dom";
 import { useRef } from "react";
 import productSetParams from "../productSetParams/productSetParams"
 import { useEffect, useState } from "react";
-import { fetchFavorite, fetchProcessingMethod, fetchRoastingMethod, fetchWeight } from "../productSlice";
+import {
+    fetchFavorite,
+    fetchProcessingMethod,
+    fetchRoastingMethod,
+    fetchWeight
+} from "../productSlice";
 import {useDispatch, useSelector} from "react-redux";
-import { useAddCartMutation, useAddFavoriteMutation} from "../../../api/apiSlice";
+import {
+    useAddCartMutation,
+    useAddFavoriteMutation,
+} from "../../../api/apiSlice";
 import { fetchProductInCart, fetchDeleteProductInCart, fetchUpdateCart } from "../../clientCart/cartSlice";
 import Star from "../../icons/Star";
 import Favorite from "../../icons/Favorite";
+
 
 const ProductListItem = ({product, i}) => {
     const activeClient = useSelector(state => state.authUser.client);
@@ -22,7 +31,8 @@ const ProductListItem = ({product, i}) => {
     const [addCart] = useAddCartMutation();
     const [addFavorite] = useAddFavoriteMutation();
     const [cart, setCart] = useState();
-    const [favorite, setFavorite] = useState(false);
+    const [favorite, setFavorite] = useState([]);
+
 
     useEffect(()=>{
         dispatch(fetchProcessingMethod(product.processing_method)).then(data => {
@@ -31,6 +41,7 @@ const ProductListItem = ({product, i}) => {
         dispatch(fetchRoastingMethod(product.roasting_method)).then(data => {
             setRoasting(data.payload)
         })
+
         updateCard();
 
     }, [openWeight])
@@ -49,31 +60,31 @@ const ProductListItem = ({product, i}) => {
 
     }, [])
 
-
     const updateCard = () => {
         dispatch(fetchProductInCart({
             'product': product.product_id,
             'weight_selection': openWeight.weight_selection
         })).then(data => setCart(data.payload))
 
-        // dispatch(fetchFavorite(client)).then(data => setFavorite(data.payload))
+        dispatch(fetchFavorite(product.product_id))
+            .then(data => setFavorite(data.payload))
     }
-
 
     const onAddToCart = () => {
         const newCart = {
             'weight_selection': openWeight.weight_selection
         }
-        addCart(newCart).then(updateCard);
+        addCart(newCart).then(() => updateCard());
     }
 
+    let fav;
+    favorite && favorite.length !== 0 ? fav='active' : fav=null
+
     const onAddToFavorite = () => {
-        if(activeClient){
-            const newFavorite = {
-                'product': product.product_id
-            }
-            addFavorite(newFavorite).then(updateCard);
+        const newFavorite = {
+            'product': product.product_id,
         }
+        addFavorite(newFavorite).then(() => updateCard());
     }
 
     const changeCount = (value) => {
@@ -85,21 +96,15 @@ const ProductListItem = ({product, i}) => {
                     'weight_selection': cart.weight_selection,
                     'product_count': cart.product_count,
                     'id': cart.cart_id
-                })).then(updateCard)
+                })).then(() => updateCard())
             }, 200)
         }else{
             setTimeout(() =>{
-                dispatch(fetchDeleteProductInCart(cart.cart_id)).then(updateCard)
+                dispatch(fetchDeleteProductInCart(cart.cart_id)).then(() => updateCard())
             }, 200)
         }
-
     }
 
-    const active = () => {
-        const fav = favorite ? true : false
-        return fav
-    }
-    // console.log(product.product_id, favorite)
 
     const renBtn = () => {
         let btn;
@@ -136,9 +141,9 @@ const ProductListItem = ({product, i}) => {
                     </div>
                     <div className="flex">
                         <Star width="16"/>
-                        <p className="text-mainGray text ml-1 mr-4">{product.raiting}</p>
+                        <p className="text-mainGray text ml-1 mr-4">{product.rating}</p>
                         <button className="h-fit" onClick={onAddToFavorite}>
-                            <Favorite width="20" height="20" strokeColor="#939393" active={active()}/>
+                            <Favorite width="20" height="20" strokeColor="#939393" active={fav}/>
                         </button>
                     </div>
                 </div>

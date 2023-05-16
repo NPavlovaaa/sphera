@@ -21,6 +21,7 @@ import ProductReviewsAdmin from '../products/productReviews/ProductReviewsAdmin'
 import ReviewsClient from '../reviews/ReviewsClient';
 import ReviewsAdmin from '../reviews/ReviewsAdmin';
 import AdminOrders from '../orders/adminOrders/AdminOrders';
+import FavoritesProductList from "../products/favoritesProductList/FavoritesProductList";
 
 
 function App() {
@@ -51,6 +52,7 @@ function App() {
                             <Route path="/cart" element={<ClientCart/>}/>
                             <Route path="/ordering" element={<Ordering/>}/>
                             <Route path="/my_orders" element={<ClientOrders/>}/>
+                            <Route path="/favorite" element={<FavoritesProductList/>}/>
                             <Route path="/admin_orders" element={<AdminOrders/>}/>
                             <Route path="/reviews" element={<ReviewsClient/>}/>
                             <Route path="/admin_reviews" element={<ReviewsAdmin/>}/>
