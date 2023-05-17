@@ -31,10 +31,9 @@ const ProductsFilters = () => {
             return <InactiveCircle/>
         }
     }
-    // console.log(vara)
 
     return (
-        <div className="flex flex-col h-screen shadow-lg px-10 py-5">
+        <div className="flex flex-col h-full shadow-lg px-10 py-5">
             <div className="flex flex-col mb-4">
                 <div className="flex justify-between items-center rounded-xl mb-3 shadow-xl px-4 py-1.5">
                     <p>Обработка</p>

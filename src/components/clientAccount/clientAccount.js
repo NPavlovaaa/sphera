@@ -25,9 +25,9 @@ const ClientAccount = () => {
             <div className="flex flex-row bg-lightGray shadow-md rounded-xl px-16 py-10 w-full h-fit mt-5">
                 <div className="flex flex-col w-1/2">
                     <div className="flex flex-row items-center mb-5">
-                        {activeClient.avatar ?
+                        {activeUser.avatar ?
                             <div className="h-16 w-16">
-                                <img src={activeClient.avatar} className="rounded-xl avatar" alt="фотография пользователя"/>
+                                <img src={activeUser.avatar} className="rounded-xl avatar" alt="фотография пользователя"/>
                             </div>
                         :
                             <AvatarDetail/>
