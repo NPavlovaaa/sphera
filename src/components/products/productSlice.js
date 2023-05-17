@@ -6,10 +6,13 @@ const productAdapter = createEntityAdapter();
 
 const initialState = productAdapter.getInitialState({
     productLoadingStatus: 'idle',
-    favoriteLoadingStatus: 'idle',
     product: [],
-    favorite: [],
-    activeFilterProcessing: null
+    roasting: [],
+    processing: [],
+    variety: [],
+    activeFilterProcessing: null,
+    activeFilterRoasting: null,
+    activeFilterVariety: []
 });
 
 export const fetchProduct = createAsyncThunk(
@@ -36,6 +39,21 @@ export const fetchRoastingMethod = createAsyncThunk(
     }
 )
 
+export const fetchRoastingMethods = createAsyncThunk(
+    'products/fetchRoastingMethods',
+    async () => {
+        const {request} = useHttp();
+        return await request(`http://localhost:8000/roasting/`)
+    }
+)
+export const fetchProcessingMethods = createAsyncThunk(
+    'products/fetchProcessingMethods',
+    async () => {
+        const {request} = useHttp();
+        return await request(`http://localhost:8000/processing/`)
+    }
+)
+
 export const fetchProcessingMethod = createAsyncThunk(
     'products/fetchProcessingMethod',
      async (id) => {
@@ -46,9 +64,17 @@ export const fetchProcessingMethod = createAsyncThunk(
 
 export const fetchVariety = createAsyncThunk(
     'products/fetchVariety',
+    async () => {
+        const {request} = useHttp();
+        return await request(`http://localhost:8000/variety/`)
+    }
+)
+
+export const fetchProductVariety = createAsyncThunk(
+    'products/fetchProductVariety',
      async (id) => {
          const {request} = useHttp();
-         return await request(`http://localhost:8000/variety/${id}/`)
+         return await request(`http://localhost:8000/product_variety/${id}/`)
     }
 )
 
@@ -75,6 +101,12 @@ const productSlice = createSlice({
         activeFilterProcessingChange: (state, action) => {
             state.activeFilterProcessing = action.payload;
         },
+        activeFilterRoastingChange: (state, action) => {
+            state.activeFilterRoasting = action.payload;
+        },
+        activeFilterVarietyChange: (state, action) => {
+            state.activeFilterVariety.push(action.payload);
+        },
     },
     extraReducers: builder => {
         builder
@@ -94,6 +126,15 @@ const productSlice = createSlice({
             .addCase(fetchFavoriteList.fulfilled, state => {
                 state.productLoadingStatus = 'success';
             })
+            .addCase(fetchRoastingMethods.fulfilled, (state, action) => {
+                state.roasting = action.payload;
+            })
+            .addCase(fetchProcessingMethods.fulfilled, (state, action) => {
+                state.processing = action.payload;
+            })
+            .addCase(fetchVariety.fulfilled, (state, action) => {
+                state.variety = action.payload;
+            })
             .addCase(fetchWeight.rejected, state => {state.productLoadingStatus = 'error'})
             .addCase(fetchProduct.rejected, state => {state.productLoadingStatus = 'error'})
             .addDefaultCase(() => {})
@@ -104,4 +145,6 @@ const {actions, reducer} = productSlice;
 export default reducer;
 export const {
     activeFilterProcessingChange,
+    activeFilterRoastingChange,
+    activeFilterVarietyChange
 } = actions;

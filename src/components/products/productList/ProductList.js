@@ -1,16 +1,38 @@
 import {useGetProductsQuery} from "../../../api/apiSlice";
 import ProductListItem from "../productsListItem/ProductListItem";
-import { useSelector } from "react-redux";
+import {useSelector} from "react-redux";
+import {useMemo} from "react";
 
 
 const ProductList = () => {
     const activeClient = useSelector(state => state.authUser.client);
+    const {activeFilterProcessing, activeFilterRoasting} = useSelector(state => state.getProduct)
 
     const {
         data: products = [],
         isLoading,
         isError
     } = useGetProductsQuery();
+
+    const filteredProducts = useMemo(() => {
+        const filteredProducts = products.slice();
+        if(activeFilterProcessing === null && activeFilterRoasting === null){
+            return filteredProducts;
+        }else {
+            if(activeFilterProcessing && activeFilterRoasting){
+                return filteredProducts.filter(item => item.processing_method === activeFilterProcessing && item.roasting_method === activeFilterRoasting)
+            }
+            else{
+                if(activeFilterProcessing){
+                    return filteredProducts.filter(item => item.processing_method === activeFilterProcessing)
+                }
+                else{
+                    return filteredProducts.filter(item => item.roasting_method === activeFilterRoasting)
+                }
+            }
+        }
+
+    }, [products, activeFilterProcessing, activeFilterRoasting]);
 
     if (isLoading) {
         return <h5 className="text-center mt-5">Загрузка</h5>;
@@ -37,7 +59,7 @@ const ProductList = () => {
 
     }
 
-    const elements = renderProductList(products);
+    const elements = renderProductList(filteredProducts);
     return (
         <div className="flex flex-col w-full justify-center p-10">
             {elements}

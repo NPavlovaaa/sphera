@@ -4,13 +4,11 @@ import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 export const apiSlice = createApi({
     reducerPath: '',
     baseQuery: fetchBaseQuery({
-        baseUrl: 'http://127.0.0.1:8000',
-        // mode: 'no-cors',
+        baseUrl: 'http://localhost:8000',
         prepareHeaders: (headers, { getState }) => {
             const token = getState().authUser.token
             if (token) {
                 headers.set('Authorization', `Bearer ${token}`)
-                // headers.set('Access-Control-Allow-Origin', '*')
                 return headers
             }
         },
@@ -55,11 +53,23 @@ export const apiSlice = createApi({
         }),
         addFavorite: builder.mutation({
             query: favorite => ({
-                url: '/favorites/',
+                url: '/create_favorite/',
                 method: 'POST',
                 body: favorite
             }),
             invalidatesTags: ['Clients']
+        }),
+        getFavorites: builder.query({
+            query: () => '/favorites/',
+            providesTags: ['Products']
+        }),
+        getDetailFavorite: builder.query({
+            query: (id) => `/favorite_detail/${id}/`,
+            providesTags: ['Products']
+        }),
+        getProductVarieties: builder.query({
+            query: () => `/product_varieties/`,
+            providesTags: ['Products']
         }),
         getDeliveryMethods: builder.query({
             query: () => '/delivery_methods/',
@@ -80,7 +90,10 @@ export const {  useGetUsersQuery,
                 useRegistrationMutation,
                 useGetProductsQuery,
                 useAddCartMutation,
-                useAddFavoriteMutation,
                 useGetDeliveryMethodsQuery,
                 useCreateOrderMutation,
+                useAddFavoriteMutation,
+                useGetFavoritesQuery,
+                useGetDetailFavoriteQuery,
+                useGetProductVarietiesQuery
 } = apiSlice;

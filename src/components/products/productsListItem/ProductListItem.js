@@ -3,12 +3,7 @@ import { Link } from "react-router-dom";
 import { useRef } from "react";
 import productSetParams from "../productSetParams/productSetParams"
 import { useEffect, useState } from "react";
-import {
-    fetchFavorite,
-    fetchProcessingMethod,
-    fetchRoastingMethod,
-    fetchWeight
-} from "../productSlice";
+import { fetchFavorite, fetchProcessingMethod, fetchProductVariety, fetchRoastingMethod, fetchWeight } from "../productSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {
     useAddCartMutation,
@@ -23,8 +18,9 @@ const ProductListItem = ({product, i}) => {
     const activeClient = useSelector(state => state.authUser.client);
     const itemRefs = useRef([]);
     const dispatch = useDispatch();
-    const [processing, setProcessing] = useState();
-    const [roasting, setRoasting] = useState();
+    const [processing, setProcessing] = useState([]);
+    const [roasting, setRoasting] = useState([]);
+    const [variety, setVariety] = useState([]);
     const [checkedList, setCheckedList] = useState();
     const [openWeight, setOpenWeight] = useState({});
     const {renderParams} = productSetParams(product);
@@ -40,6 +36,9 @@ const ProductListItem = ({product, i}) => {
         })
         dispatch(fetchRoastingMethod(product.roasting_method)).then(data => {
             setRoasting(data.payload)
+        })
+        dispatch(fetchProductVariety(product.product_id)).then(data => {
+            setVariety(data.payload)
         })
 
         updateCard();
@@ -156,6 +155,11 @@ const ProductListItem = ({product, i}) => {
                             {renderImage()}
                         </div>
                     </Link>
+                    <div className="flex flex-row justify-around text-sm w-full mt-3 text-mainGray px-10">
+                        {variety.map(item => {
+                            return <p>{item.variety_name}</p>
+                        })}
+                    </div>
                     <p className="text-sm w-full left-0 text-mainGray mt-3 h-9">{product.taste}</p>
                     <div className="flex flex-col text-sm text-mainGray w-full mt-5">
                         <div className="flex justify-between">
