@@ -2,7 +2,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { fetchCart, fetchDeleteProductInCart, fetchUpdateCart } from "./cartSlice";
 import { Link } from "react-router-dom";
-import Spinner from "../spinner/Spinner";
 
 const ClientCart = () => {
     const activeClient = useSelector(state => state.authUser.client);
@@ -134,7 +133,7 @@ const ClientCart = () => {
             <h1 className="text-3xl font-bold">Корзина</h1>
             <div className="grid grid-cols-3 gap-16 col-span-2 bg-lightGray p-10 w-full rounded-xl mt-6">
                 <div className="flex flex-col col-span-2 items-center justify-center">
-                    {cartLoadingStatus === 'loading' ? <Spinner/> : null}
+                    {/*{cartLoadingStatus === 'loading' ? <Spinner/> : null}*/}
                     {elements}
                 </div>
                 <div className="flex flex-col">

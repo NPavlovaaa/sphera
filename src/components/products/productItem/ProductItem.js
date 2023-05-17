@@ -6,21 +6,21 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { fetchProduct } from "../productSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProcessingMethod, fetchRoastingMethod, fetchVariety, fetchWeight } from "../productSlice";
+import { fetchProcessingMethod, fetchRoastingMethod, fetchProductVariety, fetchWeight } from "../productSlice";
 import productSetParams from "../productSetParams/productSetParams";
 import ProductMakingMethods from "../productMakingMethods/productMakingMethods";
 import ProductReview from "../productReviews/ProductReviewsClient";
 import { useAddCartMutation, useAddFavoriteMutation} from "../../../api/apiSlice";
 import { fetchProductInCart, fetchDeleteProductInCart, fetchUpdateCart } from "../../clientCart/cartSlice";
 import Spinner from "../../spinner/Spinner";
+import { Helmet } from "react-helmet";
 
 
 const ProductItem = () => {
     const activeClient = useSelector(state => state.authUser.client);
-    // const curProduct = useSelector(state => state.getProduct.product);
     const productLoadingStatus = useSelector(state => state.getProduct.productLoadingStatus);
     const [product, setProduct] = useState({})
-    const [variety, setVariety] = useState();
+    const [variety, setVariety] = useState([]);
     const [processing, setProcessing] = useState();
     const [roasting, setRoasting] = useState();
     const [addCart] = useAddCartMutation();
@@ -39,7 +39,7 @@ const ProductItem = () => {
             dispatch(fetchRoastingMethod(data.payload.roasting_method)).then(data => {
                 setRoasting(data.payload)
             })
-            dispatch(fetchVariety(data.payload.variety)).then(data => {
+            dispatch(fetchProductVariety(id)).then(data => {
                 setVariety(data.payload)
             })
             dispatch(fetchProcessingMethod(data.payload.processing_method)).then(data => {
@@ -143,6 +143,13 @@ const ProductItem = () => {
 
     return (
         <div className="px-56">
+            <Helmet>
+                <meta
+                    name="description"
+                    content={`Страница товара ${product.product_name} `}
+                />
+                <title>{product.product_name}</title>
+            </Helmet>
             {productLoadingStatus === 'loading' ? <Spinner/> : null}
             <div className="grid grid-cols-9 gap-16 w-full py-10 mt-10">
                 <div className="flex flex-col col-span-4 items-center bg-lightGray rounded-lg pt-14 pb-10">
@@ -176,7 +183,11 @@ const ProductItem = () => {
                     <p className="text-2xl font-semibold mb-5">{product ? product.product_name : null}</p>
                     <div>
                         <p className="text-lg font-semibold mb-1">Разновидность</p>
-                        <p className="text-base font-medium mb-3">{variety ? variety.variety_name : null}</p>
+                        <div className="flex flex-row text-base font-medium mb-3">
+                            {variety.map(item => {
+                                return <p className="mr-2">{item.variety_name}</p>
+                            })}
+                        </div>
                     </div>
                     <div>
                         <p className="text-lg font-semibold mb-1">Способ обжарки</p>
