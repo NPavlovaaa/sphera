@@ -11,10 +11,13 @@ const ProductList = () => {
     const activeClient = useSelector(state => state.authUser.client);
     // const [productList, setProductList] = useState([]);
     const {activeFilterProcessing, activeFilterRoasting} = useSelector(state => state.getProduct)
+    let {activeCategory} = useSelector(state => state.getProduct)
+
     // const [newItemLoading, setNewItemLoading] = useState(false);
     // const [offset, setOffset] = useState(0);
     // const [productEnded, setProductEnded] = useState(false);
     // const dispatch = useDispatch();
+    activeCategory === 2 ? activeCategory=1 : activeCategory=activeCategory
 
     const [currentPage, setCurrentPage] = useState(1);
     const {
@@ -56,14 +59,26 @@ const ProductList = () => {
 
     const filteredProducts = useMemo(() => {
         const filteredProducts = currentData.slice();
-        if(activeFilterProcessing === null && activeFilterRoasting === null){
+        if(activeFilterProcessing === null && activeFilterRoasting === null && activeCategory === null){
             return filteredProducts;
         }else {
-            if(activeFilterProcessing && activeFilterRoasting){
-                return filteredProducts.filter(item => item.processing_method === activeFilterProcessing && item.roasting_method === activeFilterRoasting)
+            if(activeFilterProcessing && activeFilterRoasting && activeCategory){
+                return filteredProducts.filter(item => item.processing_method === activeFilterProcessing && item.roasting_method === activeFilterRoasting && item.category === activeCategory)
             }
             else{
-                if(activeFilterProcessing){
+                if(activeFilterProcessing && activeFilterRoasting){
+                    return filteredProducts.filter(item => item.processing_method === activeFilterProcessing && item.roasting_method === activeFilterRoasting)
+                }
+                else if(activeFilterProcessing && activeCategory){
+                    return filteredProducts.filter(item => item.processing_method === activeFilterProcessing && item.category === activeCategory)
+                }
+                else if(activeFilterRoasting && activeCategory){
+                    return filteredProducts.filter(item => item.roasting_method === activeFilterRoasting && item.category === activeCategory)
+                }
+                else if(activeCategory){
+                    return filteredProducts.filter(item => item.category === activeCategory)
+                }
+                else if(activeFilterProcessing){
                     return filteredProducts.filter(item => item.processing_method === activeFilterProcessing)
                 }
                 else{
@@ -72,13 +87,14 @@ const ProductList = () => {
             }
         }
 
-    }, [products, activeFilterProcessing, activeFilterRoasting, currentPage]);
+    }, [products, activeFilterProcessing, activeFilterRoasting, currentPage, activeCategory]);
 
-    // if (isLoading) {
-    //     return <h5 className="text-center mt-5">Загрузка</h5>;
-    // } else if (isError) {
-    //     return <h5 className="text-center mt-5">Ошибка загрузки</h5>
-    // }
+    if (isLoading) {
+        return <h5 className="text-center mt-5">Загрузка</h5>;
+    } else if (isError) {
+        return <h5 className="text-center mt-5">Ошибка загрузки</h5>
+    }
+
     function renderProductList(arr){
         if (arr.length === 0) {
             return <h5 className="text-center mt-5">Товаров пока нет</h5>

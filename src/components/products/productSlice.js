@@ -10,9 +10,11 @@ const initialState = productAdapter.getInitialState({
     roasting: [],
     processing: [],
     variety: [],
+    categories: [],
     activeFilterProcessing: null,
     activeFilterRoasting: null,
-    activeFilterVariety: []
+    activeFilterVariety: [],
+    activeCategory: null
 });
 
 export const fetchProductList = createAsyncThunk(
@@ -20,8 +22,6 @@ export const fetchProductList = createAsyncThunk(
     async (offset) => {
         const {request} = useHttp();
         return await request(`http://localhost:8000/product_list/${offset}/`)
-        // // console.log(data)
-        // data.map(item => {return item})
     }
 )
 
@@ -105,6 +105,14 @@ export const fetchFavoriteList = createAsyncThunk(
     }
 )
 
+export const fetchCategory = createAsyncThunk(
+    'products/fetchCategory',
+    async () => {
+        const {request} = useHttp();
+        return await request(`http://localhost:8000/categories/`)
+    }
+)
+
 const productSlice = createSlice({
     name: 'getProduct',
     initialState,
@@ -117,6 +125,9 @@ const productSlice = createSlice({
         },
         activeFilterVarietyChange: (state, action) => {
             state.activeFilterVariety.push(action.payload);
+        },
+        activeCategoryChange: (state, action) => {
+            state.activeCategory = action.payload;
         },
     },
     extraReducers: builder => {
@@ -146,6 +157,9 @@ const productSlice = createSlice({
             .addCase(fetchVariety.fulfilled, (state, action) => {
                 state.variety = action.payload;
             })
+            .addCase(fetchCategory.fulfilled, (state, action) => {
+                state.categories = action.payload;
+            })
             .addCase(fetchWeight.rejected, state => {state.productLoadingStatus = 'error'})
             .addCase(fetchProduct.rejected, state => {state.productLoadingStatus = 'error'})
             .addDefaultCase(() => {})
@@ -157,5 +171,6 @@ export default reducer;
 export const {
     activeFilterProcessingChange,
     activeFilterRoastingChange,
-    activeFilterVarietyChange
+    activeFilterVarietyChange,
+    activeCategoryChange
 } = actions;

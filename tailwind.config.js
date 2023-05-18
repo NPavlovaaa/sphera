@@ -8,6 +8,7 @@ module.exports = {
       mainWhite: '#ffffff',
       mainOrange:{
         100: 'rgba(255, 168, 46, 0.2)',
+        200: 'rgba(190,120,31,0.2)',
         600: '#FFA82E',
         700: 'rgba(255,168,46,0.76)',
       },

@@ -16,6 +16,7 @@ import Favorite from "../../icons/Favorite";
 
 const ProductListItem = ({product, i}) => {
     const activeClient = useSelector(state => state.authUser.client);
+    const {activeCategory} = useSelector(state => state.getProduct);
     const itemRefs = useRef([]);
     const dispatch = useDispatch();
     const [processing, setProcessing] = useState([]);
@@ -50,14 +51,21 @@ const ProductListItem = ({product, i}) => {
         dispatch(fetchWeight(product.product_id))
             .then(data => {
                 setCheckedList(data.payload)
-                setOpenWeight({
-                    'weight_selection': data.payload[0].id,
-                    'weight': data.payload[0].weight,
-                    'price': data.payload[0].price
-                })
+                activeCategory === 2 ?
+                    setOpenWeight({
+                        'weight_selection': data.payload[1].id,
+                        'weight': data.payload[1].weight,
+                        'price': data.payload[1].price
+                    })
+                    :
+                    setOpenWeight({
+                        'weight_selection': data.payload[0].id,
+                        'weight': data.payload[0].weight,
+                        'price': data.payload[0].price
+                    })
             })
 
-    }, [])
+    }, [activeCategory])
 
     const updateCard = () => {
         dispatch(fetchProductInCart({

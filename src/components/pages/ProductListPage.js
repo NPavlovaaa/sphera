@@ -1,5 +1,6 @@
 import ProductList from "../products/productList/ProductList"
 import ProductsFilters from "../products/productsFilters/ProductsFilters";
+import ProductCategoryFilters from "../products/productCategoryFilters/ProductCategoryFilters";
 
 const ProductListPage = () => {
     return (
@@ -7,7 +8,8 @@ const ProductListPage = () => {
             <div className="w-1/6">
                 <ProductsFilters/>
             </div>
-            <div className="w-5/6">
+            <div className="flex flex-col w-5/6">
+                <ProductCategoryFilters/>
                 <ProductList/>
             </div>
         </div>
