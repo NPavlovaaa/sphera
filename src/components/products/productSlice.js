@@ -15,6 +15,17 @@ const initialState = productAdapter.getInitialState({
     activeFilterVariety: []
 });
 
+export const fetchProductList = createAsyncThunk(
+    'products/fetchProductList',
+    async (offset) => {
+        const {request} = useHttp();
+        return await request(`http://localhost:8000/product_list/${offset}/`)
+        // // console.log(data)
+        // data.map(item => {return item})
+    }
+)
+
+
 export const fetchProduct = createAsyncThunk(
     'products/fetchProduct',
      async (id) => {

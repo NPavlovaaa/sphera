@@ -150,6 +150,7 @@ const ProductListItem = ({product, i}) => {
                     <Link to={`/products/${product.product_id}/`}>
                         <div className="flex justify-center">
                             <p className="text-xl font-medium mb-3">{product.product_name}</p>
+                            {/*<p className="text-lg font-semibold mb-3">{product.product_name}</p>*/}
                         </div>
                         <div className="flex justify-center items-end max-h-44">
                             {renderImage()}

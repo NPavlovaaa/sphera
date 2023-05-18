@@ -1,21 +1,61 @@
 import {useGetProductsQuery} from "../../../api/apiSlice";
 import ProductListItem from "../productsListItem/ProductListItem";
-import {useSelector} from "react-redux";
-import {useMemo} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {useEffect, useMemo} from "react";
+import {fetchProductList} from "../productSlice";
+import {useState} from "react";
+import Pagination from "../../pagination/Pagination";
 
 
 const ProductList = () => {
     const activeClient = useSelector(state => state.authUser.client);
+    // const [productList, setProductList] = useState([]);
     const {activeFilterProcessing, activeFilterRoasting} = useSelector(state => state.getProduct)
+    // const [newItemLoading, setNewItemLoading] = useState(false);
+    // const [offset, setOffset] = useState(0);
+    // const [productEnded, setProductEnded] = useState(false);
+    // const dispatch = useDispatch();
 
+    const [currentPage, setCurrentPage] = useState(1);
     const {
         data: products = [],
         isLoading,
         isError
     } = useGetProductsQuery();
 
+    let pageSize = 9;
+    const currentData = useMemo(() => {
+        const firstPageIndex = (currentPage - 1) * pageSize;
+        const lastPageIndex = firstPageIndex + pageSize;
+        return products.slice(firstPageIndex, lastPageIndex);
+    }, [currentPage, products]);
+
+
+    // useEffect(() => {
+    //     onRequest(offset, true)
+    // }, [])
+
+    // const onRequest = (offset, initial) => {
+    //     initial ? setNewItemLoading(false) : setNewItemLoading(true);
+    //     dispatch(fetchProductList(offset))
+    //         .then(data => onProductListLoaded(data.payload))
+    // }
+    //
+    // const onProductListLoaded = (newProductList) => {
+    //     let ended = false;
+    //     if (newProductList.length < 8){
+    //         ended = true
+    //     }
+    //
+    //     setProductList([...productList, ...newProductList]);
+    //     setNewItemLoading(false);
+    //     setOffset(offset + 9);
+    //     setProductEnded(ended);
+    // }
+
+
     const filteredProducts = useMemo(() => {
-        const filteredProducts = products.slice();
+        const filteredProducts = currentData.slice();
         if(activeFilterProcessing === null && activeFilterRoasting === null){
             return filteredProducts;
         }else {
@@ -32,14 +72,13 @@ const ProductList = () => {
             }
         }
 
-    }, [products, activeFilterProcessing, activeFilterRoasting]);
+    }, [products, activeFilterProcessing, activeFilterRoasting, currentPage]);
 
-    if (isLoading) {
-        return <h5 className="text-center mt-5">Загрузка</h5>;
-    } else if (isError) {
-        return <h5 className="text-center mt-5">Ошибка загрузки</h5>
-    }
-
+    // if (isLoading) {
+    //     return <h5 className="text-center mt-5">Загрузка</h5>;
+    // } else if (isError) {
+    //     return <h5 className="text-center mt-5">Ошибка загрузки</h5>
+    // }
     function renderProductList(arr){
         if (arr.length === 0) {
             return <h5 className="text-center mt-5">Товаров пока нет</h5>
@@ -61,9 +100,22 @@ const ProductList = () => {
 
     const elements = renderProductList(filteredProducts);
     return (
-        <div className="flex flex-col w-full justify-center p-10">
+        <div className="flex flex-col w-full justify-center p-10 items-center">
             {elements}
-            <button className="bg-mainOrange-600 shadow-xl rounded-lg px-5 py-2 mt-10">Загрузить еще</button>
+            {/*<button className="bg-mainOrange-600 shadow-xl rounded-lg px-5 py-2 mt-10"*/}
+            {/*        onClick={() => onRequest(offset)}*/}
+            {/*        disabled={newItemLoading}*/}
+            {/*        style={{'display': productEnded ? 'none' : 'block'}}*/}
+            {/*>*/}
+            {/*    Загрузить еще*/}
+            {/*</button>*/}
+            <Pagination
+                className="pagination-bar mt-5"
+                currentPage={currentPage}
+                totalCount={products.length}
+                pageSize={pageSize}
+                onPageChange={page => setCurrentPage(page)}
+            />
         </div>
     )
 }
