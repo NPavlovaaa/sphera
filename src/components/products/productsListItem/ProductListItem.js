@@ -30,7 +30,6 @@ const ProductListItem = ({product, i}) => {
     const [cart, setCart] = useState();
     const [favorite, setFavorite] = useState([]);
 
-
     useEffect(()=>{
         dispatch(fetchProcessingMethod(product.processing_method)).then(data => {
             setProcessing(data.payload)
@@ -41,11 +40,11 @@ const ProductListItem = ({product, i}) => {
         dispatch(fetchProductVariety(product.product_id)).then(data => {
             setVariety(data.payload)
         })
+    }, [])
 
+    useEffect(()=>{
         updateCard();
-
     }, [openWeight])
-
 
     useEffect(() => {
         dispatch(fetchWeight(product.product_id))

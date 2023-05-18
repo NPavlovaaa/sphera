@@ -6,13 +6,20 @@ import Avatar from "../icons/Avatar";
 import Favorite from "../icons/Favorite";
 import Cart from "../icons/Cart";
 import Package from "../icons/Package";
-import { useSelector } from "react-redux";
-
+import {useDispatch, useSelector} from "react-redux";
+import {useEffect} from "react";
+import {fetchCart} from "../clientCart/cartSlice";
 
 const AppHeaderClient = () => {
     const activeClient = useSelector(state => state.authUser.client);
     const activeUser = useSelector(state => state.authUser.user);
     const level = useSelector(state => state.authUser.level);
+    const cart = useSelector(state => state.getCart.cart);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(fetchCart())
+    }, [])
 
     return (
         <header className="z-50 header bg-mainWhite sticky top-0 shadow-sm flex items-center justify-between px-14">
@@ -89,6 +96,7 @@ const AppHeaderClient = () => {
                             <p>Избранное</p>
                         </NavLink>
                         <NavLink to="/cart" className="flex flex-col items-center ml-5">
+                            <div className="text-black bg-mainOrange-600 rounded-2xl absolute right-14 top-20 px-1.5 py-0.5">{cart.length}</div>
                             <Cart/>
                             <p>Корзина</p>
                         </NavLink>

@@ -6,9 +6,8 @@ import { Link } from "react-router-dom";
 const ClientCart = () => {
     const activeClient = useSelector(state => state.authUser.client);
     const cartLoadingStatus = useSelector(state => state.getCart.cartLoadingStatus);
-
+    const cart = useSelector(state => state.getCart.cart);
     const dispatch = useDispatch();
-    const [cart, setCart] = useState([]);
 
     useEffect(()=>{
         if(activeClient){
@@ -17,9 +16,7 @@ const ClientCart = () => {
     }, [activeClient])
 
     const updateCart = () =>{
-        dispatch(fetchCart()).then(data => {
-            setCart(data.payload)
-        })
+        dispatch(fetchCart())
     }
 
     let total_sum  = 0;

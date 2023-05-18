@@ -6,6 +6,7 @@ const cartAdapter = createEntityAdapter();
 
 const initialState = cartAdapter.getInitialState({
     cartLoadingStatus: 'idle',
+    cart: []
 });
 
 
@@ -67,8 +68,9 @@ const cartSlice = createSlice({
             .addCase(fetchCart.pending, state => {
                 state.cartLoadingStatus = 'loading';
             })
-            .addCase(fetchCart.fulfilled, (state) => {
+            .addCase(fetchCart.fulfilled, (state, action) => {
                 state.cartLoadingStatus = 'success';
+                state.cart = action.payload;
             })
             .addCase(fetchCart.rejected, state => {state.cartLoadingStatus = 'error'})
             .addDefaultCase(() => {})
