@@ -9,7 +9,7 @@ import {
     fetchProcessingMethods,
     fetchVariety,
     fetchRoastingMethods, activeCategoryChange
-} from "../productSlice";
+} from "../../products/productSlice";
 
 
 const ProductsFilters = () => {

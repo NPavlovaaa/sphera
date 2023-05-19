@@ -1,6 +1,6 @@
 import {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import { fetchCategory, activeCategoryChange } from "../productSlice";
+import { fetchCategory, activeCategoryChange } from "../../products/productSlice";
 import Question from "../../icons/Question";
 
 

@@ -3,14 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import {fetchOrders, fetchStatuses} from "../orderSlice";
 import { fetchAdminCart } from "../../clientCart/cartSlice";
 import ModalWindow from "../../modalWindow/ModalWindow";
-import {activeFilterStatusChange} from "../orderSlice";
 import Spinner from "../../spinner/Spinner";
+import OrderStatusFilters from "../../filters/orderStatusFilters/OrderStatusFilters";
 
 
 const AdminOrders = () => {
     const {changeOrderStatus, activeFilter, ordersLoadingStatus} = useSelector(state => state.getOrders);
     const activeUser = useSelector(state => state.authUser.user);
-    const statuses = useSelector(state => state.getOrders.statuses);
 
     const [orders, setOrders] = useState([]);
     const [cart, setCart] = useState([]);
@@ -47,9 +46,8 @@ const AdminOrders = () => {
     }, [orders, activeFilter]);
 
 
-    const renderStatus = ({id, detail}) => {
+    const renderStatus = (id) => {
         let typeStatus;
-        if((activeFilter && id === activeFilter) || detail === 'status'){
             switch(id){
                 case 1:
                     typeStatus = 'text-red-700 bg-red-100';
@@ -67,11 +65,6 @@ const AdminOrders = () => {
                     typeStatus = 'text-blue-700 bg-blue-100';
                     break;
             }
-        }
-        else {
-            typeStatus = 'border-lightGray border-2';
-        }
-
         return typeStatus;
     }
 
@@ -97,10 +90,7 @@ const AdminOrders = () => {
                             <div className="flex flex-col w-5/12">
                                 <div className="flex flex-row w-full rounded-xl">
                                     <p className="mr-5 font-semibold">Доставка в постамат</p>
-                                    <div className={`${renderStatus({
-                                        'id': item.status.status_id,
-                                        'detail': 'status'
-                                    })} text-xs flex justify-center h-fit rounded-lg py-1.5 px-3 shadow-lg`}>
+                                    <div className={`${renderStatus(item.status.status_id)} text-xs flex justify-center h-fit rounded-lg py-1.5 px-3 shadow-lg`}>
                                         {item.status.status_name}
                                     </div>
                                 </div>
@@ -167,23 +157,7 @@ const AdminOrders = () => {
         <div className="w-full">
             <h1 className="text-3xl font-bold">Заказы</h1>
             <div className="flex flex-row mt-5 items-center">
-                <p className="text-mainGray mr-5">Фильтры: </p>
-                {statuses.map(item =>{
-                    return(
-                        <button className={`${renderStatus({'id': item.status_id, 'detail': 'filter'})} text-sm flex justify-center h-fit rounded-lg py-1.5 px-3 shadow-sm mr-3`}
-                                type="submit"
-                                onClick={() => dispatch(activeFilterStatusChange(item.status_id))}
-                        >
-                            {item.status_name}
-                        </button>
-                        )
-                })}
-                <button className="text-sm flex justify-center h-fit py-1.5 px-4"
-                        type="submit"
-                        onClick={() => dispatch(activeFilterStatusChange(0))}
-                >
-                    Сбросить фильтр
-                </button>
+                <OrderStatusFilters/>
             </div>
             {ordersLoadingStatus === 'loading' ? <Spinner/> : null}
             <div>
