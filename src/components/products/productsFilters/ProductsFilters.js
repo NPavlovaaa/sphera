@@ -8,7 +8,7 @@ import {
     activeFilterVarietyChange,
     fetchProcessingMethods,
     fetchVariety,
-    fetchRoastingMethods
+    fetchRoastingMethods, activeCategoryChange
 } from "../productSlice";
 
 
@@ -43,7 +43,9 @@ const ProductsFilters = () => {
                         return (
                             <div className="flex flex-row mb-1 items-center">
                                 <button type="submit" onClick={() => {
-                                    dispatch(activeFilterProcessingChange(item.processing_method_id))
+                                    item.processing_method_id === activeFilterProcessing
+                                        ? dispatch(activeFilterProcessingChange(null))
+                                        : dispatch(activeFilterProcessingChange(item.processing_method_id))
                                 }}>
                                     {activeFilterProcessing && activeFilterProcessing === item.processing_method_id ? <ActiveCircle/> : <InactiveCircle/>}
                                 </button>
@@ -62,7 +64,9 @@ const ProductsFilters = () => {
                         return (
                             <div className="flex flex-row mb-1 items-center">
                                 <button type="submit" onClick={() => {
-                                    dispatch(activeFilterRoastingChange(item.roasting_method_id))
+                                    item.roasting_method_id === activeFilterRoasting
+                                        ? dispatch(activeFilterRoastingChange(null))
+                                        : dispatch(activeFilterRoastingChange(item.roasting_method_id))
                                 }}>
                                     {activeFilterRoasting && activeFilterRoasting === item.roasting_method_id ? <ActiveCircle/> : <InactiveCircle/>}
                                 </button>
@@ -81,7 +85,9 @@ const ProductsFilters = () => {
                         return (
                             <div className="flex flex-row mb-1 items-center">
                                 <button type="submit" onClick={() => {
-                                    dispatch(activeFilterVarietyChange(item.variety_id))
+                                    item.variety_id === activeFilterVariety
+                                        ? dispatch(activeFilterProcessingChange(null))
+                                        : dispatch(activeFilterVarietyChange(item.variety_id))
                                 }}>
                                     {renderVar(item)}
                                 </button>
