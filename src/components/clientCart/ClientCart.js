@@ -67,9 +67,11 @@ const ClientCart = () => {
             return (
                 <div className="flex flex-row w-full justify-between bg-mainWhite mb-1.5 p-8 rounded-xl" key={cart_id}>
                     <div className="flex flex-row w-2/3 items-center justify-center">
-                        <div className="flex py-3 w-1/4 max-h-44 justify-center">
-                            <img src={image} alt="картинка товара" className="max-h-40"/>
-                        </div>
+                            <div className="flex py-3 w-1/4 max-h-44 justify-center">
+                                <Link to={`/products/${product.product_id}/`}>
+                                    <img src={image} alt="картинка товара" className="max-h-40"/>
+                                </Link>
+                            </div>
                         <div className="flex flex-col w-3/4 ml-5">
                             <p className="flex font-medium text-lg mt-1">
                                 {product.product_name}

@@ -16,27 +16,21 @@ const ProductList = () => {
     // const [newItemLoading, setNewItemLoading] = useState(false);
     // const [offset, setOffset] = useState(0);
     // const [productEnded, setProductEnded] = useState(false);
-    // const dispatch = useDispatch();
+    const [products, setProducts] = useState([]);
+    const dispatch = useDispatch();
     activeCategory === 2 ? activeCategory=1 : activeCategory=activeCategory
 
     const [currentPage, setCurrentPage] = useState(1);
-    const {
-        data: products = [],
-        isLoading,
-        isError
-    } = useGetProductsQuery();
+    // const {
+    //     data: products = [],
+    //     isLoading,
+    //     isError
+    // } = useGetProductsQuery();
 
-    let pageSize = 9;
-    const currentData = useMemo(() => {
-        const firstPageIndex = (currentPage - 1) * pageSize;
-        const lastPageIndex = firstPageIndex + pageSize;
-        return products.slice(firstPageIndex, lastPageIndex);
-    }, [currentPage, products]);
-
-
-    // useEffect(() => {
-    //     onRequest(offset, true)
-    // }, [])
+    useEffect(() => {
+        dispatch(fetchProductList())
+            .then(data => setProducts(data.payload))
+    }, [])
 
     // const onRequest = (offset, initial) => {
     //     initial ? setNewItemLoading(false) : setNewItemLoading(true);
@@ -58,7 +52,8 @@ const ProductList = () => {
 
 
     const filteredProducts = useMemo(() => {
-        const filteredProducts = currentData.slice();
+        const filteredProducts = products.slice();
+        setCurrentPage(1);
         if(activeFilterProcessing === null && activeFilterRoasting === null && activeCategory === null){
             return filteredProducts;
         }else {
@@ -87,13 +82,20 @@ const ProductList = () => {
             }
         }
 
-    }, [products, activeFilterProcessing, activeFilterRoasting, currentPage, activeCategory]);
+    }, [products, activeFilterProcessing, activeFilterRoasting, activeCategory]);
 
-    if (isLoading) {
-        return <h5 className="text-center mt-5">Загрузка</h5>;
-    } else if (isError) {
-        return <h5 className="text-center mt-5">Ошибка загрузки</h5>
-    }
+    let pageSize = 9;
+    const currentData = useMemo(() => {
+        const firstPageIndex = (currentPage - 1) * pageSize;
+        const lastPageIndex = firstPageIndex + pageSize;
+        return filteredProducts.slice(firstPageIndex, lastPageIndex);
+    }, [currentPage, filteredProducts]);
+
+    // if (isLoading) {
+    //     return <h5 className="text-center mt-5">Загрузка</h5>;
+    // } else if (isError) {
+    //     return <h5 className="text-center mt-5">Ошибка загрузки</h5>
+    // }
 
     function renderProductList(arr){
         if (arr.length === 0) {
@@ -114,7 +116,7 @@ const ProductList = () => {
 
     }
 
-    const elements = renderProductList(filteredProducts);
+    const elements = renderProductList(currentData);
     return (
         <div className="flex flex-col w-full justify-center p-10 items-center">
             {elements}
@@ -128,7 +130,7 @@ const ProductList = () => {
             <Pagination
                 className="pagination-bar mt-5"
                 currentPage={currentPage}
-                totalCount={products.length}
+                totalCount={filteredProducts.length}
                 pageSize={pageSize}
                 onPageChange={page => setCurrentPage(page)}
             />

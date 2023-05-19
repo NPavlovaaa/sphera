@@ -17,11 +17,19 @@ const initialState = productAdapter.getInitialState({
     activeCategory: null
 });
 
+// export const fetchProductList = createAsyncThunk(
+//     'products/fetchProductList',
+//     async (offset) => {
+//         const {request} = useHttp();
+//         return await request(`http://localhost:8000/product_list/${offset}/`)
+//     }
+// )
+
 export const fetchProductList = createAsyncThunk(
     'products/fetchProductList',
-    async (offset) => {
+    async () => {
         const {request} = useHttp();
-        return await request(`http://localhost:8000/product_list/${offset}/`)
+        return await request(`http://localhost:8000/products/`)
     }
 )
 
