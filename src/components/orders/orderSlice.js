@@ -8,7 +8,7 @@ const initialState = orderAdapter.getInitialState({
     ordersLoadingStatus: 'idle',
     statuses: [],
     changeOrderStatus: null,
-    activeFilter: 0
+    activeFilter: 0,
 });
 
 

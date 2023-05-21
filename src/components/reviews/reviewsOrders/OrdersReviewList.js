@@ -38,9 +38,7 @@ const OrdersReviewList = () => {
 
     return (
         <div className="flex flex-row mt-4">
-            <div className="p-5">
-                {elements}
-            </div>
+            {elements}
         </div>
     )
 }
