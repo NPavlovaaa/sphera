@@ -1,6 +1,5 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 
-
 export const apiSlice = createApi({
     reducerPath: '',
     baseQuery: fetchBaseQuery({
@@ -83,6 +82,10 @@ export const apiSlice = createApi({
             }),
             invalidatesTags: ['Orders']
         }),
+        getOrdersReviews: builder.query({
+            query: () => '/reviews/',
+            providesTags: ['Orders']
+        })
     })
 })
 
@@ -95,5 +98,6 @@ export const {  useGetUsersQuery,
                 useAddFavoriteMutation,
                 useGetFavoritesQuery,
                 useGetDetailFavoriteQuery,
-                useGetProductVarietiesQuery
+                useGetProductVarietiesQuery,
+                useGetOrdersReviewsQuery
 } = apiSlice;

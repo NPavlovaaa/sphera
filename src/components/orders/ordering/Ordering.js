@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCart } from "../../clientCart/cartSlice";
-import delivery from "../../../assets/delivery.png";
 import Card from "../../icons/Card";
 import { useCreateOrderMutation, useGetDeliveryMethodsQuery } from "../../../api/apiSlice";
 
@@ -17,7 +16,6 @@ const Ordering = () => {
     const {data: deliveries = []} = useGetDeliveryMethodsQuery();
     const [createOrder] = useCreateOrderMutation();
     const [redirect, setRedirect] = useState(false);
-
 
     useEffect(()=>{
         if(activeClient){
@@ -69,114 +67,61 @@ const Ordering = () => {
                             </div>
                             <div className="flex flex-col mt-5">
                                 <div className="flex flex-row justify-between">
-                                    <p className="text-lg font-semibold">Способы доставки</p>
-                                    <div className="flex flex-row">
-                                        <ul className="flex space-x-10">
-                                            <li>
-                                                <a className={` ${openTab === 1 ? "text-mainOrange-600" : ""} text-mainGray text-lg flex justify-center cursor-pointer rounded-lg`}
-                                                   href="src/components/orders/ordering/Ordering#"
-                                                   onClick={(e) => {
-                                                       e.preventDefault();
-                                                       setOpenTab(1)
-                                                   }}>
-                                                    Курьером
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a className={` ${openTab === 2 ? "text-mainOrange-600" : ""} text-mainGray text-lg flex justify-center cursor-pointer rounded-lg`}
-                                                   href="src/components/orders/ordering/Ordering#"
-                                                   onClick={(e) => {
-                                                       e.preventDefault();
-                                                       setOpenTab(2)
-                                                   }}>
-                                                    Пункты выдачи
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                    <p className="text-lg font-semibold">Адрес доставки</p>
                                 </div>
-                                <div
-                                    className={`${openTab === 1 ? "flex" : "hidden"} flex-col w-full justify-between bg-mainWhite mb-1.5 p-8 rounded-xl mt-2`}>
-                                    {deliveries ? deliveries.map(item => {
+                                <div className="flex flex-row mt-2">
+                                    <input name="city"
+                                           placeholder="Город, улица"
+                                           className="w-2/3 mr-10 rounded-lg py-1 px-2"
+                                           onChange={(e) => {
+                                               e.preventDefault();
+                                               setAddress({
+                                                   'city': e.currentTarget.value,
+                                                   'apartament': address.apartament
+                                               })
+                                           }}
+                                    />
+                                    <input name="apartament"
+                                           placeholder="Квартира/Офис"
+                                           className="w-1/3 rounded-lg py-1 px-2"
+                                           onChange={(e) => {
+                                               e.preventDefault();
+                                               setAddress({
+                                                   'city': address.city,
+                                                   'apartament': e.currentTarget.value
+                                               })
+                                           }}
+                                    />
+                                </div>
+                            </div>
+                            <div className="flex flex-col mt-5">
+                                <p className="text-lg font-semibold">Получатель</p>
+                                <div className="flex flex-row mt-2">
+                                    <p className="mr-10">{activeClient ? activeClient.first_name + ' ' + activeClient.last_name : null}</p>
+                                    <p>{activeClient ? activeClient.phone : null}</p>
+                                </div>
+                            </div>
+                            <div className="flex flex-col mt-5">
+                                <p className="text-lg font-semibold">Состав заказа</p>
+                                <div className="flex mt-2 bg-mainWhite rounded-xl px-8 py-5">
+                                    {
+                                        cart && cart.map(({cart_id, price, weight, count, product}) => {
+                                            total_sum += price;
+                                            weight_sum += weight * count;
+                                            count_products += 1 * count;
+                                            weight === 1000 ? image = product.image_max : image = product.image_min
                                             return (
-                                                <div key={item.delivery_id}>
-                                                    <div
-                                                        className={`${selectedDelivery.selected === true && selectedDelivery.delivery === item.delivery_id ? "flex border-2 border-mainOrange-600" : "flex"} flex-row py-4 px-5 rounded-xl justify-between items-center text-lg`}
-                                                        onClick={(e) => {
-                                                            e.preventDefault();
-                                                            setSelectedDelivery({
-                                                                'delivery': item.delivery_id,
-                                                                'selected': !selectedDelivery.selected
-                                                            })
-                                                        }}>
-                                                        <img src={delivery} width="70" alt="картинка способа доставки"/>
-                                                        <p>2 - 4 мая</p>
-                                                        <p>149 р</p>
-                                                    </div>
+                                                <div key={cart_id} className="flex flex-col items-center mr-5">
+                                                    <img src={image} alt="картинка товара" width="100"
+                                                         className="h-fit"/>
+                                                    <p className="text-sm text-mainGray mt-2">{weight}г</p>
                                                 </div>
                                             )
                                         })
-                                        : null}
-                                    <div
-                                        className={`${selectedDelivery.selected === true ? "flex" : "hidden"} w-4/5 mt-10`}>
-                                        <input name="city"
-                                               placeholder="Город, улица"
-                                               className="w-2/3 border-b-2 border-mainGray mr-10"
-                                               onChange={(e) => {
-                                                   e.preventDefault();
-                                                   setAddress({
-                                                       'city': e.currentTarget.value,
-                                                       'apartament': address.apartament
-                                                   })
-                                               }}
-                                        />
-                                        <input name="apartament"
-                                               placeholder="Квартира/Офис"
-                                               className="w-1/3 border-b-2 border-mainGray"
-                                               onChange={(e) => {
-                                                   e.preventDefault();
-                                                   setAddress({
-                                                       'city': address.city,
-                                                       'apartament': e.currentTarget.value
-                                                   })
-                                               }}
-                                        />
-                                    </div>
-                                    <div className="flex flex-col mt-8">
-                                        <p className="text-base font-semibold">Получатель</p>
-                                        <div className="flex flex-row mt-2">
-                                            <p className="mr-10">{activeClient ? activeClient.first_name + ' ' + activeClient.last_name : null}</p>
-                                            <p>{activeClient ? activeClient.phone : null}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div
-                                    className={`${openTab === 2 ? "flex" : "hidden"} flex-row w-full justify-between bg-mainWhite mb-1.5 p-8 rounded-xl mt-2`}>
-                                    <img src={delivery} width="70" alt="картинка способа доставки"/>
-                                </div>
-                                <div className="flex flex-col mt-5">
-                                    <p className="text-lg font-semibold">Состав заказа</p>
-                                    <div className="flex mt-2 bg-mainWhite rounded-xl px-8 py-5">
-                                        {
-                                            cart && cart.map(({cart_id, price, weight, count, product}) => {
-                                                total_sum += price;
-                                                weight_sum += weight * count;
-                                                count_products += 1 * count;
-                                                weight === 1000 ? image = product.image_max : image = product.image_min
-                                                return (
-                                                    <div key={cart_id} className="flex flex-col items-center mr-5">
-                                                        <img src={image} alt="картинка товара" width="100"
-                                                             className="h-fit"/>
-                                                        <p className="text-sm text-mainGray mt-2">{weight}г</p>
-                                                    </div>
-                                                )
-                                            })
-                                        }
-                                    </div>
+                                    }
                                 </div>
                             </div>
                         </div>
-
                     </div>
                     <div className="flex flex-col">
                 {/* <Link to={`/ordering/`}> */}
