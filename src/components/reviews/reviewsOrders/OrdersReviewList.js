@@ -37,7 +37,7 @@ const OrdersReviewList = () => {
     const elements = renderReviewList(reviews);
 
     return (
-        <div className="flex flex-row mt-4">
+        <div className="flex flex-row mt-4 w-full">
             {elements}
         </div>
     )

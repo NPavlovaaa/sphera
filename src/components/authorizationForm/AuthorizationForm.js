@@ -16,7 +16,10 @@ const AuthorizationForm = ({onToggle}) => {
             'username': values.username,
             'password': values.password
         }))
-            .then(data => localStorage.setItem('TOKEN_AUTH', data.payload.access))
+            .then(data => {
+                console.log(data.payload)
+                localStorage.setItem('TOKEN_AUTH', data.payload.access);
+            })
             .then(setRedirect(true))
     }
 

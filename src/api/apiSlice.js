@@ -85,6 +85,13 @@ export const apiSlice = createApi({
         getOrdersReviews: builder.query({
             query: () => '/reviews/',
             providesTags: ['Orders']
+        }),
+        updateOrdersReview: builder.mutation({
+            query: body => ({
+                url: `/review_update/`,
+                method: 'POST',
+                body: body
+            }),
         })
     })
 })
@@ -99,5 +106,6 @@ export const {  useGetUsersQuery,
                 useGetFavoritesQuery,
                 useGetDetailFavoriteQuery,
                 useGetProductVarietiesQuery,
-                useGetOrdersReviewsQuery
+                useGetOrdersReviewsQuery,
+                useUpdateOrdersReviewMutation
 } = apiSlice;
