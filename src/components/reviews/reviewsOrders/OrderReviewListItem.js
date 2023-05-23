@@ -9,7 +9,7 @@ import Rating from "../../icons/Rating";
 import {useUpdateOrdersReviewMutation} from "../../../api/apiSlice";
 
 
-const OrderReviewListItem = ({review, review_date, avatar, first_name, level}) => {
+const OrderReviewListItem = ({review, review_date, avatar, first_name, level, review_status, onChange}) => {
     const role = localStorage.getItem('ROLE');
     const [updateOrdersReview] = useUpdateOrdersReviewMutation();
 
@@ -37,17 +37,48 @@ const OrderReviewListItem = ({review, review_date, avatar, first_name, level}) =
         return params
     }
 
+    const renderStatus = (id) => {
+        let typeStatus;
+        switch(id){
+            case 1:
+                typeStatus = 'text-blue-700 bg-blue-100';
+                break;
+            case 2:
+                typeStatus = 'text-green-700 bg-green-100';
+                break;
+            case 3:
+                typeStatus = 'text-red-700 bg-red-100';
+                break;
+            default:
+                typeStatus = 'text-blue-700 bg-blue-100';
+                break;
+        }
+        return typeStatus;
+    }
+
     const ratingProduct = renderRating(review.product_quality_assessment)
     const ratingDelivery = renderRating(review.delivery_assessment)
 
     const updateReview = (id) => {
-        updateOrdersReview({'review_id': id})
+        updateOrdersReview({'review_id': id, 'detail': 'publish'})
+        onChange(id)
+    }
 
+    const cancelReview = (id) => {
+        updateOrdersReview({'review_id': id, 'detail': 'cancel'})
+        onChange(id)
     }
 
     return(
         <div className="mb-10">
-            <div className="bg-mainWhite rounded-lg p-10 mb-4">
+            <div className="bg-mainWhite rounded-lg px-10 pt-5 pb-10 mb-4">
+                {role === '1' ?
+                    <div className="flex justify-between mb-5">
+                        <p className="text-lg font-semibold">Отзыв №{review.review_id}</p>
+                        <p className={`${renderStatus(review.review_status)} text-sm flex justify-center h-fit rounded-lg py-1.5 px-3 shadow-lg`}>{review_status}</p>
+                    </div>
+                    : null
+                }
                 <div className="flex flex-row justify-between mb-4">
                     <div className="flex flex-row">
                         <div className="h-14 w-14">
@@ -74,13 +105,13 @@ const OrderReviewListItem = ({review, review_date, avatar, first_name, level}) =
                 </div>
                 <p className="mt-3">{review.review_text}</p>
             </div>
-            {role === '1' ?
+            {role === '1' && review_status === 'На рассмотрении' ?
                 <div className="flex justify-end">
+                    <button type="submit" onClick={() => cancelReview(review.review_id)} className="text-red-700 px-5 py-2 mr-5">Отклонить</button>
                     <button type="submit" onClick={() => updateReview(review.review_id)} className="bg-mainOrange-600 shadow-xl rounded-xl px-5 py-2">Опубликовать</button>
                 </div>
                 : null
             }
-
         </div>
     )
 }

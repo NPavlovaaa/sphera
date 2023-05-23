@@ -18,7 +18,6 @@ import AppHeaderClient from '../appHeader/AppHeaderClient';
 import AppHeaderAdmin from '../appHeader/AppHeaderAdmin';
 import ProductReviewsClient from '../products/productReviews/ProductReviewsClient';
 import ProductReviewsAdmin from '../products/productReviews/ProductReviewsAdmin';
-import OrdersReviewListAdmin from '../reviews/reviewsAdmin/OrdersReviewListAdmin';
 import AdminOrders from '../orders/adminOrders/AdminOrders';
 import ProductListFavorites from "../products/productListFavorites/ProductListFavorites";
 import OrdersReviewPage from "../pages/OrdersReviewPage";
@@ -55,7 +54,6 @@ function App() {
                             <Route path="/favorite" element={<ProductListFavorites/>}/>
                             <Route path="/admin_orders" element={<AdminOrders/>}/>
                             <Route path="/reviews" element={<OrdersReviewPage/>}/>
-                            <Route path="/admin_reviews" element={<OrdersReviewListAdmin/>}/>
                             <Route path="/product_reviews" element={<ProductReviewsClient/>}/>
                             <Route path="/admin_product_reviews" element={<ProductReviewsAdmin/>}/>
                         </Routes>

@@ -1,18 +1,22 @@
-import {useGetOrdersReviewsQuery} from "../../../api/apiSlice";
 import OrderReviewListItem from "./OrderReviewListItem";
+import {useState} from "react";
+import {useEffect} from "react";
+import {fetchReviews} from "../reviewsSlice";
+import {useDispatch} from "react-redux";
 
 const OrdersReviewList = () => {
-    const {
-        data: reviews = [],
-        isLoading,
-        isError
-    } = useGetOrdersReviewsQuery();
+    const [status, setStatus] = useState();
+    const [reviews, setReviews] = useState([]);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        onChange()
+    }, [status])
 
 
-    if (isLoading) {
-        return <h5 className="text-center mt-5">Загрузка</h5>;
-    } else if (isError) {
-        return <h5 className="text-center mt-5">Ошибка загрузки</h5>
+    const onChange = (id) => {
+        dispatch(fetchReviews()).then(data => setReviews(data.payload))
+        setStatus(id)
     }
 
     function renderReviewList(arr){
@@ -22,7 +26,9 @@ const OrdersReviewList = () => {
 
         const items = arr.map(({review, ...props}) => {
             return (
-                <OrderReviewListItem key={review.review_id} review={review} {...props}/>
+                <>
+                    <OrderReviewListItem key={review.review_id} review={review} {...props} onChange={onChange}/>
+                </>
             )
         })
 

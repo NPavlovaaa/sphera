@@ -8,6 +8,14 @@ const initialState = reviewAdapter.getInitialState({
     reviewLoadingStatus: 'idle',
 });
 
+export const fetchReviews = createAsyncThunk(
+    'products/fetchReviews',
+    async () => {
+        const {request} = useHttp();
+        return await request(`http://localhost:8000/reviews/`)
+    }
+)
+
 export const fetchCreateReview = createAsyncThunk(
     'products/fetchCreateReview',
      async (values) => {
