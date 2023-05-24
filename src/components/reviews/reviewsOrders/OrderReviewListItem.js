@@ -6,12 +6,13 @@ import Rating2 from "../../icons/Rating2";
 import Rating3 from "../../icons/Rating3";
 import Rating4 from "../../icons/Rating4";
 import Rating from "../../icons/Rating";
-import {useUpdateOrdersReviewMutation} from "../../../api/apiSlice";
+import {useUpdateOrdersReviewMutation, useUpdateProductsReviewMutation} from "../../../api/apiSlice";
 
 
-const OrderReviewListItem = ({review, review_date, avatar, first_name, level, review_status, onChange}) => {
+const OrderReviewListItem = ({detail, review, review_date, avatar, first_name, level, review_status, onChange}) => {
     const role = localStorage.getItem('ROLE');
     const [updateOrdersReview] = useUpdateOrdersReviewMutation();
+    const [updateProductsReview] = useUpdateProductsReviewMutation();
 
     let params;
     const renderRating = (item) => {
@@ -60,13 +61,25 @@ const OrderReviewListItem = ({review, review_date, avatar, first_name, level, re
     const ratingDelivery = renderRating(review.delivery_assessment)
 
     const updateReview = (id) => {
-        updateOrdersReview({'review_id': id, 'detail': 'publish'})
-        onChange(id)
+        if(detail === 'product'){
+            updateProductsReview({'review_id': id, 'detail': 'publish'})
+            onChange(id)
+
+        } else{
+            updateOrdersReview({'review_id': id, 'detail': 'publish'})
+            onChange(id)
+        }
     }
 
     const cancelReview = (id) => {
-        updateOrdersReview({'review_id': id, 'detail': 'cancel'})
-        onChange(id)
+        if(detail === 'product'){
+            updateProductsReview({'review_id': id, 'detail': 'cancel'})
+            onChange(id)
+
+        } else{
+            updateOrdersReview({'review_id': id, 'detail': 'cancel'})
+            onChange(id)
+        }
     }
 
     return(
@@ -89,20 +102,28 @@ const OrderReviewListItem = ({review, review_date, avatar, first_name, level, re
                             <p className="text-mainGray text-sm">{level}</p>
                         </div>
                     </div>
-                    <p className="flex">{review_date}</p>
-                </div>
-                <div className="flex">
-                    <div className="flex items-center mr-10">
-                        <Store/>
-                        <p className="ml-1.5 text-sm">Магазин</p>
-                        <span className="ml-1.5">{ratingProduct}</span>
-                    </div>
-                    <div className="flex items-center">
-                        <Package/>
-                        <p className="ml-1.5 text-sm">Доставка</p>
-                        <span className="ml-1.5">{ratingDelivery}</span>
+                    <div className="flex">
+                        <p className="flex mr-2">{review_date}</p>
+                        {detail === 'product' ?
+                            <span className="ml-1.5">{ratingProduct}</span>
+                            : null}
                     </div>
                 </div>
+                {detail !== 'product' ?
+                    <div className="flex">
+                        <div className="flex items-center mr-10">
+                            <Store/>
+                            <p className="ml-1.5 text-sm">Магазин</p>
+                            <span className="ml-1.5">{ratingProduct}</span>
+                        </div>
+                        <div className="flex items-center">
+                            <Package/>
+                            <p className="ml-1.5 text-sm">Доставка</p>
+                            <span className="ml-1.5">{ratingDelivery}</span>
+                        </div>
+                    </div>
+                    : null
+                }
                 <p className="mt-3">{review.review_text}</p>
             </div>
             {role === '1' && review_status === 'На рассмотрении' ?

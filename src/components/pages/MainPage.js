@@ -61,10 +61,10 @@ const MainPage = () => {
                                     <AdminOrders/>
                                 </div>
                                 <div className={`${openTab === 2 ? "flex" : "hidden"} flex w-full`}>
-
+                                    <OrdersReviewPage detail="product"/>
                                 </div>
                                 <div className={`${openTab === 3 ? "flex" : "hidden"} flex w-full`}>
-                                    <OrdersReviewPage/>
+                                    <OrdersReviewPage detail="order"/>
                                 </div>
                                 <div className={`${openTab === null ? "flex" : "hidden"} flex w-full`}>
                                     <div className="w-1/2 4xl:text-10xl 3xl:text-9xl 3xl:p-4 2xl:text-6xl xl:text-6xl lg:text-6xl px-12 font-semibold">

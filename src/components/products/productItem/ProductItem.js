@@ -14,12 +14,13 @@ import { useAddCartMutation, useAddFavoriteMutation} from "../../../api/apiSlice
 import { fetchProductInCart, fetchDeleteProductInCart, fetchUpdateCart } from "../../clientCart/cartSlice";
 import Spinner from "../../spinner/Spinner";
 import { Helmet } from "react-helmet";
+import OrdersReviewPage from "../../pages/OrdersReviewPage";
 
 
 const ProductItem = () => {
     const activeClient = useSelector(state => state.authUser.client);
     const productLoadingStatus = useSelector(state => state.getProduct.productLoadingStatus);
-    const [product, setProduct] = useState({})
+    const [product, setProduct] = useState([])
     const [variety, setVariety] = useState([]);
     const [processing, setProcessing] = useState();
     const [roasting, setRoasting] = useState();
@@ -142,7 +143,7 @@ const ProductItem = () => {
     }
 
     return (
-        <div className="px-56">
+        <div className="px-40">
             <Helmet>
                 <meta
                     name="description"
@@ -151,7 +152,7 @@ const ProductItem = () => {
                 <title>{product.product_name}</title>
             </Helmet>
             {productLoadingStatus === 'loading' ? <Spinner/> : null}
-            <div className="grid grid-cols-9 gap-16 w-full py-10 mt-10">
+            <div className="grid grid-cols-9 gap-16 w-full py-10 mt-10 px-20">
                 <div className="flex flex-col col-span-4 items-center bg-lightGray rounded-lg pt-14 pb-10">
                     <div className="flex justify-center items-end h-64">
                         {renderImage()}
@@ -299,7 +300,7 @@ const ProductItem = () => {
                             <ProductMakingMethods/>
                         </div>
                         <div className={`${openTab === 3 ? "flex" : "hidden"} flex w-full`}>
-                            <ProductReview/>
+                            <OrdersReviewPage detail="product" product={product ? product : null}/>
                         </div>
                     </div>
                 </div>

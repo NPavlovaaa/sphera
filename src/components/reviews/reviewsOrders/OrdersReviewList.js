@@ -1,10 +1,10 @@
 import OrderReviewListItem from "./OrderReviewListItem";
 import {useState} from "react";
 import {useEffect} from "react";
-import {fetchReviews} from "../reviewsSlice";
+import {fetchReviews, fetchReviewsProduct} from "../reviewsSlice";
 import {useDispatch} from "react-redux";
 
-const OrdersReviewList = () => {
+const OrdersReviewList = ({detail}) => {
     const [status, setStatus] = useState();
     const [reviews, setReviews] = useState([]);
     const dispatch = useDispatch();
@@ -12,10 +12,13 @@ const OrdersReviewList = () => {
     useEffect(() => {
         onChange()
     }, [status])
+    console.log(detail)
 
 
     const onChange = (id) => {
-        dispatch(fetchReviews()).then(data => setReviews(data.payload))
+        detail === 'product'
+            ? dispatch(fetchReviewsProduct()).then(data => setReviews(data.payload))
+            : dispatch(fetchReviews()).then(data => setReviews(data.payload))
         setStatus(id)
     }
 
@@ -27,7 +30,7 @@ const OrdersReviewList = () => {
         const items = arr.map(({review, ...props}) => {
             return (
                 <>
-                    <OrderReviewListItem key={review.review_id} review={review} {...props} onChange={onChange}/>
+                    <OrderReviewListItem detail={detail} key={review.review_id} review={review} {...props} onChange={onChange}/>
                 </>
             )
         })

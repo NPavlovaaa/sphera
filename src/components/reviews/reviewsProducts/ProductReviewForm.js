@@ -1,23 +1,19 @@
 import { Formik, Form, Field, ErrorMessage} from 'formik';
 import * as Yup from 'yup';
 import {useDispatch} from "react-redux";
-import {useEffect, useState} from "react";
-import {fetchOrders} from "../../orders/orderSlice";
-import {fetchCreateReview} from "../reviewsSlice";
+import {useState} from "react";
+import {fetchCreateReviewProduct} from "../reviewsSlice";
 import './../reviews.css';
 import RatingRender from "../../rating/RatingRender";
 
-const OrderReviewForm = ({availableOrders}) => {
+const ProductReviewForm = ({availableCarts}) => {
     const dispatch = useDispatch();
     const [reviewCreated, setReviewCreated] = useState(false);
 
-
-
     const onCreateReview = (values) => {
-        dispatch(fetchCreateReview({
+        dispatch(fetchCreateReviewProduct({
             'review_text': values.review_text,
-            'order': values.order,
-            'delivery_assessment': values.delivery_assessment,
+            'product': values.product,
             'product_quality_assessment': values.product_quality_assessment
         }))
             .then(() => {
@@ -31,17 +27,14 @@ const OrderReviewForm = ({availableOrders}) => {
             <Formik
                 initialValues ={{
                     review_text: '',
-                    order: null,
+                    product: availableCarts[0].product.product_id,
                     product_quality_assessment: 0,
-                    delivery_assessment: 0
                 }}
                 validationSchema={Yup.object({
                     review_text: Yup.string()
                         .min(10, 'Минимум 10 символов для заполнения')
                         .required('Обязательное поле'),
-                    order: Yup.number().required(),
                     product_quality_assessment: Yup.number().required('Обязательное поле'),
-                    delivery_assessment: Yup.number().required('Обязательное поле')
                 })}
                 onSubmit = {(values, {resetForm}) => {
                     onCreateReview(values);
@@ -55,20 +48,11 @@ const OrderReviewForm = ({availableOrders}) => {
                         </div>
                         :
                         <Form method="POST" enctype="multipart/form-data">
-                            <label htmlFor="order" className="text-xl font-bold">Оставить отзыв о заказе: </label>
-                            <Field as="select" id="order" className="bg-mainWhite shadow-lg rounded-lg py-1.5 px-3" name="order">
-                                {availableOrders.map(item => {
-                                    return <option value={item.order.order_id}>№{item.order.order_id} от {item.order_date}</option>
-                                })}
-                            </Field>
                             <div className="flex flex-row mt-5">
                                 <div className="flex flex-row items-center mr-10">
-                                    <p className="mr-2">Оцените наш магазин</p>
+                                    <p className="mr-2">Оцените кофе</p>
+                                    <p className="mr-2 font-semibold">{availableCarts[0].product.product_name}</p>
                                     <RatingRender name="product_quality_assessment"/>
-                                </div>
-                                <div className="flex flex-row items-center">
-                                    <p className="mr-2">Оцените доставку</p>
-                                    <RatingRender name="delivery_assessment"/>
                                 </div>
                             </div>
                             <div className="py-5 text-base">
@@ -78,7 +62,7 @@ const OrderReviewForm = ({availableOrders}) => {
                                         name="review_text"
                                         className="placeholder-transparent h-10 w-full focus:outline-none"
                                         id="review_text"
-                                        placeholder="Оцените заказ, магазин и доставку"
+                                        placeholder="Напишите отзыв о кофе"
                                         autoComplete="off"/>
                                 </div>
                                 <ErrorMessage component="div" style={{'color': 'red', 'margin-top': '1px', 'font-size' : '14px'}} name="review_text"/>
@@ -93,5 +77,5 @@ const OrderReviewForm = ({availableOrders}) => {
     )
 }
 
-export default OrderReviewForm;
+export default ProductReviewForm;
 

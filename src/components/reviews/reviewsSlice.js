@@ -16,6 +16,26 @@ export const fetchReviews = createAsyncThunk(
     }
 )
 
+export const fetchReviewsProduct = createAsyncThunk(
+    'products/fetchReviewsProduct',
+    async () => {
+        const {request} = useHttp();
+        return await request(`http://localhost:8000/product_reviews/`)
+    }
+)
+
+export const fetchCreateReviewProduct = createAsyncThunk(
+    'products/fetchCreateReviewProduct',
+    async (values) => {
+        const {request} = useHttp();
+        return await request(`http://localhost:8000/create_review_product/`, 'POST', {
+            'review_text': values.review_text,
+            'product': values.product,
+            'product_quality_assessment': values.product_quality_assessment
+        })
+    }
+)
+
 export const fetchCreateReview = createAsyncThunk(
     'products/fetchCreateReview',
      async (values) => {
