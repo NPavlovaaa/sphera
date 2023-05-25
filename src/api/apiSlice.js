@@ -115,5 +115,5 @@ export const {  useGetUsersQuery,
                 useGetProductVarietiesQuery,
                 useGetOrdersReviewsQuery,
                 useUpdateOrdersReviewMutation,
-                useUpdateProductsReviewMutation
+                useUpdateProductsReviewMutation,
 } = apiSlice;

@@ -89,7 +89,7 @@ const ClientCart = () => {
                             </p>
                             <div className="grid grid-cols-3 mt-1 text-sm">
                                 <button type="submit" className="flex text-mainOrange-600 py-2 w-full">В избранное</button>
-                                <button type="submit" onClick={deleteProduct} className="flex text-red py-2 w-full">Удалить</button>
+                                <button type="submit" onClick={deleteProduct} className="flex text-red-700 py-2 w-full">Удалить</button>
                             </div>
                         </div>
                     </div>

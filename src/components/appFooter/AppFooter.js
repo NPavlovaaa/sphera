@@ -5,7 +5,7 @@ import {Link} from "react-router-dom";
 
 const AppFooter = () => {
     return (
-        <div className="px-14 mt-12 flex flex-col pb-6 text-sm">
+        <div className="px-14 mt-20 flex flex-col pb-6 text-sm">
             <div className="flex justify-between px-5 font-semibold items-center">
                 <Logo width="100"/>
                 <p>Адрес: г. Москва, ул. Болотниковская д.9</p>

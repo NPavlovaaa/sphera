@@ -34,6 +34,14 @@ export const fetchAuth = createAsyncThunk(
     }
 )
 
+export const fetchAchievements = createAsyncThunk(
+    'users/fetchAchievements',
+    async () => {
+        const {request} = useHttp();
+        return await request('http://localhost:8000/achievements/')
+    }
+)
+
 const userSlice = createSlice({
     name: 'authUser',
     initialState,
