@@ -12,8 +12,6 @@ const OrdersReviewList = ({detail}) => {
     useEffect(() => {
         onChange()
     }, [status])
-    console.log(detail)
-
 
     const onChange = (id) => {
         detail === 'product'

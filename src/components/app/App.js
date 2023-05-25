@@ -21,6 +21,7 @@ import ProductReviewsAdmin from '../products/productReviews/ProductReviewsAdmin'
 import AdminOrders from '../orders/adminOrders/AdminOrders';
 import ProductListFavorites from "../products/productListFavorites/ProductListFavorites";
 import OrdersReviewPage from "../pages/OrdersReviewPage";
+import AppFooter from "../appFooter/AppFooter";
 
 
 function App() {
@@ -58,6 +59,7 @@ function App() {
                             <Route path="/admin_product_reviews" element={<ProductReviewsAdmin/>}/>
                         </Routes>
                     </main>
+                    <AppFooter/>
                 </Suspense>
             </div>
         </Router>

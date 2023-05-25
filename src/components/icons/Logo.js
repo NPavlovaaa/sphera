@@ -1,6 +1,6 @@
-function Logo() {
+function Logo({width}) {
     return (
-        <svg xmlns="http://www.w3.org/2000/svg" width="162" height="32" viewBox="0 0 162 32" fill="none">
+        <svg xmlns="http://www.w3.org/2000/svg" width={width} height="32" viewBox="0 0 162 32" fill="none">
             <path fill-rule="evenodd" clip-rule="evenodd" d="M32 0H0V32H32V0ZM16.1905 26.2857C21.7659 26.2857 26.2857 21.7659 26.2857
                 16.1905C26.2857 10.615 21.7659 6.09524 16.1905 6.09524C10.615 6.09524 6.09524 10.615 6.09524 16.1905C6.09524 21.7659
                 10.615 26.2857 16.1905 26.2857Z" fill="black">

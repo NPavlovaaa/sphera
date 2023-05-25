@@ -25,7 +25,7 @@ const AppHeaderClient = () => {
         <header className="z-50 header bg-mainWhite sticky top-0 shadow-sm flex items-center justify-between px-14">
             <div className="py-2.5 w-fit px-5">
                 <Link to="/">
-                    <Logo/>
+                    <Logo width="162"/>
                     <p className="text-xs mt-1">Интернет-магазин кофе</p>
                 </Link>
             </div>
@@ -54,7 +54,7 @@ const AppHeaderClient = () => {
                     </div>
                 </div>
                 <ul className="flex justify-between items-center py-1.5">
-                    <li className="p-2 border-b-3 hover:text-mainOrange-600 cursor-pointer flex flex-row">
+                    <li className="p-2 hover:text-mainOrange-600 cursor-pointer flex flex-row">
                         <NavLink to="/products" style={({isActive}) => ({color: isActive ? '#FFA82E' : 'inherit'})}>Каталог товаров</NavLink>
                     </li>
                     <li className="px-2 hover:text-mainOrange-600 cursor-pointer">
