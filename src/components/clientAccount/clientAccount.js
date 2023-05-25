@@ -1,64 +1,46 @@
-import AvatarDetail from "../icons/AvatarDetail";
-import Pen from "../icons/Pen"
-import Phone from "../icons/Phone"
-import Calendar from "../icons/Calendar"
-import Mail from "../icons/Mail"
-import {activeUserChange} from "../../api/userSlice";
-import {useDispatch, useSelector} from "react-redux";
-import { Link } from "react-router-dom";
+import {useState} from "react";
+import ClientInfo from "./ClientInfo";
+import ClientAchievements from "./ClientAchievements";
 
 
 const ClientAccount = () => {
-    const activeClient = useSelector(state => state.authUser.client);
-    const activeUser = useSelector(state => state.authUser.user);
-
-    const dispatch = useDispatch();
-
-    const logout = async () => {
-        localStorage.removeItem('TOKEN_AUTH');
-        dispatch(activeUserChange(null))
-    }
+    const [openTab, setOpenTab] = useState(1);
 
     return(
-        <div className="flex flex-col px-20 py-10">
+        <div className="flex flex-col px-32 pt-10 pb-5">
             <h1 className="text-3xl font-bold">Личный кабинет</h1>
-            <div className="flex flex-row bg-lightGray shadow-md rounded-xl px-16 py-10 w-full h-fit mt-5">
-                <div className="flex flex-col w-1/2">
-                    <div className="flex flex-row items-center mb-5">
-                        {activeUser.avatar ?
-                            <div className="h-16 w-16">
-                                <img src={activeUser.avatar} className="rounded-xl avatar" alt="фотография пользователя"/>
-                            </div>
-                        :
-                            <AvatarDetail/>
-                        }
-                        <p className="text-xl ml-2">{activeClient.first_name} {activeClient.last_name}</p>
-                    </div>
-                    <div className="flex flex-row items-center">
-                        <Phone/>
-                        <p className="ml-3">{activeClient.phone}</p>
-                    </div>
-                    <div className="flex flex-row items-center mt-3">
-                        <Mail/>
-                        <p className="ml-3">{activeUser.username}</p>
-                    </div>
-                    <div className="flex flex-row items-center mt-3">
-                        <Calendar/>
-                        <p className="ml-3">{activeClient.birthday}</p>
-                    </div>
-                    <div className="flex mt-3">
-                        <Link to="/">
-                            <button type="submit" className="text-mainGray hover:text-mainOrange-600" onClick={logout}>Выйти</button>
-                        </Link>
-                    </div>
-                </div>
-                <div className="flex items-start w-1/2 justify-end">
-                    <button type="submit" className="flex flex-row items-center bg-mainOrange-600 shadow-lg rounded-2xl px-5 py-1.5">
-                        Редактировать
-                        <div className="ml-2">
-                            <Pen/>
+            <div className="flex mt-12">
+                <div className="flex flex-col w-full">
+                    <ul className="flex space-x-10">
+                        <li>
+                            <a className={` ${openTab === 1 ? "border-2 border-mainOrange-600" : ""} text-lg flex justify-center cursor-pointer rounded-lg py-1 px-8`}
+                               href="src/components/products/productItem/ProductItem#"
+                               onClick={(e) => {
+                                   e.preventDefault();
+                                   setOpenTab(1)
+                               }}>
+                                Личная информация
+                            </a>
+                        </li>
+                        <li>
+                            <a className={` ${openTab === 2 ? "border-2 border-mainOrange-600" : ""} text-lg flex justify-center cursor-pointer rounded-lg py-1 px-8`}
+                               href="src/components/products/productItem/ProductItem#"
+                               onClick={(e) => {
+                                   e.preventDefault();
+                                   setOpenTab(2)
+                               }}>
+                                Достижения
+                            </a>
+                        </li>
+                    </ul>
+                    <div className="flex flex-row bg-lightGray shadow-md rounded-xl px-16 pt-10 pb-5 w-full h-fit mt-5">
+                        <div className={`${openTab === 1 ? "flex" : "hidden"} flex w-full`}>
+                            <ClientInfo/>
                         </div>
-                    </button>
+                        <div className={`${openTab === 2 ? "flex" : "hidden"} flex w-full`}>
+                            <ClientAchievements/>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
