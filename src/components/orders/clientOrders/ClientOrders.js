@@ -5,6 +5,7 @@ import {fetchCartInOrders} from "../../clientCart/cartSlice";
 import Spinner from "../../spinner/Spinner";
 import {Link} from "react-router-dom";
 
+
 const ClientOrders = () => {
     const activeClient = useSelector(state => state.authUser.client);
     const ordersLoadingStatus = useSelector(state => state.getOrders.ordersLoadingStatus);
@@ -74,9 +75,8 @@ const ClientOrders = () => {
                                 {item.status.status_id === 6 ?
                                     <div>
                                         <p className="flex text-mainGray mt-5">Дата доставки: {item.delivery_date}</p>
-                                        <div className="flex flex-row mt-10 text-sm items-start">
+                                        <div className="flex mt-10 text-sm">
                                             <Link to="/reviews/" className="bg-mainOrange-600 rounded-xl px-3 py-1.5 mr-5">Оценить заказ</Link>
-                                            <Link to="" className="border-mainOrange-600 border-2 rounded-xl px-3 py-1.5">Оценить товар</Link>
                                         </div>
                                     </div>
                                     : <p className="flex text-mainGray mt-5">Ожидаемая дата: {item.delivery_date}</p>
@@ -87,7 +87,14 @@ const ClientOrders = () => {
                                 if(item.order.order_id === order){
                                     let image;
                                     weight === 1000 ? image = product.image_max : image = product.image_min
-                                    return <img src={image} alt="картинка товара" width="100" className="h-fit"/>
+                                    return (
+                                        <div className="flex flex-col text-sm justify-center items-center">
+                                            <img src={image} alt="картинка товара" width="100" className="h-fit mb-2"/>
+                                            {item.status.status_id === 6 ?
+                                                <Link to={`/products/${product.product_id}/`} className="text-mainOrange-600 rounded-xl px-3 py-1.5">Оценить товар</Link>
+                                             : null }
+                                        </div>
+                                    )
                                 }
                             })}
                             </div>
