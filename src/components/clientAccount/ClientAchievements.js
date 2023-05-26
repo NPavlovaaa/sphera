@@ -64,7 +64,7 @@ const ClientAchievements = () => {
                     <Star width="18"/>
                     <div className="flex justify-between w-60">
                         <p className="ml-2 text-mainGray mr-5">Средняя оценка кофе</p>
-                        <p className="">2</p>
+                        <p className="">{achievements ? achievements.assessment : null}</p>
                     </div>
                 </div>
             </div>
