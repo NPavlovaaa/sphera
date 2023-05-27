@@ -24,6 +24,11 @@ const AdminOrders = () => {
         updateCarts();
     }, [activeUser, changeOrderStatus])
 
+    function byField(field) {
+        return (a, b) => a['order'][field] > b['order'][field] ? 1 : -1;
+    }
+
+    const sorted_orders = orders.sort(byField('order_id'))
 
     const updateOrders = () =>{
         dispatch(fetchOrders()).then(data => {
@@ -37,13 +42,13 @@ const AdminOrders = () => {
     }
 
     const filteredOrders = useMemo(() => {
-        const filteredOrders = orders.slice();
+        const filteredOrders = sorted_orders.slice();
         if (activeFilter === 0){
             return filteredOrders;
         } else {
             return filteredOrders.filter(item => item.status.status_id === activeFilter)
         }
-    }, [orders, activeFilter]);
+    }, [sorted_orders, activeFilter]);
 
 
     const renderStatus = (id) => {
@@ -70,7 +75,7 @@ const AdminOrders = () => {
 
     const renderOrders = (arr) => {
         if (arr.length === 0) {
-            return <p className="text-center mt-5 text-2xl">Заказов пока нет</p>
+            return <p className="text-center text-xl mt-16">Заказов пока нет</p>
         }
         return arr.map((item) => {
             let total_product_count = 0;

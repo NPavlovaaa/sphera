@@ -4,6 +4,7 @@ import {fetchOrders} from "../orderSlice";
 import {fetchCartInOrders} from "../../clientCart/cartSlice";
 import Spinner from "../../spinner/Spinner";
 import {Link} from "react-router-dom";
+import ArrowVertical from "../../icons/ArrowVertical";
 
 
 const ClientOrders = () => {
@@ -11,6 +12,7 @@ const ClientOrders = () => {
     const ordersLoadingStatus = useSelector(state => state.getOrders.ordersLoadingStatus);
     const [orders, setOrders] = useState([]);
     const [cart, setCart] = useState([])
+    const [openTab, setOpenTab] = useState('');
 
     const dispatch = useDispatch();
 
@@ -34,7 +36,7 @@ const ClientOrders = () => {
             case 1:
                 typeStatus = 'text-red-700 bg-red-100';
                 break;
-            case 5:
+            case 2:
                 typeStatus = 'text-red-700 bg-red-100';
                 break;
             case 6:
@@ -50,11 +52,75 @@ const ClientOrders = () => {
         return typeStatus;
     }
 
+    function byField(field, detail) {
+        if(detail === 'ascending'){
+            return (a, b) => a['order'][field] > b['order'][field] ? 1 : -1;
+        }else{
+            return (a, b) => a['order'][field] < b['order'][field] ? 1 : -1;
+        }
+    }
+
+    let sorted_orders;
+    console.log(orders)
+
+    if(openTab === 'date_ascending'){
+        sorted_orders = orders.sort(byField('order_date', 'ascending'))
+    }
+    else if(openTab === 'date_descending'){
+        sorted_orders = orders.sort(byField('order_date', 'descending'))
+    }
+    else if(openTab === 'price_ascending'){
+        sorted_orders = orders.sort(byField('order_sum', 'ascending'))
+    }
+    else if(openTab === 'price_descending'){
+        sorted_orders = orders.sort(byField('order_sum', 'descending'))
+    }
+    else{
+        sorted_orders = orders.sort(byField('status', 'ascending'))
+    }
+
     return(
         <div className="w-full px-28 py-10">
             <h1 className="text-3xl font-bold">Заказы</h1>
+            <div className="flex w-1/3 items-center justify-between mt-6">
+                <p>Сортировать по:</p>
+                <div className="flex items-center">
+                    <a className={` ${openTab === 'date_ascending' || openTab === 'date_descending' ? "text-mainOrange-600" : ""} cursor-pointer mr-1`}
+                       href=""
+                       onClick={(e) => {
+                           e.preventDefault();
+                           openTab !== 'date_ascending' ? setOpenTab('date_ascending') : setOpenTab('date_descending')
+                       }}>
+                        Дате
+                    </a>
+                    <ArrowVertical color={openTab === 'date_ascending' || openTab === 'date_descending' ? "#FFA82E" : "#000"}
+                                   rotate={openTab === 'date_ascending' ? 180 : 0}
+                    />
+                </div>
+                <div className="flex items-center">
+                    <a className={` ${openTab === 'price_ascending' || openTab === 'price_descending' ? "text-mainOrange-600" : ""} cursor-pointer mr-1`}
+                       href=""
+                       onClick={(e) => {
+                           e.preventDefault();
+                           openTab !== 'price_ascending' ? setOpenTab('price_ascending') : setOpenTab('price_descending')
+                       }}>
+                        Цене
+                    </a>
+                    <ArrowVertical color={openTab === 'price_ascending' || openTab === 'price_descending' ? "#FFA82E" : "#000"}
+                                   rotate={openTab === 'price_ascending' ? 180 : 0}
+                    />
+                </div>
+                <a className="cursor-pointer text-mainGray text-sm"
+                   href=""
+                   onClick={(e) => {
+                       e.preventDefault();
+                       setOpenTab('')
+                   }}>
+                    Сбросить
+                </a>
+            </div>
             {ordersLoadingStatus === 'loading' ? <Spinner/> : null}
-            {orders.map((item) => {
+            {sorted_orders.map((item) => {
                 return(
                     <div className="flex flex-col bg-lightGray pt-6 w-full rounded-xl mt-6 shadow-md" key={item.order.order_id}>
                         <div className="flex justify-between pr-10">

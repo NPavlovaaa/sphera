@@ -26,15 +26,12 @@ import AppFooter from "../appFooter/AppFooter";
 
 function App() {
     const dispatch = useDispatch();
-    const userAuthLoadingStatus = useSelector(state => state.authUser.userAuthLoadingStatus);
-    const role = useSelector(state => state.authUser.role);
-    const token = useSelector(state => state.authUser.token);
+    const {userAuthLoadingStatus, role} = useSelector(state => state.authUser);
 
     useEffect(() => {
-        if(userAuthLoadingStatus === 'login success' || userAuthLoadingStatus === 'idle'){
-            dispatch(fetchAuth()).then(data => localStorage.setItem('ROLE', data.payload.user.role))
-        }
-    }, [userAuthLoadingStatus, token])
+        dispatch(fetchAuth())
+            .then(data => localStorage.setItem('ROLE', data.payload.user.role))
+    }, [userAuthLoadingStatus])
 
     return (
         <Router>
