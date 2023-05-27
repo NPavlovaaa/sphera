@@ -5,14 +5,16 @@ import {useEffect, useMemo} from "react";
 import {fetchProductList} from "../productSlice";
 import {useState} from "react";
 import Pagination from "../../pagination/Pagination";
+import Spinner from "../../spinner/Spinner";
+import ArrowVertical from "../../icons/ArrowVertical";
 
 
 const ProductList = () => {
     const activeClient = useSelector(state => state.authUser.client);
     // const [productList, setProductList] = useState([]);
-    const {activeFilterProcessing, activeFilterRoasting} = useSelector(state => state.getProduct)
+    const {activeFilterProcessing, activeFilterRoasting, productLoadingStatus} = useSelector(state => state.getProduct)
     let {activeCategory} = useSelector(state => state.getProduct)
-
+    const [openTab, setOpenTab] = useState('');
     // const [newItemLoading, setNewItemLoading] = useState(false);
     // const [offset, setOffset] = useState(0);
     // const [productEnded, setProductEnded] = useState(false);
@@ -50,9 +52,35 @@ const ProductList = () => {
     //     setProductEnded(ended);
     // }
 
+    function byField(field, detail) {
+        if(detail === 'ascending'){
+            return (a, b) => a[field] > b[field] ? 1 : -1;
+        }else{
+            return (a, b) => a[field] < b[field] ? 1 : -1;
+        }
+    }
+
+    let sorted_products;
+
+    if(openTab === 'rating_ascending'){
+        sorted_products = products.sort(byField('rating', 'ascending'))
+    }
+    else if(openTab === 'rating_descending'){
+        sorted_products = products.sort(byField('rating', 'descending'))
+    }
+    else if(openTab === 'price_ascending'){
+        sorted_products = products.sort(byField('base_price', 'ascending'))
+    }
+    else if(openTab === 'price_descending'){
+        sorted_products = products.sort(byField('base_price', 'descending'))
+    }
+    else{
+        sorted_products = products
+    }
+
 
     const filteredProducts = useMemo(() => {
-        const filteredProducts = products.slice();
+        const filteredProducts = sorted_products.slice();
         setCurrentPage(1);
         if(activeFilterProcessing === null && activeFilterRoasting === null && activeCategory === null){
             return filteredProducts;
@@ -82,7 +110,7 @@ const ProductList = () => {
             }
         }
 
-    }, [products, activeFilterProcessing, activeFilterRoasting, activeCategory]);
+    }, [sorted_products, activeFilterProcessing, activeFilterRoasting, activeCategory, openTab]);
 
     let pageSize = 9;
     const currentData = useMemo(() => {
@@ -91,34 +119,60 @@ const ProductList = () => {
         return filteredProducts.slice(firstPageIndex, lastPageIndex);
     }, [currentPage, filteredProducts]);
 
-    // if (isLoading) {
-    //     return <h5 className="text-center mt-5">Загрузка</h5>;
-    // } else if (isError) {
-    //     return <h5 className="text-center mt-5">Ошибка загрузки</h5>
-    // }
-
     function renderProductList(arr){
-        if (arr.length === 0) {
-            return <h5 className="text-center mt-5">Товаров пока нет</h5>
-        }
-
         const items = arr.map((product, i) => {
             return (
                 <ProductListItem key={product.product_id} product_id={product.product_id} product={product} i={i} client={activeClient ? activeClient.client_id : null}/>
             )
         })
-
         return (
             <ul className="grid grid-cols-3 gap-10 w-full">
                 {items}
             </ul>
         )
-
     }
 
     const elements = renderProductList(currentData);
     return (
-        <div className="flex flex-col w-full justify-center p-10 items-center">
+        <div className="flex flex-col w-full p-10">
+            <div className="flex w-1/2 items-center justify-between mt-4 mb-8">
+                <p>Сортировать по:</p>
+                <div className="flex items-center">
+                    <a className={` ${openTab === 'rating_ascending' || openTab === 'rating_descending' ? "text-mainOrange-600" : ""} cursor-pointer mr-1`}
+                       href=""
+                       onClick={(e) => {
+                           e.preventDefault();
+                           openTab !== 'rating_ascending' ? setOpenTab('rating_ascending') : setOpenTab('rating_descending')
+                       }}>
+                        Рейтингу
+                    </a>
+                    <ArrowVertical color={openTab === 'rating_ascending' || openTab === 'rating_descending' ? "#FFA82E" : "#000"}
+                                   rotate={openTab === 'rating_ascending' ? 180 : 0}
+                    />
+                </div>
+                <div className="flex items-center">
+                    <a className={` ${openTab === 'price_ascending' || openTab === 'price_descending' ? "text-mainOrange-600" : ""} cursor-pointer mr-1`}
+                       href=""
+                       onClick={(e) => {
+                           e.preventDefault();
+                           openTab !== 'price_ascending' ? setOpenTab('price_ascending') : setOpenTab('price_descending')
+                       }}>
+                        Цене
+                    </a>
+                    <ArrowVertical color={openTab === 'price_ascending' || openTab === 'price_descending' ? "#FFA82E" : "#000"}
+                                   rotate={openTab === 'price_ascending' ? 180 : 0}
+                    />
+                </div>
+                <a className="cursor-pointer text-mainGray text-sm"
+                   href=""
+                   onClick={(e) => {
+                       e.preventDefault();
+                       setOpenTab('')
+                   }}>
+                    Сбросить
+                </a>
+            </div>
+            {productLoadingStatus === 'loading' ? <Spinner/> : null}
             {elements}
             {/*<button className="bg-mainOrange-600 shadow-xl rounded-lg px-5 py-2 mt-10"*/}
             {/*        onClick={() => onRequest(offset)}*/}

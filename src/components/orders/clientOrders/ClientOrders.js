@@ -61,7 +61,6 @@ const ClientOrders = () => {
     }
 
     let sorted_orders;
-    console.log(orders)
 
     if(openTab === 'date_ascending'){
         sorted_orders = orders.sort(byField('order_date', 'ascending'))

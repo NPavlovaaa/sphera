@@ -143,6 +143,12 @@ const productSlice = createSlice({
             .addCase(fetchProduct.pending, state => {
                 state.productLoadingStatus = 'loading';
             })
+            .addCase(fetchProductList.pending, state => {
+                state.productLoadingStatus = 'loading';
+            })
+            .addCase(fetchProductList.fulfilled, state => {
+                state.productLoadingStatus = 'success';
+            })
             .addCase(fetchProduct.fulfilled, (state, action) => {
                 state.productLoadingStatus = 'success';
                 state.product = action.payload;
