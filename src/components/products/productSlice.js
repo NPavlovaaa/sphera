@@ -121,6 +121,14 @@ export const fetchCategory = createAsyncThunk(
     }
 )
 
+export const fetchProductMakingMethods = createAsyncThunk(
+    'products/fetchProductMakingMethods',
+    async (id) => {
+        const {request} = useHttp();
+        return await request(`http://localhost:8000/making_methods/${id}/`)
+    }
+)
+
 const productSlice = createSlice({
     name: 'getProduct',
     initialState,

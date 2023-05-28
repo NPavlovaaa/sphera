@@ -4,7 +4,7 @@ import cookies from "../../../assets/cookies.png";
 import frutes from "../../../assets/frutes.png";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { fetchProduct } from "../productSlice";
+import {fetchProduct, fetchProductMakingMethods} from "../productSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProcessingMethod, fetchRoastingMethod, fetchProductVariety, fetchWeight } from "../productSlice";
 import productSetParams from "../productSetParams/productSetParams";
@@ -90,7 +90,6 @@ const ProductItem = () => {
         })).then(data => setCart(data.payload))
         // dispatch(fetchFavorite(client)).then(data => setFavorite(data.payload))
     }
-    console.log('product', product)
 
 
     const onAddToCart = () => {
@@ -292,14 +291,14 @@ const ProductItem = () => {
                             </a>
                         </li>
                     </ul>
-                    <div className="flex px-14 py-8 mt-6 bg-lightGray rounded-lg tracking-wide">
-                        <div className={`${openTab === 1 ? "flex" : "hidden"} flex w-full`}>
+                    <div className="flex mt-6 rounded-lg tracking-wide">
+                        <div className={`${openTab === 1 ? "flex" : "hidden"} w-full bg-lightGray px-14 py-8`}>
                             {product ? product.product_description : null}
                         </div>
-                        <div className={`${openTab === 2 ? "flex" : "hidden"} flex w-full`}>
-                            <ProductMakingMethods/>
+                        <div className={`${openTab === 2 ? "flex" : "hidden"} w-full`}>
+                            <ProductMakingMethods id={id}/>
                         </div>
-                        <div className={`${openTab === 3 ? "flex" : "hidden"} flex w-full`}>
+                        <div className={`${openTab === 3 ? "flex" : "hidden"} w-full bg-lightGray px-14 py-8`}>
                             <OrdersReviewPage detail="product" product={product ? product : null}/>
                         </div>
                     </div>
