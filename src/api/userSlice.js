@@ -64,6 +64,7 @@ const userSlice = createSlice({
 
             })
             .addCase(fetchAuth.fulfilled, (state, action) => {
+                state.userAuthLoadingStatus = 'success';
                 state.user = action.payload.user;
                 state.role = action.payload.user.role;
                 state.client = action.payload.client;

@@ -7,6 +7,7 @@ import {useState} from "react";
 import Pagination from "../../pagination/Pagination";
 import Spinner from "../../spinner/Spinner";
 import ArrowVertical from "../../icons/ArrowVertical";
+import ModalWindowAuthorization from "../../modalWindow/ModalWindowAuthorization";
 
 
 const ProductList = () => {
@@ -20,6 +21,8 @@ const ProductList = () => {
     // const [productEnded, setProductEnded] = useState(false);
     const [products, setProducts] = useState([]);
     const dispatch = useDispatch();
+    const [showModal, setShowModal] = useState(false);
+
     activeCategory === 2 ? activeCategory=1 : activeCategory=activeCategory
 
     const [currentPage, setCurrentPage] = useState(1);
@@ -119,10 +122,14 @@ const ProductList = () => {
         return filteredProducts.slice(firstPageIndex, lastPageIndex);
     }, [currentPage, filteredProducts]);
 
+    const addToCart = (bool) => {
+        setShowModal(bool)
+    }
+
     function renderProductList(arr){
         const items = arr.map((product, i) => {
             return (
-                <ProductListItem key={product.product_id} product_id={product.product_id} product={product} i={i} client={activeClient ? activeClient.client_id : null}/>
+                <ProductListItem key={product.product_id} product_id={product.product_id} product={product} i={i} addToCart={addToCart}/>
             )
         })
         return (
@@ -135,6 +142,7 @@ const ProductList = () => {
     const elements = renderProductList(currentData);
     return (
         <div className="flex flex-col w-full p-10">
+            {showModal ? <ModalWindowAuthorization isShowModal={showModal} addToCart={addToCart}/> : null}
             <div className="flex w-1/2 items-center justify-between mt-4 mb-8">
                 <p>Сортировать по:</p>
                 <div className="flex items-center">
@@ -182,7 +190,7 @@ const ProductList = () => {
             {/*    Загрузить еще*/}
             {/*</button>*/}
             <Pagination
-                className="pagination-bar mt-5"
+                className="pagination-bar mt-5 flex justify-center items-center"
                 currentPage={currentPage}
                 totalCount={filteredProducts.length}
                 pageSize={pageSize}

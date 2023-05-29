@@ -12,9 +12,10 @@ import {
 import { fetchProductInCart, fetchDeleteProductInCart, fetchUpdateCart } from "../../clientCart/cartSlice";
 import Star from "../../icons/Star";
 import Favorite from "../../icons/Favorite";
+import ModalWindow from "../../modalWindow/ModalWindow";
 
 
-const ProductListItem = ({product, i}) => {
+const ProductListItem = ({product, i, addToCart}) => {
     const activeClient = useSelector(state => state.authUser.client);
     const {activeCategory} = useSelector(state => state.getProduct);
     const itemRefs = useRef([]);
@@ -77,10 +78,14 @@ const ProductListItem = ({product, i}) => {
     }
 
     const onAddToCart = () => {
-        const newCart = {
-            'weight_selection': openWeight.weight_selection
+        if(activeClient){
+            const newCart = {
+                'weight_selection': openWeight.weight_selection
+            }
+            addCart(newCart).then(() => updateCard());
+        }else {
+            addToCart(true)
         }
-        addCart(newCart).then(() => updateCard());
     }
 
     let fav;

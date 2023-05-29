@@ -1,7 +1,7 @@
 export const useHttp = () => {
-    const localToken = localStorage.getItem('TOKEN_AUTH')
+    const localToken = localStorage.getItem('TOKEN_AUTH') ? `Bearer ${localStorage.getItem('TOKEN_AUTH')}` : null
 
-    const request = async (url, method = 'GET', body = null, headers = {'Content-Type': 'application/json', 'Authorization': `Bearer ${localToken}`} , credentials = 'include') => {
+    const request = async (url, method = 'GET', body = null, headers = {'Content-Type': 'application/json', 'Authorization': localToken} , credentials = 'include') => {
         if (body !== null){
             body = JSON.stringify(body)
         }
