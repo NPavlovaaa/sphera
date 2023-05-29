@@ -6,6 +6,8 @@ import { useState } from "react";
 import AdminOrders from "../orders/adminOrders/AdminOrders";
 import { Helmet } from "react-helmet";
 import OrdersReviewPage from "./OrdersReviewPage";
+import WarehouseProductList from "../warehouse/WarehouseProductList";
+import WarehousePage from "./WarehousePage";
 
 const MainPage = () => {
     const role = useSelector(state => state.authUser.role);
@@ -55,6 +57,16 @@ const MainPage = () => {
                                         Отзывы о доставке и магазине
                                     </a>
                                 </li>
+                                <li>
+                                    <a className={` ${openTab === 4 ? "border-b-2 border-mainOrange-600" : ""} text-lg flex cursor-pointer py-3 px-3`}
+                                       href="#"
+                                       onClick={(e) => {
+                                           e.preventDefault();
+                                           setOpenTab(4)
+                                       }}>
+                                        Склад
+                                    </a>
+                                </li>
                             </ul>
                             <div className="flex w-full px-10 py-3 rounded-lg h-full">
                                 <div className={`${openTab === 1 ? "flex" : "hidden"} flex w-full`}>
@@ -65,6 +77,9 @@ const MainPage = () => {
                                 </div>
                                 <div className={`${openTab === 3 ? "flex" : "hidden"} flex w-full`}>
                                     <OrdersReviewPage detail="order"/>
+                                </div>
+                                <div className={`${openTab === 4 ? "flex" : "hidden"} flex w-full`}>
+                                    <WarehousePage/>
                                 </div>
                                 <div className={`${openTab === null ? "flex" : "hidden"} flex w-full`}>
                                     <div className="w-1/2 4xl:text-10xl 3xl:text-9xl 3xl:p-4 2xl:text-6xl xl:text-6xl lg:text-6xl px-12 font-semibold">

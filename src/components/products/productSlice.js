@@ -14,7 +14,8 @@ const initialState = productAdapter.getInitialState({
     activeFilterProcessing: null,
     activeFilterRoasting: null,
     activeFilterVariety: [],
-    activeCategory: null
+    activeCategory: null,
+    count: null
 });
 
 // export const fetchProductList = createAsyncThunk(
@@ -129,6 +130,35 @@ export const fetchProductMakingMethods = createAsyncThunk(
     }
 )
 
+export const fetchProductWarehouse = createAsyncThunk(
+    'products/fetchProductWarehouse',
+    async () => {
+        const {request} = useHttp();
+        return await request(`http://localhost:8000/product_warehouse/`)
+    }
+)
+
+export const fetchProductConsumption = createAsyncThunk(
+    'products/fetchProductConsumption',
+    async (data) => {
+        const {request} = useHttp();
+        return await request(`http://localhost:8000/product_consumption/${data}/`)
+    }
+)
+
+export const fetchProductCountChange = createAsyncThunk(
+    'products/fetchProductCountChange',
+    async (data) => {
+        const {request} = useHttp();
+        return await request(`http://localhost:8000/admin_product_change/`, 'POST',
+            {
+                'product': data.product,
+                'count': data.count,
+                'action': data.action,
+            })
+    }
+)
+
 const productSlice = createSlice({
     name: 'getProduct',
     initialState,
@@ -181,6 +211,9 @@ const productSlice = createSlice({
             })
             .addCase(fetchCategory.fulfilled, (state, action) => {
                 state.categories = action.payload;
+            })
+            .addCase(fetchProductCountChange.fulfilled, (state, action) => {
+                state.count = action.payload;
             })
             .addCase(fetchWeight.rejected, state => {state.productLoadingStatus = 'error'})
             .addCase(fetchProduct.rejected, state => {state.productLoadingStatus = 'error'})
