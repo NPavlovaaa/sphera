@@ -14,6 +14,7 @@ const ModalWindowChangeProductCount = ({isShowModal, product, action, onShowModa
         dispatch(fetchProductCountChange({
             'product': product,
             'count': values.count,
+            'price': values.price,
             'action': action,
         }))
             .then(() => {
@@ -28,10 +29,13 @@ const ModalWindowChangeProductCount = ({isShowModal, product, action, onShowModa
             <>
             <Formik
                 initialValues ={{
-                    count: product.quantity,
+                    count: '',
+                    price: '',
                 }}
                 validationSchema={Yup.object({
                     count: Yup.number()
+                        .required('Обязательное поле!'),
+                    price: Yup.number()
                         .required('Обязательное поле!'),
                 })}
 
@@ -64,15 +68,27 @@ const ModalWindowChangeProductCount = ({isShowModal, product, action, onShowModa
                                     <div className="divide-y divide-gray-200">
                                         <div className="py-8 text-base leading-6 space-y-4 sm:text-lg sm:leading-7">
                                             <div className="relative">
+                                                <label/>
                                                 <Field
                                                     type="number"
                                                     name="count"
+                                                    placeholder="Количество кг"
                                                     className="placeholder-transparent h-10 w-full border-b-2 focus:outline-none focus:borer-rose-600"
                                                     id="count"
-                                                    defaultValue={product.quantity}
                                                     autoComplete="off"/>
                                             </div>
                                             <ErrorMessage component="div" style={{'color': 'red', 'margin-top': '1px', 'font-size' : '14px'}} name="count"/>
+                                            <div className="relative">
+                                                <Field
+                                                    type="number"
+                                                    name="price"
+                                                    className="placeholder-transparent h-10 w-full border-b-2 focus:outline-none focus:borer-rose-600"
+                                                    id="price"
+                                                    placeholder="Стоимость"
+                                                    autoComplete="off"/>
+                                            </div>
+                                            <ErrorMessage component="div" style={{'color': 'red', 'margin-top': '1px', 'font-size' : '14px'}} name="price"/>
+
                                             <div className="relative flex top-10 justify-center">
                                                 <button type="submit" className="bg-mainOrange-600 shadow-xl rounded-xl px-10 py-3">Добавить</button>
                                             </div>

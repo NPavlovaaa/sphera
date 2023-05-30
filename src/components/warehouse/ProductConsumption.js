@@ -3,6 +3,8 @@ import {useEffect, useState, useMemo} from "react";
 import {fetchProductConsumption, fetchProductWarehouse} from "../products/productSlice";
 import {useDispatch, useSelector} from "react-redux";
 import ModalWindowChangeProductCount from "../modalWindow/ModalWindowChangeProductCount";
+import ArrowVertical from "../icons/ArrowVertical";
+import {activeFilterStatusChange} from "../orders/orderSlice";
 
 const ProductConsumption = ({product}) => {
     const {count} = useSelector(state => state.getProduct)
@@ -10,20 +12,60 @@ const ProductConsumption = ({product}) => {
     const [products, setProducts] = useState([]);
     const dispatch = useDispatch();
     const [showModal, setShowModal] = useState(false);
+    const [openTab, setOpenTab] = useState('');
+    const [filter, setFilter] = useState(null);
     let pageSize = 10;
-    console.log(count)
 
     useEffect(() => {
         if(product.product_name){
             dispatch(fetchProductConsumption(product.product_name)).then(data => setProducts(data.payload))
         }
-    }, [product, count])
+    }, [product, count, openTab])
+
+    function byField(field, detail) {
+        if(detail === 'ascending'){
+            return (a, b) => a[field] > b[field] ? 1 : -1;
+        }else{
+            return (a, b) => a[field] < b[field] ? 1 : -1;
+        }
+    }
+
+    let sorted_products;
+
+    if(openTab === 'date_ascending'){
+        sorted_products = products.sort(byField('date', 'ascending'))
+    }
+    else if(openTab === 'date_descending'){
+        sorted_products = products.sort(byField('date', 'descending'))
+    }
+    else if(openTab === 'count_ascending'){
+        sorted_products = products.sort(byField('product_count', 'ascending'))
+    }
+    else if(openTab === 'count_descending'){
+        sorted_products = products.sort(byField('product_count', 'descending'))
+    }
+    else{
+        sorted_products = products
+    }
+
+    const filteredProducts = useMemo(() => {
+        const filteredProducts = sorted_products.slice();
+        setCurrentPage(1);
+        if(filter === null){
+            return filteredProducts;
+        }else if(filter === 'Администратор'){
+            return filteredProducts.filter(item => item.username === 'Администратор')
+        }else if(filter === 'Пользователи'){
+            return filteredProducts.filter(item => item.username !== 'Администратор')
+        }
+
+    }, [sorted_products, filter, openTab]);
 
     const currentTableData = useMemo(() => {
         const firstPageIndex = (currentPage - 1) * pageSize;
         const lastPageIndex = firstPageIndex + pageSize;
-        return products.slice(firstPageIndex, lastPageIndex);
-    }, [products, currentPage, count]);
+        return filteredProducts.slice(firstPageIndex, lastPageIndex);
+    }, [filteredProducts, currentPage]);
 
     const onShowModal = (bool) => {
         setShowModal(bool)
@@ -43,6 +85,58 @@ const ProductConsumption = ({product}) => {
                         Добавить расход
                     </button>
                 </div>
+            </div>
+            <div className="flex items-center">
+                <p className="text-mainGray mr-5">Фильтры: </p>
+                <button className={`${filter === 'Пользователи' ? 'text-mainOrange-600 bg-mainOrange-100' : null} text-sm flex justify-center h-fit rounded-lg py-1.5 px-3 shadow-md mr-3`}
+                        type="submit"
+                        onClick={() => setFilter('Пользователи')}
+                >
+                    Пользователи
+                </button>
+                <button className={`${filter === 'Администратор' ? 'text-mainOrange-600 bg-mainOrange-100' : null} text-sm flex justify-center h-fit rounded-lg py-1.5 px-3 shadow-md mr-3`}
+                        type="submit"
+                        onClick={() => setFilter('Администратор')}
+                >
+                    Администратор
+                </button>
+            </div>
+            <div className="flex w-1/2 items-center justify-between mt-8 mb-2">
+                <p>Сортировать по:</p>
+                <div className="flex items-center">
+                    <a className={` ${openTab === 'date_ascending' || openTab === 'date_descending' ? "text-mainOrange-600" : ""} cursor-pointer mr-1`}
+                       href=""
+                       onClick={(e) => {
+                           e.preventDefault();
+                           openTab !== 'date_ascending' ? setOpenTab('date_ascending') : setOpenTab('date_descending')
+                       }}>
+                        Дате
+                    </a>
+                    <ArrowVertical color={openTab === 'date_ascending' || openTab === 'date_descending' ? "#FFA82E" : "#000"}
+                                   rotate={openTab === 'date_ascending' ? 180 : 0}
+                    />
+                </div>
+                <div className="flex items-center">
+                    <a className={` ${openTab === 'count_ascending' || openTab === 'count_descending' ? "text-mainOrange-600" : ""} cursor-pointer mr-1`}
+                       href=""
+                       onClick={(e) => {
+                           e.preventDefault();
+                           openTab !== 'count_ascending' ? setOpenTab('count_ascending') : setOpenTab('count_descending')
+                       }}>
+                        Количеству
+                    </a>
+                    <ArrowVertical color={openTab === 'count_ascending' || openTab === 'count_descending' ? "#FFA82E" : "#000"}
+                                   rotate={openTab === 'count_ascending' ? 180 : 0}
+                    />
+                </div>
+                <a className="cursor-pointer text-mainGray text-sm"
+                   href=""
+                   onClick={(e) => {
+                       e.preventDefault();
+                       setOpenTab('')
+                   }}>
+                    Сбросить
+                </a>
             </div>
             <table className="w-full">
                 <thead className="flex flex-col w-full">
@@ -67,7 +161,7 @@ const ProductConsumption = ({product}) => {
                                 <td className="text-center grid col-span-1">{item.roasting_method ? item.roasting_method : <span>---</span>}</td>
                                 <td className="text-center grid col-span-1">{item.processing_method}</td>
                                 <td className="text-center grid col-span-1">{item.weight ? item.weight : 1000} г</td>
-                                <td className="text-center grid col-span-1">{item.price ? item.price : <span>---</span>}</td>
+                                <td className="text-center grid col-span-1">{item.price > 0 ? item.price : <span>---</span>}</td>
                                 <td className="text-center grid col-span-1 text-red-700">- {item.product_count} шт</td>
                             </tr>
                             <span className="border-b border-lightGray w-full"></span>

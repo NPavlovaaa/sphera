@@ -1,7 +1,7 @@
 import {useState} from "react";
 import WarehouseProductList from "../warehouse/WarehouseProductList";
 import ProductConsumption from "../warehouse/ProductConsumption";
-
+import './pages.scss'
 
 const WarehousePage  = () => {
     const [openTab, setOpenTab] = useState(1);
@@ -10,7 +10,6 @@ const WarehousePage  = () => {
         setOpenTab(value)
         setProduct(product)
     }
-    console.log(product)
 
     return (
         <div className="flex flex-col w-full">
@@ -23,14 +22,22 @@ const WarehousePage  = () => {
                     Товары
                 </button>
             </div>
-            <div className="flex bg-lightGray py-10 px-20 w-full rounded-xl mt-6">
-                <div className={`${openTab === 1 ? "flex" : "hidden"} w-full`}>
+            <div className="flex w-full rounded-xl mt-6">
+                <div className={`${openTab === 1 ? "flex" : "hidden"} w-full bg-lightGray py-10 px-20 rounded-xl`}>
                     <WarehouseProductList changeTab={changeTab}/>
                 </div>
-                <div className={`${openTab === 2 ? "flex" : "hidden"} w-full`}>
-                    <ProductConsumption product={product ? product : null}/>
+                <div className={`${openTab === 2 ? "flex flex-col" : "hidden"} w-full rounded-xl`}>
+                    <div className="flex text-sm m-2">
+                        <button type="submit" onClick={() => setOpenTab(1)} className="flex">
+                            <div className="arrow left mr-3"/>
+                            Назад
+                        </button>
+                    </div>
+                    <div className="flex bg-lightGray py-10 px-20 rounded-xl">
+                        <ProductConsumption product={product ? product : null}/>
+                    </div>
                 </div>
-                <div className={`${openTab === 3 ? "flex" : "hidden"} w-full`}>
+                <div className={`${openTab === 3 ? "flex" : "hidden"} w-full bg-lightGray py-10 px-20 rounded-xl`}>
                     frfrvv
                 </div>
             </div>

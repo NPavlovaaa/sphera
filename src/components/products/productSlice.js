@@ -154,6 +154,7 @@ export const fetchProductCountChange = createAsyncThunk(
             {
                 'product': data.product,
                 'count': data.count,
+                'price': data.price,
                 'action': data.action,
             })
     }
