@@ -2,7 +2,6 @@ import {useState} from "react";
 import {useDispatch} from "react-redux";
 import {Formik, Form, Field, ErrorMessage} from 'formik';
 import * as Yup from "yup";
-import {fetchLogin} from "../../api/userSlice";
 import {fetchProductCountChange} from "../products/productSlice";
 
 
@@ -62,7 +61,10 @@ const ModalWindowChangeProductCount = ({isShowModal, product, action, onShowModa
                                         </span>
                                 </button>
                                 <div>
-                                    <h1 className="text-2xl font-semibold">Добавление расхода товара</h1>
+                                    {action === 'Consumption' ?
+                                        <h1 className="text-2xl font-semibold">Добавление расхода товара</h1> :
+                                        <h1 className="text-2xl font-semibold">Добавление поступления товара</h1>
+                                    }
                                 </div>
                                 <Form method="POST">
                                     <div className="divide-y divide-gray-200">

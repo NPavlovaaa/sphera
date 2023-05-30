@@ -23,7 +23,7 @@ const WarehouseProductList = ({changeTab}) => {
         <div>
             <table className="w-full">
                 <thead className="flex flex-col w-full">
-                    <tr className="grid grid-cols-5 mb-3 mt-5">
+                    <tr className="grid grid-cols-6 mb-3 mt-5">
                         <th className="text-start grid col-span-1">Название</th>
                         <th className="text-center grid col-span-1">Обработка</th>
                         <th className="text-center grid col-span-1">Стоимость за кг</th>
@@ -35,7 +35,7 @@ const WarehouseProductList = ({changeTab}) => {
                 {currentTableData ? currentTableData.map(item => {
                     return (
                         <div className="flex flex-col py-1.5">
-                            <tr className="grid grid-cols-5 mb-2 items-center">
+                            <tr className="grid grid-cols-6 mb-2 items-center">
                                 <td className="text-start grid col-span-1">{item.product_name}</td>
                                 <td className="text-center grid col-span-1 ">{item.processing_method}</td>
                                 <td className="text-center grid col-span-1">{item.price} р</td>
@@ -43,8 +43,15 @@ const WarehouseProductList = ({changeTab}) => {
                                 <div className="col-span-1">
                                     <button type="submit"
                                             onClick={() => changeTab(2, item)}
-                                            className="flex bg-mainOrange-600 hover:bg-mainOrange-700 rounded-xl px-5 py-1.5">
+                                            className="flex border border-mainOrange-600 hover:bg-mainOrange-700 rounded-xl px-5 py-1.5">
                                         Расходы
+                                    </button>
+                                </div>
+                                <div className="col-span-1">
+                                    <button type="submit"
+                                            onClick={() => changeTab(3, item)}
+                                            className="flex bg-mainOrange-600 hover:bg-mainOrange-700 rounded-xl px-5 py-1.5">
+                                        Поступления
                                     </button>
                                 </div>
                             </tr>

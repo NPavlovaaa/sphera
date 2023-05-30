@@ -2,6 +2,7 @@ import {useState} from "react";
 import WarehouseProductList from "../warehouse/WarehouseProductList";
 import ProductConsumption from "../warehouse/ProductConsumption";
 import './pages.scss'
+import ProductReceipt from "../warehouse/ProductReceipt";
 
 const WarehousePage  = () => {
     const [openTab, setOpenTab] = useState(1);
@@ -37,8 +38,16 @@ const WarehousePage  = () => {
                         <ProductConsumption product={product ? product : null}/>
                     </div>
                 </div>
-                <div className={`${openTab === 3 ? "flex" : "hidden"} w-full bg-lightGray py-10 px-20 rounded-xl`}>
-                    frfrvv
+                <div className={`${openTab === 3 ? "flex flex-col" : "hidden"} w-full rounded-xl`}>
+                    <div className="flex text-sm m-2">
+                        <button type="submit" onClick={() => setOpenTab(1)} className="flex">
+                            <div className="arrow left mr-3"/>
+                            Назад
+                        </button>
+                    </div>
+                    <div className="flex bg-lightGray py-10 px-20 rounded-xl">
+                        <ProductReceipt product={product ? product : null}/>
+                    </div>
                 </div>
             </div>
         </div>

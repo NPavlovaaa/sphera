@@ -5,21 +5,20 @@ import {useDispatch, useSelector} from "react-redux";
 import ModalWindowChangeProductCount from "../modalWindow/ModalWindowChangeProductCount";
 import ArrowVertical from "../icons/ArrowVertical";
 
-const ProductConsumption = ({product}) => {
+const ProductReceipt = ({product}) => {
     const {count} = useSelector(state => state.getProduct)
     const [currentPage, setCurrentPage] = useState(1);
     const [products, setProducts] = useState([]);
     const dispatch = useDispatch();
     const [showModal, setShowModal] = useState(false);
     const [openTab, setOpenTab] = useState('');
-    const [filter, setFilter] = useState(null);
     let pageSize = 10;
 
     useEffect(() => {
         if(product.product_name){
             dispatch(fetchProductConsumption(product.product_name)).then(data => {
                 let prs = data.payload
-                prs = prs.filter(item => item.action === 'Consumption')
+                prs = prs.filter(item => item.action === 'Receipt')
                 setProducts(prs)
             })
         }
@@ -51,24 +50,11 @@ const ProductConsumption = ({product}) => {
         sorted_products = products
     }
 
-    const filteredProducts = useMemo(() => {
-        const filteredProducts = sorted_products.slice();
-        setCurrentPage(1);
-        if(filter === null){
-            return filteredProducts;
-        }else if(filter === 'Администратор'){
-            return filteredProducts.filter(item => item.username === 'Администратор')
-        }else if(filter === 'Пользователи'){
-            return filteredProducts.filter(item => item.username !== 'Администратор')
-        }
-
-    }, [sorted_products, filter, openTab]);
-
     const currentTableData = useMemo(() => {
         const firstPageIndex = (currentPage - 1) * pageSize;
         const lastPageIndex = firstPageIndex + pageSize;
-        return filteredProducts.slice(firstPageIndex, lastPageIndex);
-    }, [filteredProducts, currentPage]);
+        return sorted_products.slice(firstPageIndex, lastPageIndex);
+    }, [sorted_products, currentPage, openTab]);
 
     const onShowModal = (bool) => {
         setShowModal(bool)
@@ -76,33 +62,18 @@ const ProductConsumption = ({product}) => {
 
     return(
         <div className="w-full">
-            {showModal ? <ModalWindowChangeProductCount onShowModal={onShowModal} isShowModal={showModal} product={product ? product : null} action={'Consumption'}/> : null}
+            {showModal ? <ModalWindowChangeProductCount onShowModal={onShowModal} isShowModal={showModal} product={product ? product : null} action={'Receipt'}/> : null}
             <div className="flex justify-between mb-2">
-                <h3 className="text-xl font-semibold">Расходы сорта {product.product_name}</h3>
+                <h3 className="text-xl font-semibold">Поступления сорта {product.product_name}</h3>
                 <div className="flex text-lg items-center">
                     <p className="mr-2">Текущее кол-во кг:</p>
                     <p className="mr-5">{product.quantity}</p>
                     <button className="bg-mainOrange-600 px-4 py-1.5 rounded-xl text-base"
                         onClick={() => setShowModal(true)}
                     >
-                        Добавить расход
+                        Добавить поступление
                     </button>
                 </div>
-            </div>
-            <div className="flex items-center">
-                <p className="text-mainGray mr-5">Фильтры: </p>
-                <button className={`${filter === 'Пользователи' ? 'text-mainOrange-600 bg-mainOrange-100' : null} text-sm flex justify-center h-fit rounded-lg py-1.5 px-3 shadow-md mr-3`}
-                        type="submit"
-                        onClick={() => setFilter('Пользователи')}
-                >
-                    Пользователи
-                </button>
-                <button className={`${filter === 'Администратор' ? 'text-mainOrange-600 bg-mainOrange-100' : null} text-sm flex justify-center h-fit rounded-lg py-1.5 px-3 shadow-md mr-3`}
-                        type="submit"
-                        onClick={() => setFilter('Администратор')}
-                >
-                    Администратор
-                </button>
             </div>
             <div className="flex w-1/2 items-center justify-between mt-8 mb-2">
                 <p>Сортировать по:</p>
@@ -143,12 +114,10 @@ const ProductConsumption = ({product}) => {
             </div>
             <table className="w-full">
                 <thead className="flex flex-col w-full">
-                    <tr className="grid grid-cols-7 mb-3 mt-5 w-full">
+                    <tr className="grid grid-cols-5 mb-3 mt-5 w-full">
                         <th className="text-start grid col-span-1">Пользователь</th>
                         <th className="text-center grid col-span-1">Дата</th>
-                        <th className="text-center grid col-span-1">Обжарка</th>
                         <th className="text-center grid col-span-1">Обработка</th>
-                        <th className="text-center grid col-span-1">Вес</th>
                         <th className="text-center grid col-span-1">Стоимость</th>
                         <th className="text-center grid col-span-1">Кол-во</th>
                     </tr>
@@ -158,20 +127,18 @@ const ProductConsumption = ({product}) => {
                 {currentTableData && currentTableData.length > 0 ? currentTableData.map(item => {
                     return (
                         <div className="flex flex-col py-1.5 w-full">
-                            <tr className="grid grid-cols-7 mb-2 items-center">
+                            <tr className="grid grid-cols-5 mb-2 items-center">
                                 <td className={`${item.username === 'Администратор' ? "text-mainOrange-600" : ""} text-start grid col-span-1`}>{item.username}</td>
                                 <td className="text-center grid col-span-1">{item.date}</td>
-                                <td className="text-center grid col-span-1">{item.roasting_method ? item.roasting_method : <span>---</span>}</td>
                                 <td className="text-center grid col-span-1">{item.processing_method}</td>
-                                <td className="text-center grid col-span-1">{item.weight ? item.weight : 1000} г</td>
                                 <td className="text-center grid col-span-1">{item.price > 0 ? item.price : <span>---</span>}</td>
-                                <td className="text-center grid col-span-1 text-red-700">- {item.product_count} шт</td>
+                                <td className="text-center grid col-span-1 text-green-700">+ {item.product_count} кг</td>
                             </tr>
                             <span className="border-b border-lightGray w-full"></span>
                         </div>
                     );
                 }) :
-                <p className="text-xl text-center mt-8">Расходов еще нет</p>
+                <p className="text-xl text-center mt-8">Поступлений еще нет</p>
                 }
                 </tbody>
             </table>
@@ -185,4 +152,4 @@ const ProductConsumption = ({product}) => {
         </div>
     )
 }
-export default ProductConsumption
+export default ProductReceipt
