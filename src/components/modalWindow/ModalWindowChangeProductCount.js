@@ -17,8 +17,8 @@ const ModalWindowChangeProductCount = ({isShowModal, product, action, onShowModa
             'action': action,
         }))
             .then(() => {
-                setShowModal(false)
                 onShowModal(false)
+                setShowModal(false)
             })
     }
 
@@ -32,7 +32,7 @@ const ModalWindowChangeProductCount = ({isShowModal, product, action, onShowModa
                     price: '',
                 }}
                 validationSchema={Yup.object({
-                    count: Yup.number()
+                    count: Yup.string()
                         .required('Обязательное поле!'),
                     price: Yup.number()
                         .required('Обязательное поле!'),
@@ -72,7 +72,7 @@ const ModalWindowChangeProductCount = ({isShowModal, product, action, onShowModa
                                             <div className="relative">
                                                 <label/>
                                                 <Field
-                                                    type="number"
+                                                    type="text"
                                                     name="count"
                                                     placeholder="Количество кг"
                                                     className="placeholder-transparent h-10 w-full border-b-2 focus:outline-none focus:borer-rose-600"

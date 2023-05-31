@@ -27,7 +27,7 @@ const WarehouseProductList = ({changeTab}) => {
                         <th className="text-start grid col-span-1">Название</th>
                         <th className="text-center grid col-span-1">Обработка</th>
                         <th className="text-center grid col-span-1">Стоимость за кг</th>
-                        <th className="text-center grid col-span-1">Кол-во</th>
+                        <th className="text-center grid col-span-1">Кол-во кг</th>
                     </tr>
                     <span className="border-b border-mainOrange-600 w-full"></span>
                 </thead>
