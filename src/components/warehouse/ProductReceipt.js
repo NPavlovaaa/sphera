@@ -6,7 +6,7 @@ import ModalWindowChangeProductCount from "../modalWindow/ModalWindowChangeProdu
 import ArrowVertical from "../icons/ArrowVertical";
 
 const ProductReceipt = ({product}) => {
-    const {count} = useSelector(state => state.getProduct)
+    const {quantity, productLoadingStatus} = useSelector(state => state.getProduct)
     const [currentPage, setCurrentPage] = useState(1);
     const [products, setProducts] = useState([]);
     const dispatch = useDispatch();
@@ -17,12 +17,13 @@ const ProductReceipt = ({product}) => {
     useEffect(() => {
         if(product.product_name){
             dispatch(fetchProductConsumption(product.product_name)).then(data => {
-                let prs = data.payload
+                let prs = data.payload.data
                 prs = prs.filter(item => item.action === 'Receipt')
                 setProducts(prs)
             })
         }
-    }, [product, count, openTab])
+    }, [product, openTab, productLoadingStatus])
+
 
     function byField(field, detail) {
         if(detail === 'ascending'){
@@ -67,7 +68,7 @@ const ProductReceipt = ({product}) => {
                 <h3 className="text-xl font-semibold">Поступления сорта {product.product_name}</h3>
                 <div className="flex text-lg items-center">
                     <p className="mr-2">Текущее кол-во кг:</p>
-                    <p className="mr-5">{product.quantity}</p>
+                    <p className="mr-5">{quantity ? quantity : null}</p>
                     <button className="bg-mainOrange-600 px-4 py-1.5 rounded-xl text-base"
                         onClick={() => setShowModal(true)}
                     >

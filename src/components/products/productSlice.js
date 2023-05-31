@@ -15,7 +15,7 @@ const initialState = productAdapter.getInitialState({
     activeFilterRoasting: null,
     activeFilterVariety: [],
     activeCategory: null,
-    count: null
+    quantity: null
 });
 
 // export const fetchProductList = createAsyncThunk(
@@ -213,8 +213,13 @@ const productSlice = createSlice({
             .addCase(fetchCategory.fulfilled, (state, action) => {
                 state.categories = action.payload;
             })
+            .addCase(fetchProductConsumption.fulfilled, (state, action) => {
+                state.quantity = action.payload.quantity;
+                state.productLoadingStatus = 'success';
+            })
             .addCase(fetchProductCountChange.fulfilled, (state, action) => {
-                state.count = action.payload;
+                state.quantity = action.payload.quantity;
+                state.productLoadingStatus = 'success change';
             })
             .addCase(fetchWeight.rejected, state => {state.productLoadingStatus = 'error'})
             .addCase(fetchProduct.rejected, state => {state.productLoadingStatus = 'error'})

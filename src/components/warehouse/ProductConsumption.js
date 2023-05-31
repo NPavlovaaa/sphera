@@ -6,7 +6,7 @@ import ModalWindowChangeProductCount from "../modalWindow/ModalWindowChangeProdu
 import ArrowVertical from "../icons/ArrowVertical";
 
 const ProductConsumption = ({product}) => {
-    const {count} = useSelector(state => state.getProduct)
+    const {quantity, productLoadingStatus} = useSelector(state => state.getProduct)
     const [currentPage, setCurrentPage] = useState(1);
     const [products, setProducts] = useState([]);
     const dispatch = useDispatch();
@@ -18,12 +18,12 @@ const ProductConsumption = ({product}) => {
     useEffect(() => {
         if(product.product_name){
             dispatch(fetchProductConsumption(product.product_name)).then(data => {
-                let prs = data.payload
+                let prs = data.payload.data
                 prs = prs.filter(item => item.action === 'Consumption')
                 setProducts(prs)
             })
         }
-    }, [product, count, openTab])
+    }, [product, openTab, productLoadingStatus])
 
     function byField(field, detail) {
         if(detail === 'ascending'){
@@ -53,13 +53,15 @@ const ProductConsumption = ({product}) => {
 
     const filteredProducts = useMemo(() => {
         const filteredProducts = sorted_products.slice();
-        setCurrentPage(1);
         if(filter === null){
             return filteredProducts;
-        }else if(filter === 'Администратор'){
-            return filteredProducts.filter(item => item.username === 'Администратор')
-        }else if(filter === 'Пользователи'){
-            return filteredProducts.filter(item => item.username !== 'Администратор')
+        }else{
+            setCurrentPage(1);
+            if(filter === 'Администратор'){
+                return filteredProducts.filter(item => item.username === 'Администратор')
+            }else if(filter === 'Пользователи'){
+                return filteredProducts.filter(item => item.username !== 'Администратор')
+            }
         }
 
     }, [sorted_products, filter, openTab]);
@@ -81,7 +83,7 @@ const ProductConsumption = ({product}) => {
                 <h3 className="text-xl font-semibold">Расходы сорта {product.product_name}</h3>
                 <div className="flex text-lg items-center">
                     <p className="mr-2">Текущее кол-во кг:</p>
-                    <p className="mr-5">{product.quantity}</p>
+                    <p className="mr-5">{quantity}</p>
                     <button className="bg-mainOrange-600 px-4 py-1.5 rounded-xl text-base"
                         onClick={() => setShowModal(true)}
                     >
@@ -93,13 +95,17 @@ const ProductConsumption = ({product}) => {
                 <p className="text-mainGray mr-5">Фильтры: </p>
                 <button className={`${filter === 'Пользователи' ? 'text-mainOrange-600 bg-mainOrange-100' : null} text-sm flex justify-center h-fit rounded-lg py-1.5 px-3 shadow-md mr-3`}
                         type="submit"
-                        onClick={() => setFilter('Пользователи')}
+                        onClick={() => {
+                            filter !== 'Пользователи' ? setFilter('Пользователи') : setFilter(null)
+                        }}
                 >
                     Пользователи
                 </button>
                 <button className={`${filter === 'Администратор' ? 'text-mainOrange-600 bg-mainOrange-100' : null} text-sm flex justify-center h-fit rounded-lg py-1.5 px-3 shadow-md mr-3`}
                         type="submit"
-                        onClick={() => setFilter('Администратор')}
+                        onClick={() => {
+                            filter !== 'Администратор' ? setFilter('Администратор') : setFilter(null)
+                        }}
                 >
                     Администратор
                 </button>
