@@ -4,8 +4,9 @@ import ProductConsumption from "../warehouse/ProductConsumption";
 import './pages.scss'
 import ProductReceipt from "../warehouse/ProductReceipt";
 
-const WarehousePage  = () => {
-    const [openTab, setOpenTab] = useState(1);
+
+const WarehousePage  = ({}) => {
+    const [openTab, setOpenTab] = useState('WarehouseProductList');
     const [product, setProduct] = useState({});
     const changeTab = (value, product) => {
         setOpenTab(value)
@@ -15,29 +16,29 @@ const WarehousePage  = () => {
     return (
         <div className="flex flex-col w-full">
             <h1 className="text-3xl font-bold">Склад</h1>
-            <div className="flex w-full rounded-xl mt-6">
-                <div className={`${openTab === 1 ? "flex" : "hidden"} w-full bg-lightGray py-10 px-20 rounded-xl`}>
+            <div className="flex w-full rounded-xl mt-3">
+                <div className={`${openTab === 'WarehouseProductList' ? "flex" : "hidden"} w-full rounded-xl`}>
                     <WarehouseProductList changeTab={changeTab}/>
                 </div>
-                <div className={`${openTab === 2 ? "flex flex-col" : "hidden"} w-full rounded-xl`}>
-                    <div className="flex text-sm m-2">
-                        <button type="submit" onClick={() => setOpenTab(1)} className="flex">
+                <div className={`${openTab === 'ProductConsumption' ? "flex flex-col" : "hidden"} w-full rounded-xl`}>
+                    <div className="flex text-sm mb-8">
+                        <button type="submit" onClick={() => setOpenTab('WarehouseProductList')} className="flex">
                             <div className="arrow left mr-3"/>
                             Назад
                         </button>
                     </div>
-                    <div className="flex bg-lightGray py-10 px-20 rounded-xl">
+                    <div className="flex rounded-xl">
                         <ProductConsumption product={product ? product : null}/>
                     </div>
                 </div>
-                <div className={`${openTab === 3 ? "flex flex-col" : "hidden"} w-full rounded-xl`}>
-                    <div className="flex text-sm m-2">
-                        <button type="submit" onClick={() => setOpenTab(1)} className="flex">
+                <div className={`${openTab === 'ProductReceipt' ? "flex flex-col" : "hidden"} w-full rounded-xl`}>
+                    <div className="flex text-sm mb-8">
+                        <button type="submit" onClick={() => setOpenTab('WarehouseProductList')} className="flex">
                             <div className="arrow left mr-3"/>
                             Назад
                         </button>
                     </div>
-                    <div className="flex bg-lightGray py-10 px-20 rounded-xl">
+                    <div className="flex rounded-xl">
                         <ProductReceipt product={product ? product : null}/>
                     </div>
                 </div>

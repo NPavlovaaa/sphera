@@ -12,7 +12,9 @@ const initialState = userAdapter.getInitialState({
     role: null,
     client: null,
     level: null,
-    token
+    token,
+    count: null,
+    changeLoadingStatus: null
 });
 
 export const fetchLogin = createAsyncThunk(
@@ -42,6 +44,27 @@ export const fetchAchievements = createAsyncThunk(
     }
 )
 
+export const fetchCustomers = createAsyncThunk(
+    'users/fetchCustomers',
+    async () => {
+        const {request} = useHttp();
+        return await request('http://localhost:8000/customers/')
+    }
+)
+
+export const fetchCreateIncomeChange = createAsyncThunk(
+    'users/fetchCreateIncomeChange',
+    async (data) => {
+        const {request} = useHttp();
+        return await request('http://localhost:8000/create_income_change/','POST',
+            {
+                'note': data.note,
+                'price': data.price,
+                'action': data.action,
+            })
+    }
+)
+
 const userSlice = createSlice({
     name: 'authUser',
     initialState,
@@ -63,12 +86,20 @@ const userSlice = createSlice({
                 state.token = action.payload.access;
 
             })
+            .addCase(fetchCustomers.fulfilled, (state, action) => {
+                if(!state.count){
+                    state.count = (action.payload).length;
+                }
+            })
             .addCase(fetchAuth.fulfilled, (state, action) => {
                 state.userAuthLoadingStatus = 'success';
                 state.user = action.payload.user;
                 state.role = action.payload.user.role;
                 state.client = action.payload.client;
                 state.level = action.payload.level;
+            })
+            .addCase(fetchCreateIncomeChange.fulfilled, (state) => {
+                state.changeLoadingStatus = 'success';
             })
             .addCase(fetchLogin.rejected, state => {state.userAuthLoadingStatus = 'error'})
             .addCase(fetchAuth.rejected, state => {

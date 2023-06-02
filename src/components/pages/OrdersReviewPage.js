@@ -68,7 +68,6 @@ const OrdersReviewPage = ({detail, product}) => {
                                         </div>
                                     }
                                     <div>
-                                        <h3 className="text-xl font-bold">Все отзывы</h3>
                                         <OrdersReviewList detail={detail}/>
                                     </div>
                                 </div>
@@ -80,9 +79,8 @@ const OrdersReviewPage = ({detail, product}) => {
             :
                 <div className="w-full">
                 <h1 className="text-3xl font-bold">Отзывы</h1>
-                    <div className="bg-lightGray py-10 px-16 w-full rounded-xl mt-6">
+                    <div className="w-full rounded-xl">
                         <div>
-                            <h3 className="text-xl font-bold">Все отзывы</h3>
                             <OrdersReviewList detail={detail}/>
                         </div>
                     </div>

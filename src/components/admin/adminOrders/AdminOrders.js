@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {fetchOrders, fetchStatuses} from "../orderSlice";
+import {fetchOrders, fetchStatuses} from "../../orders/orderSlice";
 import { fetchAdminCart } from "../../clientCart/cartSlice";
 import ModalWindow from "../../modalWindow/ModalWindow";
 import Spinner from "../../spinner/Spinner";
@@ -57,7 +57,7 @@ const AdminOrders = () => {
                 case 1:
                     typeStatus = 'text-red-700 bg-red-100';
                     break;
-                case 5:
+                case 2:
                     typeStatus = 'text-red-700 bg-red-100';
                     break;
                 case 6:

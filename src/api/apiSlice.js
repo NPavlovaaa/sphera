@@ -23,7 +23,7 @@ export const apiSlice = createApi({
             invalidatesTags: ['Users', 'Clients']
         }),
         getUsers: builder.query({
-            query: () => '/users/',
+            query: () => '/customers/',
             providesTags: ['Users']
         }),
         getProducts: builder.query({

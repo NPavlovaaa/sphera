@@ -42,6 +42,22 @@ export const fetchChangeOrderStatus = createAsyncThunk(
     }
 )
 
+export const fetchIncomes = createAsyncThunk(
+    'products/fetchIncomes',
+    async () => {
+        const {request} = useHttp();
+        return await request(`http://localhost:8000/incomes/`)
+    }
+)
+
+export const fetchProductCount = createAsyncThunk(
+    'products/fetchProductCount',
+    async () => {
+        const {request} = useHttp();
+        return await request(`http://localhost:8000/product_count/`)
+    }
+)
+
 
 const orderingSlice = createSlice({
     name: 'getOrders',

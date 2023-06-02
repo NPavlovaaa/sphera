@@ -15,7 +15,9 @@ const initialState = productAdapter.getInitialState({
     activeFilterRoasting: null,
     activeFilterVariety: [],
     activeCategory: null,
-    quantity: null
+    quantity: null,
+    total_quantity: null,
+    activeEditProduct: null
 });
 
 // export const fetchProductList = createAsyncThunk(
@@ -26,11 +28,20 @@ const initialState = productAdapter.getInitialState({
 //     }
 // )
 
+
 export const fetchProductList = createAsyncThunk(
     'products/fetchProductList',
     async () => {
         const {request} = useHttp();
         return await request(`http://localhost:8000/products/`)
+    }
+)
+
+export const fetchDeleteProduct = createAsyncThunk(
+    'products/fetchDeleteProduct',
+    async (id) => {
+        const {request} = useHttp();
+        return await request(`http://localhost:8000/products/${id}/`, 'DELETE')
     }
 )
 
@@ -176,6 +187,9 @@ const productSlice = createSlice({
         activeCategoryChange: (state, action) => {
             state.activeCategory = action.payload;
         },
+        editProduct: (state, action) => {
+            state.activeEditProduct = action.payload;
+        },
     },
     extraReducers: builder => {
         builder
@@ -221,6 +235,18 @@ const productSlice = createSlice({
                 state.quantity = action.payload.quantity;
                 state.productLoadingStatus = 'success change';
             })
+            .addCase(fetchDeleteProduct.fulfilled, (state) => {
+                state.productLoadingStatus = 'success deleted';
+            })
+            .addCase(fetchProductWarehouse.fulfilled, (state, action) => {
+                state.productLoadingStatus = 'success';
+                let arr = action.payload
+                if(!state.total_quantity){
+                    arr.map(item => {
+                        state.total_quantity += item.quantity;
+                    })
+                }
+            })
             .addCase(fetchWeight.rejected, state => {state.productLoadingStatus = 'error'})
             .addCase(fetchProduct.rejected, state => {state.productLoadingStatus = 'error'})
             .addDefaultCase(() => {})
@@ -233,5 +259,6 @@ export const {
     activeFilterProcessingChange,
     activeFilterRoastingChange,
     activeFilterVarietyChange,
-    activeCategoryChange
+    activeCategoryChange,
+    editProduct
 } = actions;

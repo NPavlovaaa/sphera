@@ -23,6 +23,7 @@ module.exports = {
       },
       mainGray: '#939393',
       lightGray: 'rgba(223, 223, 223, 0.27)',
+      darkLightGray: 'rgba(197,197,197,0.27)',
       red: {
         700: '#EC5859',
         100: 'rgba(236, 88, 89, 0.2)'
@@ -32,6 +33,7 @@ module.exports = {
         100: 'rgba(36, 255, 0, 0.2)'
       },
       gray: {
+        800: '#c9c9c9',
         700: '#939393',
         100: 'rgba(147, 147, 147, 0.2)'
       },
@@ -39,7 +41,12 @@ module.exports = {
         700: '#0085FF',
         100: 'rgba(0, 133, 255, 0.2)',
       },
-      black: '#000000'
+      violet: {
+        700: '#ab59d5',
+      },
+      black: '#000000',
+      darkMain: '#1b1c26',
+      darkActive: 'rgba(67,69,93,0.49)'
     },
     screens: {
       'sm': {'min': '640px', 'max': '767px'},

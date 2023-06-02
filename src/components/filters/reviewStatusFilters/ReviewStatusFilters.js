@@ -1,27 +1,23 @@
-import {activeFilterStatusChange} from "../../orders/orderSlice";
+import {activeFilterStatusChange} from "../../reviews/reviewsSlice";
 import {useDispatch, useSelector} from "react-redux";
 
 
-const OrderStatusFilters = () => {
-    const statuses = useSelector(state => state.getOrders.statuses);
-    const {activeFilter} = useSelector(state => state.getOrders);
+const ReviewStatusFilters = () => {
+    const {activeFilter, statuses} = useSelector(state => state.getReview);
     const dispatch = useDispatch();
 
     const renderStatus = (id) => {
         let typeStatus;
         if(activeFilter && id === activeFilter){
             switch(id){
-                case 1:
-                    typeStatus = 'text-red-700 bg-red-100';
+                case 'На рассмотрении':
+                    typeStatus = 'text-blue-700 bg-blue-100';
                     break;
-                case 2:
-                    typeStatus = 'text-red-700 bg-red-100';
-                    break;
-                case 6:
+                case 'Опубликовано':
                     typeStatus = 'text-green-700 bg-green-100';
                     break;
-                case 7:
-                    typeStatus = 'text-gray-700 bg-gray-100';
+                case 'Отклонено':
+                    typeStatus = 'text-red-700 bg-red-100';
                     break;
                 default:
                     typeStatus = 'text-blue-700 bg-blue-100';
@@ -29,7 +25,7 @@ const OrderStatusFilters = () => {
             }
         }
         else {
-            typeStatus = 'border-lightGray border-2';
+            typeStatus = 'bg-mainWhite';
         }
         return typeStatus;
     }
@@ -39,17 +35,17 @@ const OrderStatusFilters = () => {
             <p className="text-mainGray mr-5">Фильтры: </p>
             {statuses.map(item =>{
                 return(
-                    <button className={`${renderStatus(item.status_id)} bg-mainWhite text-sm flex justify-center h-fit rounded-lg py-1.5 px-3 shadow-sm mr-3`}
+                    <button className={`${renderStatus(item.review_status_name)} text-sm flex justify-center h-fit rounded-lg py-1.5 px-3 shadow-sm mr-3`}
                             type="submit"
-                            onClick={() => dispatch(activeFilterStatusChange(item.status_id))}
+                            onClick={() => dispatch(activeFilterStatusChange(item.review_status_name))}
                     >
-                        {item.status_name}
+                        {item.review_status_name}
                     </button>
                 )
             })}
             <button className="text-sm flex justify-center h-fit py-1.5 px-4"
                     type="submit"
-                    onClick={() => dispatch(activeFilterStatusChange(0))}
+                    onClick={() => dispatch(activeFilterStatusChange(''))}
             >
                 Сбросить фильтр
             </button>
@@ -57,4 +53,4 @@ const OrderStatusFilters = () => {
     )
 
 }
-export default OrderStatusFilters;
+export default ReviewStatusFilters;
