@@ -137,7 +137,7 @@ const ProductItem = () => {
 
     const renderImage = () =>{
         let image;
-        openWeight.weight === 1000 ? image = product.image_max : image = product.image_min
+        openWeight.weight === 250 ? image = product.image_min : image = product.image_max
         return <img src={image} alt="картинка товара" width="175" className="max-h-64"/>
     }
 
@@ -151,12 +151,14 @@ const ProductItem = () => {
                 <title>{product.product_name}</title>
             </Helmet>
             {productLoadingStatus === 'loading' ? <Spinner/> : null}
-            <div className="grid grid-cols-9 gap-16 w-full py-10 mt-10 px-20">
-                <div className="flex flex-col col-span-4 items-center bg-lightGray rounded-lg pt-14 pb-10">
-                    <div className="flex justify-center items-end h-64">
-                        {renderImage()}
+            <div className="grid grid-cols-8 gap-16 w-full py-10 mt-10 px-2">
+                <div className="flex flex-col col-span-4 items-center justify-center bg-lightGray rounded-lg pt-6 pb-4">
+                    <div className="bg-mainWhite rounded-lg w-2/3 py-10 px-10">
+                        <div className="flex justify-center items-end h-64">
+                            {renderImage()}
+                        </div>
                     </div>
-                    <div className="flex flex-col text-base text-mainGray w-full mt-14 px-14">
+                    <div className="flex flex-col text-base text-mainGray w-2/3 mt-5 px-6">
                         <div className="flex justify-between">
                             <div className="flex flex-col items-center mb-2">
                                 <p className="flex mb-1">Кислотность</p>
@@ -179,7 +181,7 @@ const ProductItem = () => {
                         </div>
                     </div>
                 </div>
-                <div className="flex flex-col col-span-5">
+                <div className="flex flex-col col-span-4">
                     <p className="text-2xl font-semibold mb-5">{product ? product.product_name : null}</p>
                     <div>
                         <p className="text-lg font-semibold mb-1">Разновидность</p>
@@ -250,7 +252,7 @@ const ProductItem = () => {
                         }) : null}
                     </div>
                     <div className="flex mt-3 text-2xl">
-                        {openWeight.price} р
+                        {openWeight.weight === 250 || openWeight.weight === 1000 ? `${openWeight.price} р` : `${openWeight.price} р/кг`}
                     </div>
                     <div className="flex mt-5">
                         {renBtn()}

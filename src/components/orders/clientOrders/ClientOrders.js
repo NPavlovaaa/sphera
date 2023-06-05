@@ -33,16 +33,13 @@ const ClientOrders = () => {
     const renderStatus = (id) => {
         let typeStatus;
         switch(id){
-            case 1:
+            case 'active':
                 typeStatus = 'text-red-700 bg-red-100';
                 break;
-            case 2:
-                typeStatus = 'text-red-700 bg-red-100';
-                break;
-            case 6:
+            case 'completed':
                 typeStatus = 'text-green-700 bg-green-100';
                 break;
-            case 7:
+            case 'canceled':
                 typeStatus = 'text-gray-700 bg-green-gray';
                 break;
             default:
@@ -132,8 +129,8 @@ const ClientOrders = () => {
                         <div className="flex flex-row w-full justify-between bg-mainWhite px-10 py-5 mt-5 rounded-xl">
                             <div className="flex flex-col">
                                 <div className="flex flex-row w-full rounded-xl">
-                                    <p className="mr-5 font-semibold">Доставка в постамат</p>
-                                    <div className={`${renderStatus(item.status.status_id)} text-xs flex justify-center h-fit rounded-lg py-1.5 px-3 shadow-lg`}>
+                                    <p className="mr-5 font-semibold">Доставка курьером</p>
+                                    <div className={`${renderStatus(item.status.status_id)} text-xs flex justify-center h-fit rounded-lg py-1.5 px-3 shadow-sm`}>
                                         {item.status.status_name}
                                     </div>
                                 </div>
@@ -144,14 +141,14 @@ const ClientOrders = () => {
                                             <Link to="/reviews/" className="bg-mainOrange-600 rounded-xl px-3 py-1.5 mr-5">Оценить заказ</Link>
                                         </div>
                                     </div>
-                                    : <p className="flex text-mainGray mt-5">Ожидаемая дата: {item.delivery_date}</p>
+                                    : <p className="flex text-mainGray mt-5">Ожидаемая дата: {item.delivery_date} {item.user_delivery_time}</p>
                                 }
                             </div>
                             <div className="flex pr-10 items-end">
                             {cart.map(({order, product, weight}) => {
                                 if(item.order.order_id === order){
                                     let image;
-                                    weight === 1000 ? image = product.image_max : image = product.image_min
+                                    weight === 250 ? image = product.image_min : image = product.image_max;
                                     return (
                                         <div className="flex flex-col text-sm justify-center items-center">
                                             <img src={image} alt="картинка товара" width="100" className="h-fit mb-2"/>

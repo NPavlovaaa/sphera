@@ -14,7 +14,8 @@ const initialState = userAdapter.getInitialState({
     level: null,
     token,
     count: null,
-    changeLoadingStatus: null
+    changeLoadingStatus: null,
+    activeEditUser: null
 });
 
 export const fetchLogin = createAsyncThunk(
@@ -75,6 +76,9 @@ const userSlice = createSlice({
             state.client = action.payload;
             state.userAuthLoadingStatus = action.payload;
         },
+        activeEditUserChange: (state, action) => {
+            state.activeEditUser = action.payload;
+        },
     },
     extraReducers: builder => {
         builder
@@ -114,4 +118,5 @@ export default reducer;
 
 export const {
     activeUserChange,
+    activeEditUserChange
 } = actions;

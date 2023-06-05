@@ -1,8 +1,8 @@
-function Question() {
+function Question({width}) {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="22"
+            width={width}
             height="22"
             fill="none"
             viewBox="0 0 27 27"

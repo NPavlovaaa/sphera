@@ -96,7 +96,7 @@ const EditProductForm = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="relative flex top-5 justify-center">
+                    <div className="relative flex justify-center">
                         <button className="bg-mainOrange-600 drop-shadow-md rounded-xl px-10 py-2"
                                 type="submit"
                         >Сохранить</button>

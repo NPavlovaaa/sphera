@@ -1,13 +1,21 @@
 import PropTypes from 'prop-types';
-import {Avatar, Button, CardContent, Stack, SvgIcon, Typography} from '@mui/material';
-import ChatBubbleLeftIcon from "@heroicons/react/24/solid/ChatBubbleLeftIcon";
+import ArrowRightIcon from '@heroicons/react/24/solid/ArrowRightIcon';
+import {
+  Avatar,
+  Button,
+  CardContent,
+  Stack,
+  SvgIcon,
+  Typography
+} from '@mui/material';
+import "./simplebar.min.css";
 import {Link} from "react-router-dom";
-import ArrowRightIcon from "@heroicons/react/24/solid/ArrowRightIcon";
+import SwatchIcon from '@heroicons/react/24/solid/SwatchIcon';
 
-export const OverviewOrderReviews = ({changeTab}) => {
 
+export const OverviewVarieties = ({changeTab}) => {
   return (
-      <div className="rounded-xl shadow-lg bg-mainWhite">
+      <div className="rounded-xl shadow-sm bg-mainWhite">
         <CardContent>
           <Stack
               alignItems="flex-start"
@@ -21,21 +29,21 @@ export const OverviewOrderReviews = ({changeTab}) => {
                   variant="h7"
                   gutterBottom
               >
-                Отзывы о заказах
+                Разновидности
               </Typography>
               <Typography variant="h4">
-                123
+                12
               </Typography>
             </Stack>
             <Avatar
                 sx={{
-                  backgroundColor: '#cf7cff',
+                  backgroundColor: 'rgba(78,220,189,0.41)',
                   height: 56,
                   width: 56
                 }}
             >
               <SvgIcon>
-                <ChatBubbleLeftIcon />
+                <SwatchIcon />
               </SvgIcon>
             </Avatar>
           </Stack>
@@ -59,7 +67,7 @@ export const OverviewOrderReviews = ({changeTab}) => {
   );
 };
 
-OverviewOrderReviews.propTypes = {
-  value: PropTypes.string,
+OverviewVarieties.prototype = {
+  orders: PropTypes.array,
   sx: PropTypes.object
 };

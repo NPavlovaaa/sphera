@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types';
-import UsersIcon from '@heroicons/react/24/solid/UsersIcon';
+import { Squares2X2Icon } from "@heroicons/react/24/outline";
 import {Avatar, Button, CardContent, Stack, SvgIcon, Typography} from '@mui/material';
 import ArrowRightIcon from "@heroicons/react/24/solid/ArrowRightIcon";
 import {Link} from "react-router-dom";
 
-export const OverviewTotalCustomers = ({ value, changeTab }) => {
+export const OverviewOrderStatuses = ({changeTab }) => {
 
   return (
-      <div className="rounded-xl shadow-lg bg-mainWhite" >
+      <div className="rounded-xl shadow-sm bg-mainWhite" >
       <CardContent>
         <Stack
           alignItems="flex-start"
@@ -21,21 +21,21 @@ export const OverviewTotalCustomers = ({ value, changeTab }) => {
               variant="h7"
               gutterBottom
             >
-              Клиенты
+              Статусы заказа
             </Typography>
             <Typography variant="h4">
-              {value}
+              6
             </Typography>
           </Stack>
           <Avatar
             sx={{
-              backgroundColor: '#48BA20',
+              backgroundColor: 'rgba(255,168,46,0.76)',
               height: 56,
               width: 56
             }}
           >
             <SvgIcon>
-              <UsersIcon />
+                <Squares2X2Icon/>
             </SvgIcon>
           </Avatar>
         </Stack>
@@ -59,7 +59,7 @@ export const OverviewTotalCustomers = ({ value, changeTab }) => {
   );
 };
 
-OverviewTotalCustomers.propTypes = {
+OverviewOrderStatuses.propTypes = {
   difference: PropTypes.number,
   positive: PropTypes.bool,
   value: PropTypes.string.isRequired,

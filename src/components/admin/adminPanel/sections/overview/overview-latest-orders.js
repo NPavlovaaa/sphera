@@ -13,19 +13,18 @@ import {
 } from '@mui/material';
 
 import {useEffect, useState} from "react";
-import {fetchOrders} from "../../../orders/orderSlice";
+import {fetchOrders} from "../../../../orders/orderSlice";
 import {useDispatch} from "react-redux";
 import "./simplebar.min.css";
 import {SeverityPill} from "../../components/severity-pill";
 
 const statusMap = {
-  1: 'text-red-700 bg-red-100',
-  2: 'text-red-700 bg-red-100',
-  3: 'text-blue-700 bg-blue-100',
-  4: 'text-blue-700 bg-blue-100',
-  5: 'text-blue-700 bg-blue-100',
-  6: 'text-green-700 bg-green-100',
-  7: 'text-gray-700 bg-gray-100'
+  'active': 'text-red-700 bg-red-100',
+  'new': 'text-blue-700 bg-blue-100',
+  'created': 'text-blue-700 bg-blue-100',
+  'available': 'text-blue-700 bg-blue-100',
+  'completed': 'text-green-700 bg-green-100',
+  'canceled': 'text-gray-700 bg-gray-100'
 };
 
 export const OverviewLatestOrders = ({changeTab}) => {
@@ -43,7 +42,7 @@ export const OverviewLatestOrders = ({changeTab}) => {
   const sorted_orders = orders.sort(byField('order_date')).slice(0, 8)
 
   return (
-      <div className="rounded-2xl shadow-lg bg-mainWhite w-full">
+      <div className="rounded-2xl shadow-sm bg-mainWhite w-full">
         <CardHeader title="Последние заказы" />
           <Table>
             <TableHead>

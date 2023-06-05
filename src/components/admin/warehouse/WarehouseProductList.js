@@ -102,7 +102,7 @@ const WarehouseProductList = ({changeTab}) => {
                 </Table>
             </Box>
             <Pagination
-                className="pagination-bar"
+                className="pagination-bar justify-center py-4"
                 currentPage={currentPage}
                 totalCount={products.length}
                 pageSize={pageSize}

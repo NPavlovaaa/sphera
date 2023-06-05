@@ -13,7 +13,7 @@ import {
 import { alpha, useTheme } from '@mui/material/styles';
 import {useDispatch} from "react-redux";
 import {useEffect, useState} from "react";
-import {fetchProductCount} from "../../../orders/orderSlice";
+import {fetchProductCount} from "../../../../orders/orderSlice";
 
 const useChartOptions = () => {
   const theme = useTheme();
@@ -53,7 +53,7 @@ const useChartOptions = () => {
     },
     plotOptions: {
       bar: {
-        columnWidth: '25px'
+        columnWidth: '20px'
       }
     },
     stroke: {
@@ -106,7 +106,7 @@ const useChartOptions = () => {
   };
 };
 
-export const OverviewSales = (props) => {
+export const OverviewSales = () => {
   const [productCount, setProductCount] = useState([]);
   const dispatch = useDispatch();
 
@@ -121,14 +121,14 @@ export const OverviewSales = (props) => {
           },
           {
             name: '2022 год',
-              data: [12, 11, 4, 6, 2, 9, 9, 10, 11, 12, 13, 13]
+              data: [12, 11, 4, 34, 22, 9, 41, 7, 11, 50, 22, 13]
           }
   ]
 
   const chartOptions = useChartOptions();
 
   return (
-      <div className="rounded-xl shadow-lg bg-mainWhite" >
+      <div className="rounded-xl shadow-sm bg-mainWhite" >
       <CardHeader
         action={(
           <Button

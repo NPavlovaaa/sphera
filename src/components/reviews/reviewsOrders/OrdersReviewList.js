@@ -10,6 +10,8 @@ const OrdersReviewList = ({detail}) => {
     const [status, setStatus] = useState();
     const [reviews, setReviews] = useState([]);
     const {activeFilter} = useSelector(state => state.getReview);
+    const {role} = useSelector(state => state.authUser);
+
 
     const dispatch = useDispatch();
 
@@ -59,8 +61,8 @@ const OrdersReviewList = ({detail}) => {
 
     return (
         <div className="flex flex-col mt-4 w-full">
-            <div className="flex flex-row mt-5 items-center mb-3">
-                <ReviewStatusFilters/>
+            <div className="flex flex-row mt-5 items-center">
+                {role && role === 1 ? <ReviewStatusFilters/> : null}
             </div>
             {elements}
         </div>

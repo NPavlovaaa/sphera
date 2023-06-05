@@ -1,4 +1,3 @@
-import {useGetProductsQuery} from "../../../api/apiSlice";
 import ProductListItem from "../productsListItem/ProductListItem";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useMemo} from "react";
@@ -129,7 +128,7 @@ const ProductList = () => {
     function renderProductList(arr){
         const items = arr.map((product, i) => {
             return (
-                <ProductListItem key={product.product_id} product_id={product.product_id} product={product} i={i} addToCart={addToCart}/>
+                <ProductListItem key={product.product_id} product={product} i={i} addToCart={addToCart}/>
             )
         })
         return (

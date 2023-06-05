@@ -22,8 +22,16 @@ export const apiSlice = createApi({
             }),
             invalidatesTags: ['Users', 'Clients']
         }),
-        getUsers: builder.query({
+        getCustomers: builder.query({
             query: () => '/customers/',
+            providesTags: ['Users']
+        }),
+        getUsers: builder.query({
+            query: () => '/users/',
+            providesTags: ['Users']
+        }),
+        getRoles: builder.query({
+            query: () => '/roles/',
             providesTags: ['Users']
         }),
         getProducts: builder.query({
@@ -116,4 +124,7 @@ export const {  useGetUsersQuery,
                 useGetOrdersReviewsQuery,
                 useUpdateOrdersReviewMutation,
                 useUpdateProductsReviewMutation,
+                useCreateDeliveryMutation,
+                useGetRolesQuery,
+                useGetCustomersQuery
 } = apiSlice;

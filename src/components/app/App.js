@@ -1,7 +1,7 @@
 import './App.css';
 import {Suspense, useEffect} from 'react';
 import ClientsList from "../clientsList/ClientsList";
-import { BrowserRouter as Router,  Route, Routes } from "react-router-dom";
+import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import Spinner from "../spinner/Spinner";
 import RegistrationFormPage from "../pages/RegistrationFormPage";
 import MainPage from "../pages/MainPage";
@@ -23,6 +23,7 @@ import ProductListFavorites from "../products/productListFavorites/ProductListFa
 import OrdersReviewPage from "../pages/OrdersReviewPage";
 import AppFooter from "../appFooter/AppFooter";
 import AdminMainPage from "../admin/pages/AdminMainPage";
+import SisadminMainPage from "../admin/pages/SisadminMainPage";
 
 
 function App() {
@@ -34,29 +35,21 @@ function App() {
             .then(data => localStorage.setItem('ROLE', data.payload.user.role))
     }, [userAuthLoadingStatus])
 
+
     return (
         <Router>
             <div className="app">
-                {role && role === 1 ?
-                    <><
-                        AppHeaderAdmin/>
+                {role && role !== 2 ?
+                    <>
+                        <AppHeaderAdmin/>
                         <Suspense fallback={<Spinner/>}>
                             <main>
                                 <Routes>
-                                    <Route path="/" element={<AdminMainPage/>}/>
-                                    {/*<Route path="/login" element={<RegistrationFormPage/>}/>*/}
-                                    {/*<Route path="/clients" element={<ClientsList/>}/>*/}
-                                    {/*<Route path="/products" element={<ProductListPage/>}/>*/}
-                                    {/*<Route path="/products/:id" element={<ProductItem/>}/>*/}
-                                    {/*<Route path="/account" element={<AccountPage/>}/>*/}
-                                    {/*<Route path="/cart" element={<ClientCart/>}/>*/}
-                                    {/*<Route path="/ordering" element={<Ordering/>}/>*/}
-                                    {/*<Route path="/my_orders" element={<ClientOrders/>}/>*/}
-                                    {/*<Route path="/favorite" element={<ProductListFavorites/>}/>*/}
-                                    {/*<Route path="/admin_orders" element={<AdminOrders/>}/>*/}
-                                    {/*<Route path="/reviews" element={<OrdersReviewPage/>}/>*/}
-                                    {/*<Route path="/product_reviews" element={<ProductReviewsClient/>}/>*/}
-                                    {/*<Route path="/admin_product_reviews" element={<ProductReviewsAdmin/>}/>*/}
+                                    {role && role === 1 ?
+                                        <Route path="/" element={<AdminMainPage/>}/>
+                                        :
+                                        <Route path="/" element={<SisadminMainPage/>}/>
+                                    }
                                 </Routes>
                             </main>
                             <AppFooter/>

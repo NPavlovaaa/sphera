@@ -199,7 +199,7 @@ const ProductConsumption = ({product}) => {
                                     </TableCell>
                                     <TableCell>
                                         <div className="flex justify-center items-center pr-8 text-red-700">
-                                            - {item.product_count} шт
+                                            - {item.product_count} кг
                                         </div>
                                     </TableCell>
                                 </TableRow>

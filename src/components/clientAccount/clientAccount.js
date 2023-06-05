@@ -33,7 +33,7 @@ const ClientAccount = () => {
                             </a>
                         </li>
                     </ul>
-                    <div className="flex flex-row bg-lightGray shadow-md rounded-xl px-16 pt-10 pb-5 w-full h-fit mt-5">
+                    <div className="flex flex-row rounded-xl pt-4 pb-5 w-full h-fit mt-5">
                         <div className={`${openTab === 1 ? "flex" : "hidden"} flex w-full`}>
                             <ClientInfo/>
                         </div>

@@ -11,16 +11,13 @@ const OrderStatusFilters = () => {
         let typeStatus;
         if(activeFilter && id === activeFilter){
             switch(id){
-                case 1:
+                case 'active':
                     typeStatus = 'text-red-700 bg-red-100';
                     break;
-                case 2:
-                    typeStatus = 'text-red-700 bg-red-100';
-                    break;
-                case 6:
+                case 'completed':
                     typeStatus = 'text-green-700 bg-green-100';
                     break;
-                case 7:
+                case 'canceled':
                     typeStatus = 'text-gray-700 bg-gray-100';
                     break;
                 default:
@@ -29,7 +26,7 @@ const OrderStatusFilters = () => {
             }
         }
         else {
-            typeStatus = 'border-lightGray border-2';
+            typeStatus = 'bg-mainWhite';
         }
         return typeStatus;
     }
@@ -39,7 +36,7 @@ const OrderStatusFilters = () => {
             <p className="text-mainGray mr-5">Фильтры: </p>
             {statuses.map(item =>{
                 return(
-                    <button className={`${renderStatus(item.status_id)} bg-mainWhite text-sm flex justify-center h-fit rounded-lg py-1.5 px-3 shadow-sm mr-3`}
+                    <button className={`${renderStatus(item.status_id)} text-sm flex justify-center h-fit rounded-lg py-1.5 px-3 shadow-sm mr-3`}
                             type="submit"
                             onClick={() => dispatch(activeFilterStatusChange(item.status_id))}
                     >
@@ -47,7 +44,7 @@ const OrderStatusFilters = () => {
                     </button>
                 )
             })}
-            <button className="text-sm flex justify-center h-fit py-1.5 px-4"
+            <button className="text-sm flex justify-center h-fit py-1.5 px-4 text-mainGray"
                     type="submit"
                     onClick={() => dispatch(activeFilterStatusChange(0))}
             >

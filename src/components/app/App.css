@@ -10,9 +10,33 @@
 .avatar{
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  /*object-fit: cover;*/
 }
 :active, :hover, :focus {
   outline: 0;
   outline-offset: 0;
+}
+.my {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+.label {
+  text-align: center;
+  cursor: pointer;
+  display: block;
+  transition: all 0.18s ease-in-out;
+}
+
+.label:hover {
+  background: rgba(255, 168, 46, 0.09);
+}
+.tooltip {
+  @apply invisible absolute;
+}
+.has-tooltip:hover .tooltip {
+  @apply visible z-50;
 }

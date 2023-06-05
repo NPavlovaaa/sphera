@@ -16,7 +16,6 @@ const ModalWindow = ({order}) => {
 
 
     const changeStatus = ({status, date}) =>{
-        console.log(date)
         dispatch(fetchChangeOrderStatus({
             'id': order.order_id,
             'status': status,
@@ -49,9 +48,9 @@ const ModalWindow = ({order}) => {
     return (
         <>
             <button type="submit"
-                    className="flex py-1.5 px-5 bg-mainOrange-600 justify-center rounded-lg w-fit text-sm mt-5 ease-linear transition-all duration-150"
+                    className="flex py-2 px-5 bg-mainOrange-100 text-mainOrange-600 justify-center rounded-xl w-fit text-sm mt-5 ease-linear transition-all duration-150"
                     onClick={() => setShowModal(true)}>
-                Изменить статус или ожидаемую дату
+                {order.status !== 'completed' && order.status !== 'canceled' ? 'Изменить статус или ожидаемую дату' : 'Изменить статус заказа'}
             </button>
             {showModal ? (
                 <>
@@ -99,7 +98,7 @@ const ModalWindow = ({order}) => {
                                     </div>
                                     <div className="flex items-center justify-end p-6 rounded-b">
                                         <button
-                                            className="bg-mainOrange-600 font-medium text-base font-semibold uppercase text-sm px-6 py-3 rounded-xl shadow hover:shadow-xl outline-none focus:outline-none mr-1 mb-1"
+                                            className="flex py-2 px-8 bg-mainOrange-100 text-mainOrange-600 justify-center rounded-xl w-fit text-base mt-5 ease-linear transition-all duration-150"
                                             type="submit">
                                             Сохранить
                                         </button>

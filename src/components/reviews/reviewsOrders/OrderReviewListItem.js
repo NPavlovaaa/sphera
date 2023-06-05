@@ -88,7 +88,7 @@ const OrderReviewListItem = ({detail, review, review_date, avatar, first_name, l
                 {role === '1' ?
                     <div className="flex justify-between mb-5">
                         <p className="text-lg font-semibold">Отзыв №{review.review_id}</p>
-                        <p className={`${renderStatus(review.review_status)} text-sm flex justify-center h-fit rounded-lg py-1.5 px-3 shadow-lg`}>{review_status}</p>
+                        <p className={`${renderStatus(review.review_status)} text-sm flex justify-center h-fit rounded-lg py-1.5 px-3 shadow-sm`}>{review_status}</p>
                     </div>
                     : null
                 }

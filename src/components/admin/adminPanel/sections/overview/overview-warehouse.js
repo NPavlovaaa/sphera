@@ -13,7 +13,7 @@ import ArrowRightIcon from "@heroicons/react/24/solid/ArrowRightIcon";
 
 export const OverviewWarehouse = ({changeTab, total_quantity}) => {
   return (
-      <div className="rounded-xl shadow-lg bg-mainWhite">
+      <div className="rounded-xl shadow-sm bg-mainWhite">
       <CardContent>
         <Stack
           alignItems="flex-start"

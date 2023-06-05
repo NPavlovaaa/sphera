@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { fetchCart, fetchDeleteProductInCart, fetchUpdateCart } from "./cartSlice";
 import { Link } from "react-router-dom";
 
@@ -59,17 +59,17 @@ const ClientCart = () => {
             }
 
             let image;
-            weight === 1000 ? image = product.image_max : image = product.image_min
+            weight === 250 ? image = product.image_min : image = product.image_max;
 
-            total_sum += price;
-            weight_sum += weight * count;
-            count_products += 1 * count;
+            total_sum += weight === 250 || weight === 1000  ? price : weight * price * count;
+            weight_sum += weight === 250 || weight === 1000 ? weight * count : weight * count * 1000;
+            count_products += weight === 250 || weight === 1000 ? count : weight * count;
             return (
                 <div className="flex flex-row w-full justify-between bg-mainWhite mb-1.5 p-8 rounded-xl" key={cart_id}>
-                    <div className="flex flex-row w-2/3 items-center justify-center">
-                            <div className="flex py-3 w-1/4 max-h-44 justify-center">
+                    <div className="flex flex-row w-2/3 it justify-center">
+                            <div className="flex py-3 w-1/4 max-h-36 justify-center">
                                 <Link to={`/products/${product.product_id}/`}>
-                                    <img src={image} alt="картинка товара" className="max-h-40"/>
+                                    <img src={image} alt="картинка товара" className="max-h-36"/>
                                 </Link>
                             </div>
                         <div className="flex flex-col w-3/4 ml-5">
@@ -95,13 +95,24 @@ const ClientCart = () => {
                     </div>
                     <div className="flex w-1/5 justify-end">
                         <button type="submit" onClick={() => changeCount(-1)} className="flex text-xl mr-2 bg-lightGray px-2.5 py-1 rounded-lg h-fit">-</button>
-                        <p className="flex text-lg mr-2 py-1">{count}</p>
+                        <p className="flex text-lg mr-2 py-1">
+                            {weight === 250 || weight === 1000 ? count : count * weight}
+                        </p>
                         <button type="submit" onClick={() => changeCount(1)} className="flex text-xl bg-lightGray px-2 py-1 rounded-lg h-fit">+</button>
                     </div>
                     <div className="flex w-1/5 pr-3 justify-end">
                         <div className="flex flex-col items-center">
-                            <p className="flex text-xl">{price} р</p>
-                            <p className="flex text-sm text-mainGray mt-0.5">{weight} г</p>
+                            {weight === 250 || weight === 1000 ?
+                                <>
+                                    <p className="flex text-xl">{price} р</p>
+                                    <p className="flex text-sm text-mainGray mt-0.5">{weight} г</p>
+                                </>
+                                :
+                                <>
+                                    <p className="flex text-xl">{price * count * weight} р</p>
+                                    <p className="flex text-sm text-mainGray mt-0.5">{count * weight} кг</p>
+                                </>
+                            }
                         </div>
                     </div>
                 </div>

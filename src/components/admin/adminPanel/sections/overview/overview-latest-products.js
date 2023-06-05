@@ -15,7 +15,7 @@ import {
   SvgIcon
 } from '@mui/material';
 import {useEffect, useState} from "react";
-import {fetchProductList} from "../../../products/productSlice";
+import {fetchProductList} from "../../../../products/productSlice";
 import {useDispatch} from "react-redux";
 
 export const OverviewLatestProducts = ({changeTab}) => {
@@ -33,7 +33,7 @@ export const OverviewLatestProducts = ({changeTab}) => {
     const sorted_products = products.sort(byField('date_added')).slice(0, 5)
 
     return (
-      <div className="rounded-xl shadow-lg bg-mainWhite" >
+      <div className="rounded-xl bg-mainWhite" >
       <CardHeader title="Последние товары" />
       <List>
         {sorted_products.map((product, index) => {

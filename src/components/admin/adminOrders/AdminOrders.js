@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {fetchOrders, fetchStatuses} from "../../orders/orderSlice";
+import {fetchCreateDelivery, fetchOrders, fetchStatuses} from "../../orders/orderSlice";
 import { fetchAdminCart } from "../../clientCart/cartSlice";
 import ModalWindow from "../../modalWindow/ModalWindow";
 import Spinner from "../../spinner/Spinner";
@@ -8,9 +8,8 @@ import OrderStatusFilters from "../../filters/orderStatusFilters/OrderStatusFilt
 
 
 const AdminOrders = () => {
-    const {changeOrderStatus, activeFilter, ordersLoadingStatus} = useSelector(state => state.getOrders);
+    const {changeOrderStatus, activeFilter, ordersLoadingStatus, deliveryLoadingStatus} = useSelector(state => state.getOrders);
     const activeUser = useSelector(state => state.authUser.user);
-
     const [orders, setOrders] = useState([]);
     const [cart, setCart] = useState([]);
     const dispatch = useDispatch();
@@ -22,7 +21,7 @@ const AdminOrders = () => {
     useEffect(()=>{
         updateOrders();
         updateCarts();
-    }, [activeUser, changeOrderStatus])
+    }, [activeUser, changeOrderStatus, deliveryLoadingStatus])
 
     function byField(field) {
         return (a, b) => a['order'][field] > b['order'][field] ? 1 : -1;
@@ -54,17 +53,14 @@ const AdminOrders = () => {
     const renderStatus = (id) => {
         let typeStatus;
             switch(id){
-                case 1:
+                case 'active':
                     typeStatus = 'text-red-700 bg-red-100';
                     break;
-                case 2:
-                    typeStatus = 'text-red-700 bg-red-100';
-                    break;
-                case 6:
+                case 'completed':
                     typeStatus = 'text-green-700 bg-green-100';
                     break;
-                case 7:
-                    typeStatus = 'text-gray-700 bg-gray-100';
+                case 'canceled':
+                    typeStatus = 'text-gray-700 bg-green-gray';
                     break;
                 default:
                     typeStatus = 'text-blue-700 bg-blue-100';
@@ -72,14 +68,30 @@ const AdminOrders = () => {
             }
         return typeStatus;
     }
+    let total_product_count;
+    let total_weight ;
+
+    const onCreateDelivery = (value) =>{
+        const newDelivery = {
+            "id": value.id,
+            "type": "standard",
+            "matter": "Кофе",
+            "total_weight_kg": total_weight / 1000,
+            "points": [
+                {"address": "Москва, Бориса Галушкина 9", "contact_person": {"phone": "89519504886"}},
+                {"address": value.address, "contact_person": {"phone": value.phone, "name": value.client}}
+            ],
+        }
+        dispatch(fetchCreateDelivery(newDelivery))
+    }
 
     const renderOrders = (arr) => {
+        total_product_count = 0;
+        total_weight = 0;
         if (arr.length === 0) {
             return <p className="text-center text-xl mt-16">Заказов пока нет</p>
         }
         return arr.map((item) => {
-            let total_product_count = 0;
-            let total_weight = 0;
             return (
                 <div className="flex flex-col bg-lightGray pt-6 w-full rounded-xl mt-6 shadow-md"
                      key={item.order.order_id}>
@@ -95,7 +107,7 @@ const AdminOrders = () => {
                             <div className="flex flex-col w-5/12">
                                 <div className="flex flex-row w-full rounded-xl">
                                     <p className="mr-5 font-semibold">Доставка в постамат</p>
-                                    <div className={`${renderStatus(item.status.status_id)} text-xs flex justify-center h-fit rounded-lg py-1.5 px-3 shadow-lg`}>
+                                    <div className={`${renderStatus(item.status.status_id)} text-xs flex justify-center h-fit rounded-lg py-1.5 px-3 shadow-sm`}>
                                         {item.status.status_name}
                                     </div>
                                 </div>
@@ -149,7 +161,30 @@ const AdminOrders = () => {
                                 </div>
                             </div>
                         </div>
-                        <ModalWindow order={item.order}/>
+                        <div className="flex justify-between">
+                            <ModalWindow order={item.order}/>
+                            {item.order.status === 'new' ?
+                                <button type="submit"
+                                        className="flex py-2 rounded-xl px-5 bg-dostavista text-mainWhite justify-center w-fit text-sm mt-5 ease-linear transition-all duration-150"
+                                        onClick={() => onCreateDelivery({
+                                            'id': item.order.order_id,
+                                            'address': item.order.address,
+                                            'client': item.client.first_nam + item.client.last_name,
+                                            'phone': item.client.phone
+                                        })}
+                                >
+                                    Создать доставку
+                                </button>
+                            :
+                            item.order.tracking_url ?
+                                <button type="submit"
+                                        className="flex py-2 rounded-xl px-5 bg-dostavista text-mainWhite justify-center w-fit text-sm mt-5 ease-linear transition-all duration-150"
+                                        onClick={() => window.location.replace(item.order.tracking_url)}
+                                >
+                                    Трекинг
+                                </button>
+                                : null}
+                        </div>
                     </div>
                 </div>
             )

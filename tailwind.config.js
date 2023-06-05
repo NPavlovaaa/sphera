@@ -1,7 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 
 module.exports = {
-  content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  content: [
+      "./src/**/*.{js,jsx,ts,tsx}",
+  ],
   theme: {
     extend: {},
     borderWidth: {
@@ -17,19 +19,23 @@ module.exports = {
       mainWhite: '#ffffff',
       mainOrange:{
         100: 'rgba(255, 168, 46, 0.2)',
-        200: 'rgba(190,120,31,0.2)',
+        200: 'rgba(255,188,114,0.54)',
         600: '#FFA82E',
         700: 'rgba(255,168,46,0.76)',
       },
       mainGray: '#939393',
       lightGray: 'rgba(223, 223, 223, 0.27)',
+      lightGrayAdmin: 'rgba(224,224,224,0.14)',
+      lightGrayOrdering: 'rgba(243,243,243,0.27)',
       darkLightGray: 'rgba(197,197,197,0.27)',
       red: {
         700: '#EC5859',
         100: 'rgba(236, 88, 89, 0.2)'
       },
+      dostavista: '#FF3E80',
       green: {
         700: '#48BA20',
+        200: 'rgba(58,208,34,0.2)',
         100: 'rgba(36, 255, 0, 0.2)'
       },
       gray: {
@@ -83,17 +89,4 @@ module.exports = {
       '10xl': ['8rem', '1.12'],
     },
   },
-  plugins: [
-    // plugin(function({ matchUtilities, theme }) {
-    //   matchUtilities(
-    //       {
-    //         'translate-z': (value) => ({
-    //           '--tw-translate-z': value,
-    //           transform: ` translate3d(var(--tw-translate-x), var(--tw-translate-y), var(--tw-translate-z)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))`,
-    //         }), // this is actual CSS
-    //       },
-    //       { values: theme('translate'), supportsNegativeValues: true }
-    //   )
-    // })
-  ],
 }

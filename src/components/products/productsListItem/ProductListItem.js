@@ -12,7 +12,6 @@ import {
 import { fetchProductInCart, fetchDeleteProductInCart, fetchUpdateCart } from "../../clientCart/cartSlice";
 import Star from "../../icons/Star";
 import Favorite from "../../icons/Favorite";
-import ModalWindow from "../../modalWindow/ModalWindow";
 
 
 const ProductListItem = ({product, i, addToCart}) => {
@@ -134,7 +133,7 @@ const ProductListItem = ({product, i, addToCart}) => {
 
     const renderImage = () =>{
         let image;
-        openWeight.weight === 1000 ? image = product.image_max : image = product.image_min
+        openWeight.weight === 250 ? image = product.image_min : image = product.image_max
         return <img src={image} alt="картинка товара" className="max-h-44"/>
     }
 
@@ -162,7 +161,6 @@ const ProductListItem = ({product, i, addToCart}) => {
                     <Link to={`/products/${product.product_id}/`}>
                         <div className="flex justify-center">
                             <p className="text-xl font-medium mb-3">{product.product_name}</p>
-                            {/*<p className="text-lg font-semibold mb-3">{product.product_name}</p>*/}
                         </div>
                         <div className="flex justify-center items-end max-h-44">
                             {renderImage()}
@@ -196,7 +194,7 @@ const ProductListItem = ({product, i, addToCart}) => {
                             </div>
                         </div>
                     </div>
-                    <div className="flex flex-row justify-between w-full mt-5">
+                    <div className="flex flex-row justify-between w-5/6 mt-5">
                     {checkedList ? checkedList.map(({id, weight, price}) => {
                             let dem;
                             switch(weight){
@@ -239,7 +237,7 @@ const ProductListItem = ({product, i, addToCart}) => {
                         }) : null}
                     </div>
                     <div className="flex mt-3 text-2xl">
-                        {openWeight.price} р
+                        {openWeight.weight === 250 || openWeight.weight === 1000 ? `${openWeight.price} р` : `${openWeight.price} р/кг`}
                     </div>
                 </div>
             </div>

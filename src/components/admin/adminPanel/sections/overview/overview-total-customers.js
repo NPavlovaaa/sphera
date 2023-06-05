@@ -1,14 +1,13 @@
 import PropTypes from 'prop-types';
+import UsersIcon from '@heroicons/react/24/solid/UsersIcon';
 import {Avatar, Button, CardContent, Stack, SvgIcon, Typography} from '@mui/material';
-import ChatBubbleOvalLeftIcon from '@heroicons/react/24/solid/ChatBubbleOvalLeftIcon'
-import {Link} from "react-router-dom";
 import ArrowRightIcon from "@heroicons/react/24/solid/ArrowRightIcon";
+import {Link} from "react-router-dom";
 
-
-export const OverviewProductReviews = ({changeTab}) => {
+export const OverviewTotalCustomers = ({ value, changeTab }) => {
 
   return (
-      <div className="rounded-xl shadow-lg bg-mainWhite">
+      <div className="rounded-xl shadow-sm bg-mainWhite" >
       <CardContent>
         <Stack
           alignItems="flex-start"
@@ -22,21 +21,21 @@ export const OverviewProductReviews = ({changeTab}) => {
               variant="h7"
               gutterBottom
             >
-              Отзывы о товарах
+              Клиенты
             </Typography>
             <Typography variant="h4">
-              123
+              {value}
             </Typography>
           </Stack>
           <Avatar
             sx={{
-              backgroundColor: '#0085FF',
+              backgroundColor: '#48BA20',
               height: 56,
               width: 56
             }}
           >
             <SvgIcon>
-              <ChatBubbleOvalLeftIcon />
+              <UsersIcon />
             </SvgIcon>
           </Avatar>
         </Stack>
@@ -50,7 +49,7 @@ export const OverviewProductReviews = ({changeTab}) => {
               )}
               size="small"
               variant="text"
-              onClick={() => changeTab('ProductReviews')}
+              onClick={() => changeTab('ClientsList')}
           >
             Перейти
           </Button>
@@ -60,7 +59,10 @@ export const OverviewProductReviews = ({changeTab}) => {
   );
 };
 
-OverviewProductReviews.propTypes = {
-  value: PropTypes.string,
+OverviewTotalCustomers.propTypes = {
+  difference: PropTypes.number,
+  positive: PropTypes.bool,
+  value: PropTypes.string.isRequired,
   sx: PropTypes.object
 };
+

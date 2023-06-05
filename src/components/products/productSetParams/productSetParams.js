@@ -7,6 +7,7 @@ import Case5 from "../../icons/Case5";
 
 const productSetParams = (product) => {
     const allParams = [product.acidity, product.density, product.sweetness, product.bitterness]
+
     let params;
     const renderParams = allParams.map(item => {
 
