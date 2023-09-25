@@ -1,7 +1,7 @@
 # Фронтенд часть дипломного проекта "Интернет-магазин для компании по изготовлению и продаже кофе для бизнеса".
 
 [Бэкенд часть](https://github.com/NPavlovaaa/sphera_backend)  
-[Макеты в Figma]([https://github.com/NPavlovaaa/sphera_backend](https://www.figma.com/file/n85vhpwbaihjJuZnDTON6W/Untitled?type=design&node-id=0%3A1&mode=design&t=YtG4eKwyjQl2OctR-1))  
+[Макеты в Figma](https://www.figma.com/file/n85vhpwbaihjJuZnDTON6W/Untitled?type=design&node-id=0%3A1&mode=design&t=YtG4eKwyjQl2OctR-1)  
 
 ## Технологии
 - ReactJS;
