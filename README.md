@@ -5,8 +5,8 @@
 
 ### Главная страница, каталог и страница товара
 <div class="flex">
-  <img src="public/image.png" width="500" height="600">
-  <img src="public/catalog.png" width="460" height="605">
+  <img src="public/image.png" width="400" height="500">
+  <img src="public/catalog.png" width="360" height="505">
 </div>
 
 <img src="public/product.png" width="650" height="1205">
