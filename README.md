@@ -4,12 +4,15 @@
 ### [Макеты в Figma](https://www.figma.com/file/n85vhpwbaihjJuZnDTON6W/Untitled?type=design&node-id=0%3A1&mode=design&t=YtG4eKwyjQl2OctR-1)  
 
 ### Главная страница, каталог и страница товара
-<img src="public/image.png" width="285" height="350">
-<img src="public/catalog.png" width="285" height="354">
+<div class="flex">
+  <img src="public/image.png" width="500" height="600">
+  <img src="public/catalog.png" width="460" height="605">
+</div>
 
-![alt text](public/product.png)
+<img src="public/product.png" width="650" height="1205">
+
 ### Панель администратора
-![alt text](public/admin.png)
+<img src="public/admin.png" width="650" height="600">
 
 ## Технологии
 - ReactJS;
